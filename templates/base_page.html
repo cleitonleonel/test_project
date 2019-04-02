@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}MELINUX{% endblock %}</title>
+  {% load static %}
+{#  {% load compress %}#}
+  <!-- % compress css %} -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/otma-style.css' %}">
+  <!-- Font Awesome JS -->
+  <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
+  {% block main_dependencies %}
+
+  {% endblock %}
+  <!--{ endcompress %}-->
+</head>
+
+<body>
+<div class="wrapper">
+  <!-- Sidebar  -->
+  <nav id="sidebar" class="active">
+    <div class="sidebar-header">
+      <h3>MELINUX</h3>
+      <strong style="margin-left: -10px;">MLX</strong>
+    </div>
+    <ul class="list-unstyled components">
+      <li class="active">
+        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <i class="fas fa-home"></i>
+          <span>Cadastro de Cliente</span>
+        </a>
+        <ul class="collapse list-unstyled" id="homeSubmenu">
+          <li>
+            <a href="#">1</a>
+          </li>
+          <li>
+            <a href="#">2</a>
+          </li>
+          <li>
+            <a href="#">3</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-briefcase"></i>
+          <span>About</span>
+        </a>
+        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+          <i class="fas fa-copy"></i>
+          <span>Pages</span>
+        </a>
+        <ul class="collapse list-unstyled" id="pageSubmenu">
+          <li>
+            <a href="#">1</a>
+          </li>
+          <li>
+            <a href="#">2</a>
+          </li>
+          <li>
+            <a href="#">3</a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-image"></i>
+          <span>Portifólio</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-question"></i>
+          <span>FAQ</span>
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="fas fa-paper-plane"></i>
+          <span>Contato</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- Page Content  -->
+  <div id="content">
+    <div class="row top-menu">
+      <div class="col-12 dropdown">
+        <a id="sidebarCollapse">
+          <i class="fas fa-align-left toggle-menu"></i>
+        </a>
+
+        <a class="menu-profile float-right" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img class="photo" src="https://avatars1.githubusercontent.com/u/39997031?s=400&u=017e03d9cac198018edf72d10da0d7085efa2276&v=4">
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <a class="dropdown-item" href="#">Perfil</a>
+          <a class="dropdown-item" href="#">Log out</a>
+        </div>
+      </div>
+    </div>
+    <div class="page-content">
+      {% block main_content %}
+
+      {% endblock %}
+    </div>
+  </div>
+</div>
+{#{% compress js %}#}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<!-- NiceScroll -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.js"></script>
+<script>
+  $(document).ready(function() {
+    $("body").niceScroll({
+    cursorcolor:"#57c6d5",
+    cursorwidth:"7px"
+    });
+  });
+</script>
+<!-- Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<!-- Bootstrap Bundle js -->
+<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<!-- Bootstrap js -->
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<!-- OTMA js -->
+<script src="{% static 'js/otma-js.js' %}"></script>
+{#{% endcompress %}#}
+{% block secondary_dependencies %}
+
+{% endblock %}
+
+</body>
+</html>
