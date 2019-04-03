@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
   <meta charset="utf-8">
@@ -7,10 +7,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block title %}MELINUX{% endblock %}</title>
   {% load static %}
-{#  {% load compress %}#}
-  <!-- % compress css %} -->
+  <!-- Vue -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'bower_components/bootstrap-4.3.1/css/bootstrap.css' %}">
   <!-- Our Custom CSS -->
   <link rel="stylesheet" href="{% static 'css/otma-style.css' %}">
   <!-- Font Awesome JS -->
@@ -18,7 +18,7 @@
   {% block main_dependencies %}
 
   {% endblock %}
-  <!--{ endcompress %}-->
+
 </head>
 
 <body>
@@ -112,28 +112,25 @@
     </div>
   </div>
 </div>
-{#{% compress js %}#}
+
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <!-- NiceScroll -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.js"></script>
-<script>
-  $(document).ready(function() {
-    $("body").niceScroll({
-    cursorcolor:"#57c6d5",
-    cursorwidth:"7px"
-    });
-  });
-</script>
 <!-- Popper.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <!-- Bootstrap Bundle js -->
-<script src="{% static 'js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'bower_components/bootstrap-4.3.1/js/bootstrap.bundle.js' %}"></script>
 <!-- Bootstrap js -->
-<script src="{% static 'js/bootstrap.js' %}"></script>
+<script src="{% static 'bower_components/bootstrap-4.3.1/js/bootstrap.js' %}"></script>
 <!-- OTMA js -->
-<script src="{% static 'js/otma-js.js' %}"></script>
-{#{% endcompress %}#}
+<script src="{% static 'js/otma-scripts.js' %}"></script>
+<!-- OTMA Components -->
+<script src="{% static 'js/components/form-components.js' %}"></script>
+<script src="{% static 'js/components/input-components.js' %}"></script>
+<script src="{% static 'js/components/table-components.js' %}"></script>
+
+
 {% block secondary_dependencies %}
 
 {% endblock %}
