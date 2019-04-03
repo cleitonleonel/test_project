@@ -17,10 +17,11 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.views import index
+from apps.views import index, login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include('core_authentication.urls')),
+    # path('core/', include('core_authentication.urls')),
     url(r'^$', index),
+    url(r'^login/$', login),
 ]

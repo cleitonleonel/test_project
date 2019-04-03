@@ -2,19 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MELINUX - Login</title>
-
-  <!-- Vue -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+  <title>{% block title %}MELINUX - Login{% endblock %}</title>
+  {% load static %}
+    <!-- Vue -->
+    <script src="{% static 'bower_components/vuejs-2.6.1/vue.js' %}"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap-4.3.1/css/bootstrap.css' %}">
+    <!-- Our Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/otma-login.css' %}">
+    <!-- Font Awesome JS -->
+    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
 </head>
-<body>
+<body style="background: #eaeaea;">
+<div id="app">
+  <div class="col-12 centered">
+    <div class="offset-4">
+      <div class="card w-50">
+        <div class="card-header text-center login-header">ENTRAR NO SISTEMA</div>
+        <div class="card-body">
+          <app-login-form></app-login-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
 <!-- NiceScroll -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.js"></script>
-
+<!-- Popper.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<!-- Bootstrap Bundle js -->
+<script src="{% static 'bower_components/bootstrap-4.3.1/js/bootstrap.bundle.js' %}"></script>
+<!-- Bootstrap js -->
+<script src="{% static 'bower_components/bootstrap-4.3.1/js/bootstrap.js' %}"></script>
+<!-- OTMA Components -->
+<script src="{% static 'js/components/input-components.js' %}"></script>
+<script src="{% static 'js/components/form-components.js' %}"></script>
+<script src="{% static 'js/components/table-components.js' %}"></script>
+<!-- OTMA Controllers -->
+<script src="{% static 'js/controllers/form-controller.js' %}"></script>
+<!-- NiceScroll Instance -->
 <script>
   $(document).ready(function() {
     $("body").niceScroll({

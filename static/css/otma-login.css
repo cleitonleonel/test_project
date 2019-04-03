@@ -1,0 +1,26 @@
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+.center {
+    margin-left: 38%;
+}
+
+.submit-button {
+    background: #539fb2;
+    color: #ffffff;
+    border: solid 1px #477d8e;
+    width: 100px;
+}
+
+.round-border {
+   border-radius: 15px;
+}
+
+.login-header {
+    font-family: "Ubuntu Light", "sans-serif";
+}
