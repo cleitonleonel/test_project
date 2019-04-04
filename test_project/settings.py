@@ -10,14 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from conf.profile import POSTGRES_USER, POSTGRES_PASSWORD, BOWER_PATH
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from conf.profile import POSTGRES_USER, POSTGRES_PASSWORD
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -44,6 +41,7 @@ INSTALLED_APPS = [
     'otma.apps.core.communications',
     'otma.apps.core.security',
     'otma.apps.entities',
+    'djangobower',
 ]
 
 MIDDLEWARE = [
@@ -148,3 +146,17 @@ ERRORS_MESSAGES = {
     'name_min_words':'Informe o nome completo',
     'not_all_numeric':'Este campo só pode conter numeros'
 }
+
+# Bower Components
+BOWER_PATH = BOWER_PATH
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
+BOWER_INSTALLED_APPS = (
+    'bootstrap',
+    'vue',
+    'jquery',
+    'font-awesome',
+    'jquery-nicescroll',
+    #https://github.com/snokier/v-contextmenu
+    #'vue-resize-mixin',
+    #'rateyo'
+)
