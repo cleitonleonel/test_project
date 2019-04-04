@@ -1,6 +1,8 @@
 # Install command from requirements
 # command pip install -r conf/custom_requirements.txt --process-dependency-links
 django
+psycopg2-binary
+
 https://github.com/otmasolucoes/apps.core.authentication/zipball/master
 https://github.com/otmasolucoes/apps.core.security/zipball/master
 https://github.com/otmasolucoes/apps.entities/zipball/master

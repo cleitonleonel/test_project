@@ -7,19 +7,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block title %}MELINUX{% endblock %}</title>
   {% load static %}
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="{% static 'bower_components/bootstrap-4.3.1/css/bootstrap.css' %}">
-  <!-- Our Custom CSS -->
   <link rel="stylesheet" href="{% static 'css/otma-style.css' %}">
-  <!-- Font Awesome JS -->
   <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script>
-  <!-- Vue -->
   <script src="{% static 'bower_components/vuejs-2.6.1/vue.js' %}"></script>
-
   {% block main_dependencies %}
 
   {% endblock %}
-
 </head>
 
 <body>
@@ -34,20 +28,31 @@
       <li class="active">
         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
           <i class="fas fa-home"></i>
-          <span>Cadastro de Cliente</span>
+          <span>Cadastros</span>
         </a>
+
         <ul class="collapse list-unstyled" id="homeSubmenu">
           <li>
-            <a href="#">1</a>
+            <a href="#" title="Cadastro de Entidades">
+              <i class="fas fa-users"></i>
+              <span class="submenu-item-label">Cadastro de Entidades</span>
+            </a>
           </li>
           <li>
-            <a href="#">2</a>
+            <a href="#" title="Cadastro de Produtos">
+              <i class="fas fa-file"></i>
+              <span class="submenu-item-label">Cadastro de Produtos</span>
+            </a>
           </li>
           <li>
-            <a href="#">3</a>
+            <a href="#" title="Grupos Mercadológicos">
+              <i class="fas fa-sitemap"></i>
+              <span class="submenu-item-label">Grupos Mercadológicos</span>
+            </a>
           </li>
         </ul>
       </li>
+
       <li>
         <a href="#">
           <i class="fas fa-briefcase"></i>
