@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>{% block title %}MELINUX - Login{% endblock %}</title>
   {% load static %}
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'bower_components/bootstrap-4.3.1/css/bootstrap.css' %}">
-    <!-- Our Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/otma-login.css' %}">
-    <!-- Font Awesome JS -->
-    <script src="{% static 'bower_components/fontawesome-5.8.1/js/all.js' %}"></script>
-    <!-- Vue -->
-    <script src="{% static 'bower_components/vuejs-2.6.1/vue.js' %}"></script>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+  <!-- Our Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/otma-login.css' %}">
+  <!-- Font Awesome JS -->
+  <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+  <!-- Vue -->
+  <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
 </head>
 <body style="background: #eaeaea;">
 <div id="app">
@@ -26,16 +26,14 @@
     </div>
   </div>
 </div>
-
-
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+<script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
 <!-- NiceScroll -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.js"></script>
+<script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
 <!-- Bootstrap Bundle js -->
-<script src="{% static 'bower_components/bootstrap-4.3.1/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
 <!-- Bootstrap js -->
-<script src="{% static 'bower_components/bootstrap-4.3.1/js/bootstrap.js' %}"></script>
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
 <!-- OTMA Components -->
 <script src="{% static 'js/components/input-components.js' %}"></script>
 <script src="{% static 'js/components/form-components.js' %}"></script>

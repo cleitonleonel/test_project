@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from conf import profile
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'otma.apps.core.communications',
     'otma.apps.core.security',
     'otma.apps.entities',
+    'djangobower',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +144,17 @@ ERRORS_MESSAGES = {
     'name_min_words':'Informe o nome completo',
     'not_all_numeric':'Este campo só pode conter numeros'
 }
+
+# Bower Components
+BOWER_PATH = profile.BOWER_PATH
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
+BOWER_INSTALLED_APPS = (
+    'bootstrap',
+    'vue',
+    'jquery',
+    'font-awesome',
+    'jquery-nicescroll',
+    #https://github.com/snokier/v-contextmenu
+    #'vue-resize-mixin',
+    #'rateyo'
+)
