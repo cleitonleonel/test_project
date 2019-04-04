@@ -61,12 +61,12 @@ Vue.component('app-input-group',{
         <span class="input-group-text round-border" id="basic-addon1"><i :class="[, classes]"></i></span>
       </div>
       <app-raw-input
-       type="text"
-       id="login"
-       title="Usuário"
-       placeholder="Usuário"      
+       :type="type"
+       :id="id"
+       :title="title"
+       :placeholder="placeholder"      
        classes="round-border" 
-       required="required"
+       :required="required"
        aria-describedby="basic-addon1"></app-raw-input>
     </div>
   </div>

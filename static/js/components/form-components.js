@@ -3,10 +3,10 @@ Vue.component('app-login-form',{
 `
 <form>
   <div class="login">       
-    <app-input-group type="text" id="user" title="Usuário" placeholder="Usuário" classes="round-border" required="required"></app-input-group>
+    <app-input-group type="text" id="user" title="Usuário" placeholder="Usuário" required="required" classes="fas fa-user"></app-input-group>
   </div>
   <div class="password">
-    <app-field id="password" placeholder="Senha" title="Senha" type="password" required="required" classes="round-border"></app-field>
+    <app-input-group type="password" id="password"title="Senha" placeholder="Senha" required="required" classes="fas fa-lock"></app-input-group>
   </div>  
   <div>
     <app-submit-button class="center"></app-submit-button>

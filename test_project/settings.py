@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'otma.apps.core.authentication',
-    # 'otma.apps.core.commons',
-    # 'otma.apps.core.comunications',
-    # 'otma.apps.core.security',
-    # 'otma.apps.entities',
+    'otma.apps.core.authentication',
+    'otma.apps.core.commons',
+    'otma.apps.core.communications',
+    'otma.apps.core.security',
+    'otma.apps.entities',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +125,19 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = STATIC_URL
 STATICFILES_DIRS = [BASE_DIR+os.path.join('/static'), ]
+
+AUTH_USER_MODEL = 'authentication.User'
+ERRORS_MESSAGES = {
+    'invalid': 'Conteúdo inválido',
+    'document_invalid': 'Documento inválido',
+
+    'required': 'Campo obrigatório',
+    'unique':"Informação já cadastrada",
+
+    'future_date':'Data de nascimento inválida',
+    'minimum_age_person':'Precisa ter mais de 18 anos.',
+    'maximum_age_person':'Precisa ter menos que 150 anos.',
+
+    'name_min_words':'Informe o nome completo',
+    'not_all_numeric':'Este campo só pode conter numeros'
+}
