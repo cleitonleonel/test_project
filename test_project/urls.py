@@ -21,6 +21,6 @@ from apps.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include('core_authentication.urls')),
+    path('core/', include('otma.apps.core.authentication.urls')),
     url(r'^$', index),
 ]
