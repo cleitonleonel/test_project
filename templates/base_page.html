@@ -7,19 +7,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block title %}MELINUX{% endblock %}</title>
   {% load static %}
-  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-  <link rel="stylesheet" href="{% static 'css/otma-style.css' %}">
-  <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
-  <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
+    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
 
   {% block main_dependencies %}
 
   {% endblock %}
 </head>
-
 <body>
 <div id="app" class="wrapper">
-  <!-- Sidebar  -->
   <nav id="sidebar" class="active">
     <div class="sidebar-header">
       <h3>MELINUX</h3>
@@ -31,29 +31,27 @@
           <i class="fas fa-home"></i>
           <span>Cadastros</span>
         </a>
-
         <ul class="collapse list-unstyled" id="homeSubmenu">
           <li>
             <a href="#" title="Cadastro de Entidades">
-              <i class="fas fa-users"></i>
+              <i class="fas fa-users otma-submenu"></i>
               <span class="submenu-item-label">Cadastro de Entidades</span>
             </a>
           </li>
           <li>
             <a href="#" title="Cadastro de Produtos">
-              <i class="fas fa-file"></i>
+              <i class="fas fa-file otma-submenu"></i>
               <span class="submenu-item-label">Cadastro de Produtos</span>
             </a>
           </li>
           <li>
             <a href="#" title="Grupos Mercadológicos">
-              <i class="fas fa-sitemap"></i>
+              <i class="fas fa-sitemap otma-submenu"></i>
               <span class="submenu-item-label">Grupos Mercadológicos</span>
             </a>
           </li>
         </ul>
       </li>
-
       <li>
         <a href="#">
           <i class="fas fa-briefcase"></i>
@@ -95,28 +93,35 @@
       </li>
     </ul>
   </nav>
-  <!-- Page Content  -->
+
   <div id="content">
     <div class="row top-menu">
       <div class="col-12 dropdown">
         <a id="sidebarCollapse">
           <i class="fas fa-bars toggle-menu"></i>
         </a>
-
         <a class="menu-profile float-right" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <img class="photo" src="https://avatars1.githubusercontent.com/u/39997031?s=400&u=017e03d9cac198018edf72d10da0d7085efa2276&v=4">
+          <img alt="Avatar" class="photo" src="https://avatars1.githubusercontent.com/u/39997031?s=400&u=017e03d9cac198018edf72d10da0d7085efa2276&v=4">
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <a class="dropdown-item" href="#">Perfil</a>
-          <a class="dropdown-item" href="#">Log out</a>
+          <a class="dropdown-item otma-fs-14" href="#">Perfil</a>
+          <a class="dropdown-item otma-fs-14" href="#">Log out</a>
         </div>
       </div>
     </div>
-    <div class="page-content">
 
+    <div class="page-content">
       {% block main_content %}
 
       {% endblock %}
+
+    </div>
+    <div class="otma-footer otma-fs-14">
+      <div class="text-center">
+        <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
+        <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
+        <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
+      </div>
     </div>
   </div>
 </div>
@@ -124,11 +129,10 @@
 </body>
 
 {% load static %}
-<script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-<script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
-<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
-<script src="{% static 'js/otma-scripts.js' %}"></script>
+  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+  <script src="{% static 'js/otma-scripts.js' %}"></script>
 {% block secondary_dependencies %}
 
 {% endblock %}
