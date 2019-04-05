@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+
+    <title>{% block title %}Melinux - Login{% endblock %}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/otma-login.css' %}">
+
+    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+
+    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+
+    {% block primary_dependencies %}
+  {% endblock %}
+  </head>
+
+  <body style="background: #eaeaea;">
+    <div id="app_core_authentication">
+      <div class="panel-centered" style="border-radius: 5px;"> <!-- Manter esse painel mais pra cima.. -->
+        {% block main_content %}
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+
+  {% load static %}
+  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+
+  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+
+  {% block secondary_dependencies %}
+  {% endblock %}
+</html>

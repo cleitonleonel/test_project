@@ -1,20 +1,21 @@
-.centered {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
-}
-
-.center {
-    margin-left: 38%;
+.panel-centered{
+  background-color: #f3f3f3;
+  display: inline-block;
+  position: fixed;
+  height: 200px;
+  width: 300px;
+  margin: auto;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
 }
 
 .submit-button {
-    background: #539fb2;
-    color: #ffffff;
-    border: solid 1px #477d8e;
-    width: 100px;
+  background: #539fb2;
+  color: #ffffff;
+  border: solid 1px #477d8e;
+  width: 100px;
 }
 
 .round-border {
