@@ -1,5 +1,5 @@
 # Install command from requirements
-# command pip install -r conf/custom_requirements.txt --process-dependency-links
+# command pip install -r conf/requirements.txt --process-dependency-links
 django
 django-bower
 psycopg2-binary

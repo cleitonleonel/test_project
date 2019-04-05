@@ -22,6 +22,7 @@ from apps.views import index, login
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('core/', include('otma.apps.core.authentication.urls')),
-    url(r'^$', index),
-    url(r'^login/$', login),
+    #url(r'core/', include('otma.apps.core.authentication.urls')),
+    #url(r'^$', index),
+    #url(r'^login/$', login),
 ]
