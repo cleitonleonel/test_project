@@ -160,3 +160,5 @@ BOWER_INSTALLED_APPS = (
     #'vue-resize-mixin',
     #'rateyo'
 )
+
+OTMA_SERVER = "http://68.183.97.68"
