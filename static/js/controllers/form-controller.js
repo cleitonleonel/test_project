@@ -9,6 +9,7 @@ var app = new Vue({
       {id: 3, email: 'diegopasti@gmail.com', username: 'diegopasti', password: '123diego'}
     ]
   },
+
   methods: {
     otma_login: function() {
       var data_parameters = this.object;
@@ -21,5 +22,9 @@ var app = new Vue({
         alert(JSON.stringify(this.users[check]));
       }
     },
+  },
+
+  mounted: function(){
+    alert("cheguei?")
   },
 });

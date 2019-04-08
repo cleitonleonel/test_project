@@ -1,6 +1,5 @@
 function notify(type,title,description){
 	var width = "400px"
-
   var notice = new PNotify({
   	title: title,
     text: description,
@@ -9,11 +8,15 @@ function notify(type,title,description){
     delay: type=='error' ? 5000 : 5000,
     mouse_reset: false,
     type: type=='confirm' ? 'success' : type,
-    addclass: 'clickable',
-    styling: 'fontawesome', //'bootstrap3' // bootstrap3 ,
+    addclass: 'clickable font-10',
+    styling: 'fontawesome', //fontawesome5 'bootstrap3' // bootstrap3 ,
+    nonblock: {
+        nonblock: true
+    },
+
     buttons: {
-        closer: true,
-        sticker: false
+      closer: true,
+      sticker: false
     }
   });
 
@@ -54,7 +57,7 @@ function notificar(type,title,text){
 		delay: 2000,
 		mouse_reset: false,
 		type: type,
-		styling: 'bootstrap3'
+		styling: 'bootstrap4',
 	});
 }
 

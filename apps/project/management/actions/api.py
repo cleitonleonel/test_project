@@ -1,12 +1,15 @@
 import decimal
+import os
 import sys
 from datetime import date, datetime, timedelta
 
 import requests
 import json
+
+from django.conf import settings
 from django.http import HttpResponse
 
-from conf.profile import TASK_ID, USER_KEY, SPRINT_ID
+from conf.profile import TASK_ID, USER_KEY, SPRINT_ID, PROJECT_KEY
 from test_project.settings import OTMA_SERVER
 
 def json_serial(obj):
@@ -21,6 +24,7 @@ def json_serial(obj):
         return float(obj)
 
     raise TypeError("Type %s not serializable" % type(obj))
+
 
 def register_frontend(request, company_repository, project_name):
     #self.start_process(request)
@@ -58,3 +62,23 @@ def register_frontend(request, company_repository, project_name):
     print("data: ", data)
     print("response 2: ", response)
     return response
+
+
+def register_backend():
+    if os.path.exists(os.path.join(settings.BASE_DIR, "actions.txt")) == False:
+        if PROJECT_KEY != "":
+            url = OTMA_SERVER + "/api/otmasolucoes/project_ivis/management/actions/register?sprint=" + SPRINT_ID + "&session_key=&user_key=" + USER_KEY + "&action_type=BACKEND&tasks=" + TASK_ID + "&page="
+            response = requests.get(url)
+            response = json.loads(response.content)
+            if response['result'] == True:
+                print("Ivis > Successfully saved backend action.")
+                result = True
+            else:
+                print("Ivis > Error! Backend action can not be registered.")
+            actions_file = open(os.path.join(settings.BASE_DIR, "actions.txt"), "w+")
+            actions_file.close()
+    else:
+        try:
+            os.remove("actions.txt")
+        except:
+            pass

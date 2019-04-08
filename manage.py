@@ -3,6 +3,8 @@
 import os
 import sys
 
+from apps.project.management.actions.api import register_backend
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test_project.settings')
@@ -14,6 +16,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
+
+    register_backend()
     execute_from_command_line(sys.argv)
 
 

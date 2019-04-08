@@ -7,21 +7,27 @@
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-
+    <link rel=="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
     <link rel="stylesheet" href="{% static 'css/otma-login.css' %}">
 
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
-
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
-
     {% block primary_dependencies %}
-  {% endblock %}
+    {% endblock %}
+    <style>
+      colored:{
+        color: red;
+        background:blue;
+      }
+    </style>
   </head>
 
   <body style="background: #eaeaea;">
-    <div id="app_core_authentication">
+    <div id="app">
+      <app_field id="teste" value="teste" label="Testando componente" classes="colored" error="" placeholder="teste?" title="É so pra testar vei" type="text"></app_field>
       <div class="panel-centered" style="border-radius: 5px;"> <!-- Manter esse painel mais pra cima.. -->
         {% block main_content %}
+
         {% endblock %}
       </div>
     </div>
@@ -35,6 +41,10 @@
   <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
 
   <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+
+  <script src="{% static 'components/base/FormsComponents.js' %}"></script>
+
+  <script src="{% static 'js/controllers/form-controller.js' %}"></script>
 
   {% block secondary_dependencies %}
   {% endblock %}
