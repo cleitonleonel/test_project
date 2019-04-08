@@ -1,3 +1,5 @@
+
+
 function register_action(){
   var page_url = window.location.host + "/" + window.location.pathname + window.location.search
   page_url = page_url.replace("//","/")
@@ -27,7 +29,7 @@ function register_action(){
         }
         message = message +"<br><sub>Data: "+data+" às "+response.object.creation_hour.split(".")[0]+" - Tipo: "+response.object.type[0]+response.object.type.slice(1).toLowerCase()+" - Tarefa: "+task+"</sub>"
         message = message+"<br><sub>Página: "+response.object.request_page+"</sub>"
-        return success_notify("Operação realizada com sucesso", message);
+        return success_notify("Operação realizada com sucesso", message)
       }
       else{
         return error_notify(null, "Falha na operação!", "Atividade não pode ser registrada, contate o administrador.");
