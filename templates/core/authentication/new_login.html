@@ -1,0 +1,21 @@
+{% extends base_page %}
+{% block title %}Melinux - Login{% endblock %}
+
+{% block main_dependencies %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/otma-login.css' %}">
+{% endblock %}
+
+{% block main_content %}
+<div id="app">
+  <app-login-form :otma_login="otma_login" :object="object"></app-login-form>
+</div>
+{% endblock %}
+
+{% block secondary_dependencies %}
+{% load static %}
+
+<script src="{% static 'js/components/input-components.js' %}"></script>
+<script src="{% static 'js/components/form-components.js' %}"></script>
+<script src="{% static 'js/controllers/form-controller.js' %}"></script>
+{% endblock %}

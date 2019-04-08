@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from apps.project.management.actions.api import register_frontend
-from apps.views import index, login, signin
+from apps.views import index, login, signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +26,7 @@ urlpatterns = [
     # Rotas de autenticacao usando os recursos diretos do modulo de autenticacao
     path('core/', include('otma.apps.core.authentication.urls')),
     url(r'^login/$', login),
-    url(r'^signin/$', signin),
+    url(r'^signup/$', signup),
 
 
     #url(r'core/', include('otma.apps.core.authentication.urls')),

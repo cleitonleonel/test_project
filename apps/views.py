@@ -7,8 +7,8 @@ def index(request):
 
 
 def login(request):
-    return render(request, "core/authentication/base_authentication.html", {'base_page': 'core/authentication/login.html'})
+    return render(request, "core/authentication/new_login.html", {'base_page': 'core/authentication/new_base_auth.html'})
 
-def signin(request):
-    return render(request, "core/authentication/signin.html", {'base_page': 'core/authentication/base_authentication.html'})
+def signup(request):
+    return render(request, "core/authentication/new_base_auth.html", {'base_page': 'core/authentication/new_base_auth.html'})
 
