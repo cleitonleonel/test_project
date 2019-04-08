@@ -116,10 +116,7 @@
       </div>
     </div>
     <div class="page-content">
-
-
       {% block main_content %}
-        {{ response }}
       {% endblock %}
     </div>
   </div>
@@ -129,13 +126,10 @@
 
 {% load static %}
 <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-
 <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
 <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
 <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
 <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
-
-
 <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
 <script src="{% static 'apps/project/scripts/action.js' %}"></script>
 <script src="{% static 'js/otma-scripts.js' %}"></script>
@@ -144,6 +138,7 @@
 {% endblock %}
 <script>
   register_action();
+  NProgress.start();
   NProgress.done();
 </script>
 </html>

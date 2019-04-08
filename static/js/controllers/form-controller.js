@@ -21,5 +21,11 @@ var app = new Vue({
         alert(JSON.stringify(this.users[check]));
       }
     },
+
+    otma_signin: function() {
+      alert("aae");
+      var data_parameters = this.object;
+      var users = this.users;
+    },
   },
 });
