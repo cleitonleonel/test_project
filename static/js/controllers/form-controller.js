@@ -1,5 +1,5 @@
 var app = new Vue({
-  el: '#app',
+  el: '#app_core_authentication',
   data: {
     object: {
       username: '',

@@ -12,7 +12,7 @@ Vue.component('app-submit-button',{
   template:
       `
     <div>
-      <button type="submit" class="btn btn-sm submit-button round-border login-header" @click="otma_login()" style="margin-top: 10px;">ENVIAR</button>
+      <button type="submit" class="btn btn-sm submit-button" @click="otma_login()">ENVIAR</button>
     </div>
     `
 });

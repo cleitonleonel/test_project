@@ -15,6 +15,8 @@ from conf.profile import POSTGRES_USER, POSTGRES_PASSWORD, BOWER_PATH
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -24,7 +26,7 @@ SECRET_KEY = '@y-)04u*je#)vtl(ni$%d714c$8*27tz4z0b2u)ozc#*ljh8h6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition

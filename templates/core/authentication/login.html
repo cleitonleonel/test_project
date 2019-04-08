@@ -1,4 +1,4 @@
-{% extends 'core/authentication/base_login.html' %}
+{% extends 'core/authentication/base_authentication.html' %}
 {% block title %}MELINUX - Login{% endblock %}
 
 {% block main_dependencies %}
@@ -13,4 +13,8 @@
 
 {% block secondary_dependencies %}
 {% load static %}
+    <script src="{% static 'js/components/input-components.js' %}"></script>
+    <script src="{% static 'js/components/form-components.js' %}"></script>
+    <script src="{% static 'js/components/table-components.js' %}"></script>
+    <script src="{% static 'js/controllers/form-controller.js' %}"></script>
 {% endblock %}

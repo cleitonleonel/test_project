@@ -21,7 +21,13 @@ from apps.views import index, login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('core/', include('otma.apps.core.authentication.urls')),
     url(r'^$', index),
+
+    # Rotas de autenticacao usando os recursos diretos do modulo de autenticacao
+    path('core/', include('otma.apps.core.authentication.urls')),
     url(r'^login/$', login),
+
+
+    # url(r'core/', include('otma.apps.core.authentication.urls')),
+
 ]

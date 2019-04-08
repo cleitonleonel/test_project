@@ -7,4 +7,4 @@ def index(request):
 
 
 def login(request):
-    return render(request, "core/authentication/login.html", {'base_page': 'core/authentication/base_login.html'})
+    return render(request, "core/authentication/login.html", {'base_page': 'core/authentication/login.html'})
