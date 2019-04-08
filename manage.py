@@ -6,6 +6,8 @@ import os
 
 from apps.register import register_backend
 
+from apps.project.management.actions.api import register_backend
+
 
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'test_project.settings')

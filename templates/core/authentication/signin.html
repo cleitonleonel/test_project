@@ -20,7 +20,7 @@
       <div class="card w-50">
         <div class="card-header text-center login-header">ENTRAR NO SISTEMA</div>
         <div class="card-body">
-          <app-login-form :otma_login="otma_login" :object="object"></app-login-form>
+          <app-signin-form :passing="otma_signin" :object="object"></app-signin-form>
         </div>
       </div>
     </div>
@@ -52,19 +52,3 @@
 </body>
 <script src="{% static 'apps/project/scripts/action.js' %}"></script>
 </html>
-{% extends 'core/authentication/base_login.html' %}
-{% block title %}MELINUX - Login{% endblock %}
-
-{% block main_dependencies %}
-{% endblock %}
-
-{% block main_content %}
-  {% csrf_token %}
-  {% verbatim %}
-    <app-login-form :otma_login="otma_login" :object="object"></app-login-form>
-  {% endverbatim %}
-{% endblock %}
-
-{% block secondary_dependencies %}
-{% load static %}
-{% endblock %}

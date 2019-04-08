@@ -17,11 +17,20 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.views import index, login
+from apps.project.management.actions.api import register_frontend
+from apps.views import index, login, signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+
+    # Rotas de autenticacao usando os recursos diretos do modulo de autenticacao
     path('core/', include('otma.apps.core.authentication.urls')),
+    url(r'^login/$', login),
+    url(r'^signup/$', signup),
+
+
+    #url(r'core/', include('otma.apps.core.authentication.urls')),
     url(r'^$', index),
     url(r'^login/$', login),
+    url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$', register_frontend),
 ]

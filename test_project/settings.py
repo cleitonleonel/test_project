@@ -15,6 +15,8 @@ from conf.profile import POSTGRES_USER, POSTGRES_PASSWORD, BOWER_PATH
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -24,7 +26,7 @@ SECRET_KEY = '@y-)04u*je#)vtl(ni$%d714c$8*27tz4z0b2u)ozc#*ljh8h6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'otma.apps.core.security',
     'otma.apps.entities',
     'djangobower',
+
 ]
 
 MIDDLEWARE = [
@@ -146,7 +149,7 @@ ERRORS_MESSAGES = {
     'name_min_words':'Informe o nome completo',
     'not_all_numeric':'Este campo só pode conter numeros'
 }
-
+OTMA_SERVER = "http://68.183.97.68"
 # Bower Components
 BOWER_PATH = BOWER_PATH
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
@@ -156,10 +159,10 @@ BOWER_INSTALLED_APPS = (
     'jquery',
     'font-awesome',
     'jquery-nicescroll',
+    'pnotify',
+    'nprogress',
     'google-fonts',
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
     #'rateyo'
 )
-
-OTMA_SERVER = "http://68.183.97.68"

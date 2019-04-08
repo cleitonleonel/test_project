@@ -8,11 +8,11 @@ Vue.component('app-input', {
 });
 
 Vue.component('app-submit-button',{
-  props: ['otma_login'],
+  props: ['passing'],
   template:
       `
     <div>
-      <button type="submit" class="btn btn-sm submit-button round-border login-header" @click="otma_login()" style="margin-top: 10px;">ENVIAR</button>
+      <button type="submit" class="btn btn-sm submit-button round-border login-header" :passing="passing "@click="passing()" style="margin-top: 10px;">ENVIAR</button>
     </div>
     `
 });
