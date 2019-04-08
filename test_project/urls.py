@@ -28,7 +28,6 @@ urlpatterns = [
     url(r'^login/$', login),
     url(r'^signup/$', signup),
 
-
     #url(r'core/', include('otma.apps.core.authentication.urls')),
     url(r'^$', index),
     url(r'^login/$', login),
