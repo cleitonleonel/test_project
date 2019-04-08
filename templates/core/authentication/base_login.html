@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}MELINUX - Autênticação{% endblock %}</title>
+  {% load static %}
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">
+    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+</head>
+<body style="background: #eaeaea;">
+<div id="app">
+  <div class="col-12 centered">
+    <div class="offset-4">
+      <div class="card w-50">
+        <div class="card-header text-center login-header">LOG-IN/SIGN-IN</div>
+        <div class="card-body">
+          {% block main_content %}
+
+          {% endblock %}
+        </div>
+        <div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+<script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+<script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+<script src="{% static 'js/components/input-components.js' %}"></script>
+<script src="{% static 'js/components/form-components.js' %}"></script>
+<script src="{% static 'js/components/table-components.js' %}"></script>
+<script src="{% static 'js/controllers/form-controller.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    $("body").niceScroll({
+        cursorcolor:"#57c6d5",
+        cursorwidth:"7px"
+    });
+  });
+</script>
+</body>
+</html>

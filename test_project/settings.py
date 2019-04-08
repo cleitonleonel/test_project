@@ -158,7 +158,10 @@ BOWER_INSTALLED_APPS = (
     'jquery',
     'font-awesome',
     'jquery-nicescroll',
+    'google-fonts',
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
     #'rateyo'
 )
+
+OTMA_SERVER = "http://68.183.97.68"
