@@ -7,9 +7,11 @@
 
     {% load static %}
       <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-      <link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">
+      <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
       <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
       <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+      <link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">
+
     {% block primary_dependencies %}
   {% endblock %}
   </head>
@@ -22,20 +24,21 @@
         {% endblock %}
       </div>
     </div>
-  </body>
 
-  {% load static %}
-    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-    <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
-    <script>
-      $(document).ready(function() {
-        $("body").niceScroll({
-            cursorcolor:"#57c6d5",
-            cursorwidth:"7px"
+    {% load static %}
+      <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+      <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+      <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+      <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+      <script>
+        $(document).ready(function() {
+          $("body").niceScroll({
+              cursorcolor:"#57c6d5",
+              cursorwidth:"7px"
+          });
         });
-      });
-    </script>
-  {% block secondary_dependencies %}
-  {% endblock %}
+      </script>
+    {% block secondary_dependencies %}
+    {% endblock %}
+  </body>
 </html>

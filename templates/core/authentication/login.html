@@ -7,7 +7,7 @@
 {% block main_content %}
   {% csrf_token %}
   {% verbatim %}
-    <app-login-form :otma_login="otma_login" :object="object"></app-login-form>
+    <app-login-form :otma_login="login" :object="form.log_in"></app-login-form>
   {% endverbatim %}
 {% endblock %}
 
@@ -16,5 +16,6 @@
     <script src="{% static 'js/components/input-components.js' %}"></script>
     <script src="{% static 'js/components/form-components.js' %}"></script>
     <script src="{% static 'js/components/table-components.js' %}"></script>
+    <script src="{% static 'js/controllers/BaseController.js' %}"></script>
     <script src="{% static 'js/controllers/form-controller.js' %}"></script>
 {% endblock %}
