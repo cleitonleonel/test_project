@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^$', index),
     url(r'^login/$', login),
     url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$', register_frontend),
+
 ]

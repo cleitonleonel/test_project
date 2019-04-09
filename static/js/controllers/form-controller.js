@@ -15,15 +15,18 @@ var app = new Vue({
 		signin: function(){
 			var scope = this;
 			var data_paramters = scope.forms.sign_in;
+			alert('look the data_parameters: '+JSON.stringify(data_paramters));
 			var success_function = function(response){
+				alert('came at the success_function: '+JSON.stringify(response));
 				scope.errors = response.message;
 				window.location.href = "/login";
 			};
 
 			var failure_function = function(response){
+				alert('came at the failure_function: '+JSON.stringify(response));
 				scope.errors = response.message;
 			};
-			this.request('/api/register/save','post',data_paramters, null, success_function, failure_function);
+			this.request('/core/register/save/','post',data_paramters, null, success_function, failure_function);
 		},
 
 		login: function(){

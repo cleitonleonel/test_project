@@ -38,12 +38,12 @@ Vue.component('app-signin-form',{
 
   <div>
     <sub>Primeiro nome:</sub>
-    <input type="text" required="required" name="firstname" v-model="object.firstname" maxlength="50">
+    <input type="text" required="required" name="firstname" v-model="object.first_name" maxlength="50">
   </div>
 
   <div>
     <sub>Sobrenome:</sub>
-    <input type="text" required="required" name="familyname" v-model="object.familyname" maxlength="100">
+    <input type="text" required="required" name="familyname" v-model="object.family_name" maxlength="100">
   </div>
 
   <div>
@@ -53,12 +53,12 @@ Vue.component('app-signin-form',{
 
   <div>
     <sub>Senha:</sub>
-    <input type="password" required="required" name="firstpass" v-model="object.firstpass"  maxlength="50">
+    <input type="password" required="required" name="firstpass" v-model="object.password"  maxlength="50">
   </div>
 
   <div>
     <sub>Confirme a senha:</sub>
-    <input type="password" required="required" name="secondpass" v-model="object.secondpass" maxlength="50">
+    <input type="password" required="required" name="secondpass" v-model="object.confirm_password" maxlength="50">
   </div>
 
   <div>
