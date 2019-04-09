@@ -47,18 +47,18 @@ A execução do programa será dada pelo PyCharm. Ele executará linhas de códi
 - No campo "Script" digite o caminho para o arquivo ```manage.py```
 - No campo "Script parameters" digite ```runserver 8000```
 
-#### makemigrations :
+#### makemigrations
 - No campo "Name" digite ```makemigrations```
 - No campo "Script" digite o caminho para o arquivo ```manage.py```
 - No campo "Script parameters" digite ```makemigrations```
   
 
-#### migrate :
+#### migrate
 - No campo "Name" digite ```migrate```
 - No campo "Script" digite o caminho para o arquivo ```manage.py```
 - No campo "Script parameters" digite ```migrate```
 
-#### bower install :
+#### bower install
 - No campo "Name" digite ```bower install```
 - No campo "Script" digite o caminho para o arquivo ```manage.py```
 - No campo "Script parameters" digite ```bower install```
