@@ -3,7 +3,7 @@ var app = new Vue({
   mixins: [base_controller],
   data: function() {
     return{
-			form: {
+			forms: {
 				log_in: {username: null, password: null},
 				sign_in: {first_name: null, family_name: null, email: null, username: null, password: null, confirm_password: null}
 			},
@@ -14,7 +14,7 @@ var app = new Vue({
   methods: {
 		signin: function(){
 			var scope = this;
-			var data_paramters = scope.form.sign_in;
+			var data_paramters = scope.forms.sign_in;
 			var success_function = function(response){
 				scope.errors = response.message;
 				window.location.href = "/login";
@@ -29,7 +29,7 @@ var app = new Vue({
 		login: function(){
 
 			var scope = this;
-			var data_paramters = scope.form.log_in;
+			var data_paramters = scope.forms.log_in;
 			alert('look the data_parameters: '+JSON.stringify(data_paramters));
 			var success_function = function(response){
 			  alert('came at the success_function: '+JSON.stringify(response));

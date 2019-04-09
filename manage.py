@@ -20,7 +20,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    register_backend()
+    #register_backend()
     execute_from_command_line(sys.argv)
 
 

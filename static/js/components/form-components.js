@@ -1,5 +1,5 @@
 Vue.component('app-login-form',{
-  props: ['otma_login','object'],
+  props: ['passing','object'],
   template:
 `
 <form @submit.prevent>
@@ -20,7 +20,7 @@ Vue.component('app-login-form',{
     </div>        
   </div>  
   <div style="margin-top: 10px;">
-    <app-submit-button class="text-center" :otma_login="otma_login"></app-submit-button>
+    <app-submit-button class="text-center" :passing="passing"></app-submit-button>
   </div>
 </form>
 `

@@ -7,7 +7,3 @@ psycopg2-binary
 https://github.com/otmasolucoes/apps.core.authentication/zipball/master
 https://github.com/otmasolucoes/apps.core.security/zipball/master
 https://github.com/otmasolucoes/apps.entities/zipball/master
-
-##
-## PROJECT_KEY: 245E967FE4D9641574C0
-##
