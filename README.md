@@ -19,7 +19,9 @@ A criação do VirtualEnv é feita dentro do próprio PyCharm. O menu de criaç�
     - https://github.com/otmasolucoes/apps.entities/zipball/master
     
     
-  Para instalar as mesmas, o comando ```pip install -r conf/requirements.txt --process-dependency-links``` deverá ser executado
+  Para instalar as mesmas, o seguinte comando deverá ser executado
+      
+    pip install -r conf/requirements.txt --process-dependency-links
     
 ### Instalação das bibliotecas de terceiros
 
@@ -29,7 +31,7 @@ Para instalar o bower, é necessário o Node e o npm.
   Node.js & npm: https://nodejs.org/en/download/
 Depois de instalar o npm, no terminal ou no cmd, execute a linha:
   
- ```sudo npm install bower -g```
+    $sudo npm install bower -g
   
 ![Install Bower](https://i.imgur.com/2coZ8lI.gif)
   
@@ -67,8 +69,8 @@ A execução do programa será dada pelo PyCharm. Ele executará linhas de códi
 ### Extra
 Leitura recomendada sobre GIT e Politicas de Versionamento:
 
-  - https://git-scm.com/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-B%C3%A1sico-de-Branch-e-Merge
-
-  - https://git-scm.com/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Branches-Remotos
+    - https://git-scm.com/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-B%C3%A1sico-de-Branch-e-Merge
+    
+    - https://git-scm.com/book/pt-br/v1/Ramifica%C3%A7%C3%A3o-Branching-no-Git-Branches-Remotos
 
 
