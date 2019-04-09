@@ -7,18 +7,25 @@
 
     {% load static %}
       <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-      <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+  <link rel=="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
       <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
       <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
       <link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">
-
     {% block primary_dependencies %}
-  {% endblock %}
+    {% endblock %}
+    <style>
+      colored:{
+        color: red;
+        background:blue;
+      }
+    </style>
   </head>
 
   <body style="background: #eaeaea;">
-    <div id="app_core_authentication" class="row justify-content-center">
-      <div class="col-3 authentication-panel"> <!-- Keep this panel up there -->
+    <div id="app">
+      <app_field id="teste" value="teste" label="Testando componente" classes="colored" error="" placeholder="teste?" title="É so pra testar vei" type="text"></app_field>
+      <div class="panel-centered" style="border-radius: 5px;"> <!-- Manter esse painel mais pra cima.. -->
         {% block main_content %}
 
         {% endblock %}
@@ -38,7 +45,9 @@
           });
         });
       </script>
-    {% block secondary_dependencies %}
+    <script src="{% static 'components/base/FormsComponents.js' %}"></script>
+
+  <script src="{% static 'js/controllers/form-controller.js' %}"></script>{% block secondary_dependencies %}
     {% endblock %}
   </body>
 </html>

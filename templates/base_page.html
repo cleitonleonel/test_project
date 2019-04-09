@@ -6,21 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block title %}MELINUX{% endblock %}</title>
-  {% load static %}
-    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
-    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
-    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
 
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+  <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+  <link rel="stylesheet" href="{% static 'css/otma-style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
+
+  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+  <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+  <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+
+  <style>
+    .ui-pnotify-title{
+      font-size: 12px !important;
+    }
+    .font-10 {
+      font-size: 10px;
+    }
+  </style>
   {% block main_dependencies %}
 
   {% endblock %}
 </head>
 <body>
-<div id="app" class="wrapper">
-  <nav id="sidebar" class="active">
+  <div id="app" class="wrapper">
+    <nav id="sidebar" class="active">
     <div class="sidebar-header">
       <h3>MELINUX</h3>
       <strong style="margin-left: -10px;">MLX</strong>
@@ -122,18 +136,24 @@
         <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
         <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
       </div>
+      </div>
     </div>
   </div>
-</div>
-
 </body>
-
 {% load static %}
-  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
-  <script src="{% static 'js/otma-scripts.js' %}"></script>
+<script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+<script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+<script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
+<script src="{% static 'apps/core/util/js/notify.js' %}"></script>
+<script src="{% static 'apps/project/scripts/action.js' %}"></script>
+<script src="{% static 'js/otma-scripts.js' %}"></script>
 {% block secondary_dependencies %}
 
 {% endblock %}
+<script>
+  register_action();
+  //NProgress.start();
+  //NProgress.done();
+</script>
+
 </html>
