@@ -6,104 +6,461 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>{% block title %}MELINUX{% endblock %}</title>
-
   {% load static %}
-  <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-  <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
-  <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
-  <link rel="stylesheet" href="{% static 'css/otma-style.css' %}">
-  <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
+    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
 
-  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
-  <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
-  <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
-
-  <style>
-    .ui-pnotify-title{
-      font-size: 12px !important;
-    }
-    .font-10 {
-      font-size: 10px;
-    }
-  </style>
   {% block main_dependencies %}
 
   {% endblock %}
 </head>
 <body>
-  <div id="app" class="wrapper">
-    <nav id="sidebar" class="active">
+<div id="app" class="wrapper">
+  <nav id="sidebar" class="active">
     <div class="sidebar-header">
       <h3>MELINUX</h3>
       <strong style="margin-left: -10px;">MLX</strong>
     </div>
     <ul class="list-unstyled components">
-      <li class="active">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+      <li>
+        <a href="#cadastro-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Cadastros">
           <i class="fas fa-home"></i>
           <span>Cadastros</span>
         </a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
+        <ul class="collapse list-unstyled" id="cadastro-submenu">
           <li>
             <a href="#" title="Cadastro de Entidades">
               <i class="fas fa-users otma-submenu"></i>
-              <span class="submenu-item-label">Cadastro de Entidades</span>
+              <span class="submenu-item-label">Entidades</span>
             </a>
           </li>
           <li>
             <a href="#" title="Cadastro de Produtos">
               <i class="fas fa-file otma-submenu"></i>
-              <span class="submenu-item-label">Cadastro de Produtos</span>
+              <span class="submenu-item-label">Produtos</span>
             </a>
           </li>
           <li>
-            <a href="#" title="Grupos Mercadológicos">
+            <a href="#" title="Cadastro de Grupos de Produtos">
               <i class="fas fa-sitemap otma-submenu"></i>
-              <span class="submenu-item-label">Grupos Mercadológicos</span>
+              <span class="submenu-item-label">Grupos de Produtos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Cadastro de Vínculos de Produtos">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Vínculos de Produtos</span>
             </a>
           </li>
         </ul>
       </li>
       <li>
-        <a href="#">
-          <i class="fas fa-briefcase"></i>
-          <span>About</span>
+        <a href="#compras-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Compras">
+          <i class="fas fa-home"></i>
+          <span>Compras</span>
         </a>
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-          <i class="fas fa-copy"></i>
-          <span>Pages</span>
-        </a>
-        <ul class="collapse list-unstyled" id="pageSubmenu">
+        <ul class="collapse list-unstyled" id="compras-submenu">
           <li>
-            <a href="#">1</a>
+            <a href="#" title="Pedido ao Fornecedor">
+              <i class="fas fa-users otma-submenu"></i>
+              <span class="submenu-item-label">Pedido ao Fornecedor</span>
+            </a>
           </li>
           <li>
-            <a href="#">2</a>
+            <a href="#" title="Entrada de Mercadoria">
+              <i class="fas fa-file otma-submenu"></i>
+              <span class="submenu-item-label">Entrada de Mercadoria</span>
+            </a>
           </li>
           <li>
-            <a href="#">3</a>
+            <a href="#" title="Aquisição de Serviços">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Aquisição de Serviços</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Histórico de Compras">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Histórico de Compras</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Devolução de Compras">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Devolução de Compras</span>
+            </a>
           </li>
         </ul>
       </li>
       <li>
-        <a href="#">
-          <i class="fas fa-image"></i>
-          <span>Portifólio</span>
+        <a href="#varejo-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Varejo">
+          <i class="fas fa-copy"></i>
+          <span>Varejo</span>
         </a>
+        <ul class="collapse list-unstyled" id="varejo-submenu">
+          <li>
+            <a href="#" title="Venda de Balcão">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Venda de Balcão</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Terminal Caixa">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Terminal Caixa</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Televendas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Televendas</span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li>
-        <a href="#">
-          <i class="fas fa-question"></i>
-          <span>FAQ</span>
+        <a href="#atacado-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Atacado">
+          <i class="fas fa-copy"></i>
+          <span>Atacado</span>
         </a>
+        <ul class="collapse list-unstyled" id="atacado-submenu">
+          <li>
+            <a href="#" title="Cidades Atendidas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Cidades Atendidas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Segmentos de Mercado">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Segmentos de Mercado</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Rotas de Clientes">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Rotas de Clientes</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Carteiras de Vendas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Carteiras de Vendas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Digitação de Pedidos">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Digitação de Pedidos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Faturamento">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Faturamento</span>
+            </a>
+          </li>
+        </ul>
       </li>
       <li>
-        <a href="#">
-          <i class="fas fa-paper-plane"></i>
-          <span>Contato</span>
+        <a href="#servicos-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Serviços">
+          <i class="fas fa-copy"></i>
+          <span>Serviços</span>
         </a>
+        <ul class="collapse list-unstyled" id="servicos-submenu">
+          <li>
+            <a href="#" title="Grupos de Serviços">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Grupos de Serviços</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Cadastro de Serviços">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Cadastro de Serviços</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Chamados Técnicos">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Chamados Técnicos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Ordens de Serviço">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Ordens de Serviço</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Serviços de Locação">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Serviços de Locação</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Transporte e Logística">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Transporte e Logística</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Histórico de Serviços">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Transporte e Logística</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#producao-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Produção">
+          <i class="fas fa-copy"></i>
+          <span>Produção</span>
+        </a>
+        <ul class="collapse list-unstyled" id="producao-submenu">
+          <li>
+            <a href="#" title="Receitas de Desmembramento">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Receitas de Desmembramento</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Receitas de Produção">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Receitas de Produção</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Produção na Empresa">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Produção na Empresa</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#supervisao-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Supervisão">
+          <i class="fas fa-copy"></i>
+          <span>Supervisão</span>
+        </a>
+        <ul class="collapse list-unstyled" id="supervisao-submenu">
+          <li>
+            <a href="#" title="Manutenção de Preços">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Manutenção de Preços</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Crédito e Cobrança">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Crédito e Cobrança</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Devoluções de Vendas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Devoluções de Vendas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Análise de Vendas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Análise de Vendas</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#financeiro-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Financeiro">
+          <i class="fas fa-copy"></i>
+          <span>Fincanceiro</span>
+        </a>
+        <ul class="collapse list-unstyled" id="financeiro-submenu">
+          <li>
+            <a href="#" title="Caixa da Tesouraria">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Caixa da Tesouraria</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Situação de Contas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Situação de Contas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Contas a Receber">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Contas a Receber</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Receitas Extras">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Receitas Extras</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Negociar Créditos">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Negociar Créditos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Contas a Pagar">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Contas a Pagar</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Lançamento de Guias">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Lançamento de Guias</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#gerencia-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Gerência">
+          <i class="fas fa-copy"></i>
+          <span>Gerência</span>
+        </a>
+        <ul class="collapse list-unstyled" id="gerencia-submenu">
+          <li>
+            <a href="#" title="Empresas do Grupo">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Empresas do Grupo</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Cargos e Salários">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Cargos e Salários</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Usuários e Funcionários">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Usuários e Funcionários</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Condições para Vendas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Condições para Vendas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Plano de Contas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Plano de Contas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Contas Bancárias">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Contas Bancárias</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#contabil-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Contábil">
+          <i class="fas fa-copy"></i>
+          <span>Contábil</span>
+        </a>
+        <ul class="collapse list-unstyled" id="contabil-submenu">
+          <li>
+            <a href="#" title="Tabelas do Simples Nacional">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Tabelas do Simples Nacional</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Modelos de Documentos">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Modelos de Documentos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Códigos Fiscais de Operação">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Códigos Fiscais de Operação</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Códigos de Situação Tributária">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Códigos de Situação Tributária</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Plano de Contas Contábil">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Plano de Contas Contábil</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Lista de Documentos">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Lista de Documentos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Análise Tributária">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Análise Tributária</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Arquivos Fiscais">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Arquivos Fiscais</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a href="#operacoes-submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" title="Operações">
+          <i class="fas fa-copy"></i>
+          <span>Operações</span>
+        </a>
+        <ul class="collapse list-unstyled" id="operacoes-submenu">
+          <li>
+            <a href="#" title="Notas de Simples Remessa">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Notas de Simples Remessa</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Emissão de Notas Avulsa">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Emissão de Notas Avulsa</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Transferências">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Transferências</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Retorno de Cargas">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Retorno de Cargas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" title="Transferências">
+              <i class="fas fa-sitemap otma-submenu"></i>
+              <span class="submenu-item-label">Retiradas do Estoque</span>
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
   </nav>
@@ -136,24 +493,18 @@
         <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
         <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
       </div>
-      </div>
     </div>
   </div>
+</div>
+
 </body>
+
 {% load static %}
-<script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-<script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
-<script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
-<script src="{% static 'apps/core/util/js/notify.js' %}"></script>
-<script src="{% static 'apps/project/scripts/action.js' %}"></script>
-<script src="{% static 'js/otma-scripts.js' %}"></script>
+  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+  <script src="{% static 'js/otma-scripts.js' %}"></script>
 {% block secondary_dependencies %}
 
 {% endblock %}
-<script>
-  register_action();
-  //NProgress.start();
-  //NProgress.done();
-</script>
-
 </html>
