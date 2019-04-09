@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../../../favicon.ico">-->
+    <title>{% block title %}MELINUX{% endblock %}</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+
+    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+  </head>
+
+  <body class="text-center">
+    <div class="form-signin" style="position:relative;top: -50px;">
+      <h3 class="mb-3 ">
+        <img class="" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="32" height="32">
+        <span class="" style="position:relative;top:4px;">Melinux</span>
+      </h3>
+
+      <hr>
+      {% block main_content %}
+      <input type="email" id="inputEmail" class="form-control" placeholder="Nome de usuário ou email.." autofocus>
+
+      <input type="password" id="inputPassword" class="form-control" placeholder="Senha.." style="margin-top: 10px;">
+
+      <button class="btn btn-xs btn-primary btn-block" type="submit">Sign in</button>
+      {% endblock %}
+      <hr>
+
+      <p class="text-muted">Não consegue entrar? <a href="#">clique aqui</a>
+        <br>&copy; 2017-2018
+      </p>
+    </div>
+  </body>
+  {% block secondary_dependencies %}
+  {% endblock %}
+  <script>
+    $(document).ready(function() {
+      $("body").niceScroll({
+          cursorcolor:"#57c6d5",
+          cursorwidth:"7px"
+      });
+    });
+  </script>
+</html>
