@@ -1,0 +1,16 @@
+{% extends 'core/authentication/base_authentication.html' %}
+{% block title %}MELINUX - Login{% endblock %}
+
+{% block main_dependencies %}
+{% endblock %}
+
+{% block main_content %}
+  {% csrf_token %}
+  {% verbatim %}
+    <app-login-form :otma_login="login" :object="form.log_in"></app-login-form>
+  {% endverbatim %}
+{% endblock %}
+
+{% block secondary_dependencies %}
+{% load static %}
+{% endblock %}

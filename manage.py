@@ -3,8 +3,7 @@
 
 import sys
 import os
-
-from apps.register import register_backend
+from apps.project.management.actions.api import register_backend
 
 
 def main():

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'otma.apps.core.security',
     'otma.apps.entities',
     'djangobower',
+
 ]
 
 MIDDLEWARE = [
@@ -149,7 +150,8 @@ ERRORS_MESSAGES = {
     'not_all_numeric':'Este campo só pode conter numeros'
 }
 
-# Bower Components
+OTMA_SERVER = "http://68.183.97.68"
+
 BOWER_PATH = BOWER_PATH
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
 BOWER_INSTALLED_APPS = (
@@ -158,10 +160,10 @@ BOWER_INSTALLED_APPS = (
     'jquery',
     'font-awesome',
     'jquery-nicescroll',
-    'google-fonts',
+    'pnotify',
+    'nprogress',
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
     #'rateyo'
-)
 
-OTMA_SERVER = "http://68.183.97.68"
+)

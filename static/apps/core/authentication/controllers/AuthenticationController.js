@@ -2,16 +2,42 @@ var app = new Vue({
   el: '#app_core_authentication',
   mixins: [base_controller],
   data: function() {
-    return{
+    return {
 			forms: {
-				log_in: {username: null, password: null},
-				sign_in: {first_name: null, family_name: null, email: null, username: null, password: null, confirm_password: null}
-			},
-			errors:{}
-    }
-  },
+				login:{
+					object:{
+						username:null,
+						password:null
+					},
+					errors:{},
+					selected:{
+						index: null,
+						register: null
+					},
+				},
 
-  methods: {
+				signup:{
+					object:{
+						first_name: null,
+						family_name: null,
+						email: null,
+
+						activation_code: null,
+						username:null,
+						password:null
+					},
+					errors:{},
+					selected:{
+						index: null,
+						register: null
+					},
+				},
+			},
+		}
+	},
+
+
+  /*methods: {
 		signin: function(){
 			var scope = this;
 			var data_paramters = scope.forms.sign_in;
@@ -43,5 +69,5 @@ var app = new Vue({
 			};
 			this.request('/core/login/api/authenticate/','post',data_paramters, null, success_function, failure_function);
 		}
-	}
+	}*/
 });
