@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from apps.project.management.actions.api import register_frontend
-from apps.views import index, login, signup
+from apps.views import index, login, signup, logout_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,7 +30,6 @@ urlpatterns = [
     url(r'^signup/$', signup),
 
     #url(r'core/', include('otma.apps.core.authentication.urls')),
-    url(r'^$', index),
-    url(r'^login/$', login),
+    url(r'^logout/$', logout_page),
     url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$', register_frontend),
 ]

@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth import logout
+from django.shortcuts import render, redirect
 
 
 def index(request):
@@ -11,3 +12,8 @@ def login(request):
 
 def signup(request):
     return render(request, "core/authentication/signup.html",{'base_page': 'core/authentication/base_authentication.html'})
+
+
+def logout_page(request):
+    logout(request)
+    return redirect("/login")
