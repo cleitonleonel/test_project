@@ -3,18 +3,12 @@
 
 {% block main_dependencies %}
 {% load static %}
-<style>
-  .wrong_field{
-    border: 1px solid red !important;
-  }
-</style>
-<!--<link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">-->
 {% endblock %}
 
 {% block main_content %}
 <div id="app_core_authentication">
   {% csrf_token %}
-  <app_form_login :form="forms.login"></app_form_login>
+  <app_form_signup :form="forms.signup"></app_form_signup>
 </div>
 {% endblock %}
 
@@ -24,8 +18,4 @@
 <script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
 <script src="{% static 'apps/core/authentication/components/AuthenticationComponents.js' %}"></script>
 <script src="{% static 'apps/core/authentication/controllers/AuthenticationController.js' %}"></script>
-
-<script src="{% static 'js/components/input-components.js' %}"></script>
-<script src="{% static 'js/components/form-components.js' %}"></script>
-<!--<script src="{% static 'js/controllers/form-controller.js' %}"></script>-->
 {% endblock %}
