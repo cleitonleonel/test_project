@@ -1,7 +1,7 @@
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 
-from apps.project.management.actions.validators import check_islogged
+# from apps.project.management.actions.validators import check_islogged
 
 
 def index(request):
@@ -19,7 +19,7 @@ def signup(request):
 
 
 def logout_page(request):
-    if check_islogged(request):
+    if request.user.is_authenticated:
         logout(request)
         return redirect("/login")
     else:

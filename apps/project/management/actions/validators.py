@@ -7,13 +7,6 @@ import re
 email_format_validator = EmailValidator(message="Erro! Email inválido.")
 
 
-def check_islogged(request):
-    if request.user.is_authenticated:
-        return True
-    else:
-        return False
-
-
 def password_format_validator(value):
     if is_empty(value) or not contain_minimal_size(value,8) or not contain_alpha(value) or not contain_numbers(value):
         raise ValidationError(_('Password must be 8 characters or more with numbers and letters'),code='invalid')
