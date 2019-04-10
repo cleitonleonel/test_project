@@ -149,8 +149,9 @@ ERRORS_MESSAGES = {
     'name_min_words':'Informe o nome completo',
     'not_all_numeric':'Este campo só pode conter numeros'
 }
+
 OTMA_SERVER = "http://68.183.97.68"
-# Bower Components
+
 BOWER_PATH = BOWER_PATH
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
 BOWER_INSTALLED_APPS = (
