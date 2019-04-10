@@ -164,4 +164,5 @@ BOWER_INSTALLED_APPS = (
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
     #'rateyo'
+
 )
