@@ -1,0 +1,18 @@
+{% extends base_page %}
+{% block title %}Erro!{% endblock %}
+
+{% block main_dependencies %}
+{% load static %}
+<style>
+  .wrong_field{
+    border: 1px solid red !important;
+  }
+</style>
+<!--<link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">-->
+{% endblock %}
+
+{% block main_content %}
+  <span>Erro, usuário não autênticado</span><br>
+  <sub>Já tem uma conta?</sub><br>
+  <a role="button" class="btn btn-sm btn-info" href="/login">Fazer Login</a>
+{% endblock %}
