@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from conf.profile import TASK_ID, USER_KEY, SPRINT_ID, PROJECT_KEY
 from test_project.settings import OTMA_SERVER
 
+
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
     if isinstance(obj, date):
