@@ -1,13 +1,4 @@
-# Install command from requirements
-# command pip install -r conf/requirements.txt --process-dependency-links
-
-psycopg2-binary
-
 django
 django-bower
-
+psycopg2-binary
 requests
-
-https://github.com/otmasolucoes/apps.core.authentication/zipball/master
-https://github.com/otmasolucoes/apps.core.security/zipball/master
-https://github.com/otmasolucoes/apps.entities/zipball/master
