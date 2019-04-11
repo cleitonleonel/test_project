@@ -17,13 +17,14 @@ Vue.component('app_form_login', {
       var validation_function = function () {
         for(var field in data_paramters){
           if(!data_paramters[field]){
+            alert('null '+field+': '+data_paramters[field]);
             return false;
           }
-          return true;
         }
+        return true;
       };
 
-      this.request('/core/login/api/authenticate/','post',validation_function, null, success_function, failure_function);
+      this.request('/core/login/api/authenticate/','post', data_paramters, validation_function, success_function, failure_function);
     },
   },
   template:
@@ -58,6 +59,7 @@ Vue.component('app_form_signup', {
       var validation_function = function () {
         for(var field in data_paramters){
           if(!data_paramters[field]){
+            alert(field);
             return false;
           }
         }
