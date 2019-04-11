@@ -16,6 +16,19 @@ var app = new Vue({
 					},
 				},
 
+				passwd:{
+					object:{
+						password:null,
+	          new_password: null,
+	          confirm_password: null
+					},
+					errors:{},
+					selected:{
+						index: null,
+						register: null
+					},
+				},
+
 				signup:{
 					object:{
 						first_name: null,
