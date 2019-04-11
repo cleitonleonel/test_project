@@ -3,25 +3,27 @@ Vue.component('app_form_login', {
   props:['form'],
   methods:{
     login: function(){
-      var scope = this;
-      var data_paramters = scope.form.object;
-      var success_function = function(response){
+      let scope = this;
+      let data_paramters = scope.form.object;
+      let success_function = function(response){
         scope.errors = response.message;
         window.location.href = "/";
       };
 
-      var failure_function = function(response){
+      let failure_function = function(response){
         scope.form.errors = response.message;
       };
 
-      var validation_function = function () {
-        for(var field in data_paramters){
+      let validation_function = function () {
+        let result = true;
+        let error_keys = {'username' : 'usuário', 'password' : 'senha'};
+        for(let field in data_paramters){
           if(!data_paramters[field]){
-            alert('null '+field+': '+data_paramters[field]);
-            return false;
+            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório");
+            result = false;
           }
         }
-        return true;
+        return result;
       };
 
       this.request('/core/login/api/authenticate/','post', data_paramters, validation_function, success_function, failure_function);
@@ -45,22 +47,24 @@ Vue.component('app_form_signup', {
   props:['form'],
   methods:{
     signup: function(){
-      var scope = this;
-      var data_paramters = scope.form.object;
-      var success_function = function(response){
+      let scope = this;
+      let data_paramters = scope.form.object;
+      let success_function = function(response){
         scope.errors = response.message;
         window.location.href = "/";
       };
 
-      var failure_function = function(response){
+      let failure_function = function(response){
         scope.form.errors = response.message;
       };
 
-      var validation_function = function () {
-        for(var field in data_paramters){
+      let validation_function = function () {
+        let result = true;
+        let error_keys = {'first_name' : 'primeiro nome', 'family_name' : 'sobrenome', 'email' : 'e-mail', 'username' : 'usuário', 'password' : 'senha', 'confirm_password' : 'confirmação de senha', 'activation_code' : 'chave de autorização'};
+        for(let field in data_paramters){
           if(!data_paramters[field]){
-            alert(field);
-            return false;
+            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório");
+            result = false;
           }
         }
         if(!validate_password(data_paramters.password)) {
