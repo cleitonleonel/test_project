@@ -88,7 +88,7 @@ def register_backend():
                 actions_file.close()
         else:
             try:
-                os.remove("project_ivis/actions.txt")
+                os.remove("actions.txt")
             except:
                 pass
     except:

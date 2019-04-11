@@ -2,3 +2,4 @@
 https://github.com/otmasolucoes/apps.core.authentication/zipball/master
 https://github.com/otmasolucoes/apps.core.security/zipball/master
 https://github.com/otmasolucoes/apps.entities/zipball/master
+https://github.com/otmasolucoes/apps.core.management/zipball/master

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'otma.apps.core.authentication',
     'otma.apps.core.commons',
     'otma.apps.core.communications',
+    'otma.apps.core.management',
     'otma.apps.core.security',
     'otma.apps.entities',
     'djangobower',
@@ -135,6 +136,9 @@ STATIC_ROOT = STATIC_URL
 STATICFILES_DIRS = [BASE_DIR+os.path.join('/static'), ]
 
 AUTH_USER_MODEL = 'authentication.User'
+LOGIN_REDIRECT_URL = "/login"
+LOGIN_URL = '/login'
+
 ERRORS_MESSAGES = {
     'invalid': 'Conteúdo inválido',
     'document_invalid': 'Documento inválido',

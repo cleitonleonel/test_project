@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
+from otma.apps.core.management.api import ManagementController
 
+from apps.project.management.actions.api import register_backend
 import sys
 import os
-from apps.project.management.actions.api import register_backend
 
 
 def main():
@@ -17,7 +18,8 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
 
-    register_backend()
+    #register_backend()
+    ManagementController().register_backend()
     execute_from_command_line(sys.argv)
 
 

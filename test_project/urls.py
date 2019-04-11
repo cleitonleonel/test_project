@@ -23,11 +23,10 @@ from apps.views import index, login, signup, logout_page
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', index),
-    # Authentication rotes using the authentication modules resources.
-    path('core/', include('otma.apps.core.authentication.urls')), # url(r'core/', include('otma.apps.core.authentication.urls')),
     url(r'^login/$', login),
     url(r'^signup/$', signup),
     url(r'^logout/$', logout_page),
-    url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',
-        register_frontend),
+
+    path('core/', include('otma.apps.core.authentication.urls')),
+    url(r'api/apps/core/management/', include('otma.apps.core.management.urls')),
 ]

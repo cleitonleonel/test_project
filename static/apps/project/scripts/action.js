@@ -3,7 +3,7 @@
 function register_action(){
   var page_url = window.location.host + "/" + window.location.pathname + window.location.search
   page_url = page_url.replace("//","/")
-  api_url = "/api/otmasolucoes/melinux/management/actions/register/frontend";
+  api_url = "api/apps/core/management/otmasolucoes/melinux/actions/register/frontend";
   page_url = window.location.protocol+"//"+page_url
   $.ajax({
     type: "get",
@@ -35,6 +35,7 @@ function register_action(){
         return error_notify(null, "Falha na operação!", "Atividade não pode ser registrada, contate o administrador.");
       }
     },
+
     failure: function(data){
       return error_notify(null, "Falha na operação!", "Serviço indisponível, contate o administrador.");
     }

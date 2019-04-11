@@ -58,9 +58,9 @@ Vue.component('app_form_signup', {
 
 	  <app_field label='Login' type="text" classes="form-control" v-model="form.object.username"></app_field>
 
-	  <app_field label='Senha' type="text" classes="form-control" v-model="form.object.password"></app_field>
+	  <app_field label='Senha' type="password" classes="form-control" v-model="form.object.password"></app_field>
 
-	  <app_field label='Confirme a senha' type="text" classes="form-control" v-model="form.object.confirm_password"></app_field>
+	  <app_field label='Confirme a senha' type="password" classes="form-control" v-model="form.object.confirm_password"></app_field>
 
 	  <app_field label='Chave de autorização' type="text" classes="form-control" v-model="form.object.activation_code"></app_field>
 	  <br>

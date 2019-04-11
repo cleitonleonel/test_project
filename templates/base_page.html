@@ -8,12 +8,34 @@
   <title>{% block title %}MELINUX{% endblock %}</title>
   {% load static %}
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
+
+    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
 
+    <style>
+      .ui-pnotify-container {
+        padding-top:8px;
+      }
+
+      .ui-pnotify-title {
+        padding-top:4px;
+        font-size:12px;
+      }
+
+      .ui-pnotify-text {
+        padding-top:5px;
+        font-size:10px;
+      }
+    </style>
   {% block main_dependencies %}
 
   {% endblock %}
@@ -494,13 +516,18 @@
 </div>
 
 </body>
-
 {% load static %}
-  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+  <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
+  <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+  <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
+  <script src="{% static 'apps/project/scripts/action.js' %}"></script>
   <script src="{% static 'js/otma-scripts.js' %}"></script>
 {% block secondary_dependencies %}
 
-{% endblock %}
+  {% endblock %}
+  <script>
+    window.addEventListener('load', function () {
+      register_action();
+    }, false);
+  </script>
 </html>
