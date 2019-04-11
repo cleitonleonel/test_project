@@ -25,7 +25,7 @@ var time_lib = {
 			NProgress.done();
  		}
 	}
-}
+};
 
 var notify_lib = {
 	methods: {
@@ -35,7 +35,7 @@ var notify_lib = {
 			}
 		}
 	}
-}
+};
 
 var response_lib = {
 	methods: {
@@ -65,7 +65,7 @@ var response_lib = {
 			return this.response;
 		}
 	}
-}
+};
 
 var request_lib = {
 	data: function () {
