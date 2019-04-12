@@ -12,6 +12,9 @@ Vue.component('app_form_login', {
 
       let failure_function = function(response){
         scope.form.errors = response.message;
+        for (let error in scope.form.errors){
+          error_notify(null,"Falha na operação!",scope.form.errors[error]);
+        }
       };
 
       let validation_function = function () {
@@ -19,7 +22,7 @@ Vue.component('app_form_login', {
         let error_keys = {'username' : 'usuário', 'password' : 'senha'};
         for(let field in data_paramters){
           if(!data_paramters[field]){
-            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório");
+            error_notify(null,"Falha na operação!","O campo de "+error_keys[field]);
             result = false;
           }
         }
