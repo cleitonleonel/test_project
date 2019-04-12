@@ -1,39 +1,39 @@
 Vue.component('app_form_login', {
-  mixins: [base_controller],
-  props:['form'],
-  methods:{
-    login: function(){
-      let scope = this;
-      let data_paramters = scope.form.object;
-      let success_function = function(response){
-        scope.errors = response.message;
-        window.location.href = "/";
-      };
+	mixins: [base_controller],
+	props:['form'],
+	methods:{
+		login: function(){
+			let scope = this;
+			let data_paramters = scope.form.object;
+			let success_function = function(response){
+				scope.errors = response.message;
+				window.location.href = "/";
+			};
 
-      let failure_function = function(response){
-        scope.form.errors = response.message;
-        for (let error in scope.form.errors){
-          error_notify(null,"Falha na operação!",scope.form.errors[error]);
-        }
-      };
+			let failure_function = function(response){
+				scope.form.errors = response.message;
+				for (let error in scope.form.errors){
+					error_notify(null,"Falha na operação!",scope.form.errors[error]);
+				}
+			};
 
-      let validation_function = function () {
-        let result = true;
-        let error_keys = {'username' : 'usuário', 'password' : 'senha'};
-        for(let field in data_paramters){
-          if(!data_paramters[field]){
-            error_notify(null,"Falha na operação!","O campo de "+error_keys[field]);
-            result = false;
-          }
-        }
-        return result;
-      };
+			let validation_function = function () {
+				let result = true;
+				let error_keys = {'username' : 'usuário', 'password' : 'senha'};
+				for(let field in data_paramters){
+					if(!data_paramters[field]){
+						error_notify(null,"Falha na operação!","O campo de "+error_keys[field]);
+						result = false;
+					}
+				}
+				return result;
+			};
 
-      this.request('/core/login/api/authenticate/','post', data_paramters, validation_function, success_function, failure_function);
-    },
-  },
-  template:
-      `
+			this.request('/core/login/api/authenticate/','post', data_paramters, validation_function, success_function, failure_function);
+		},
+	},
+	template:
+		`
   <div>
 	  <app_input type="text" placeholder="Username ou email.." classes="form-control" v-model="form.object.username"></app_input>
 	  <div style='height: 10px;'></div>
@@ -42,24 +42,24 @@ Vue.component('app_form_login', {
 	  <app_button text="Entrar" classes='form-control btn btn-primary' title='Clique aqui para entrar' :callback='login'></app_button>
   </div>
   `
-  ,
+	,
 });
 
 Vue.component('app_form_signup', {
-  mixins: [base_controller],
-  props:['form'],
-  methods:{
-    signup: function(){
-      let scope = this;
-      let data_paramters = scope.form.object;
-      let success_function = function(response){
-        scope.errors = response.message;
-        window.location.href = "/";
-      };
+	mixins: [base_controller],
+	props:['form'],
+	methods:{
+		signup: function(){
+			let scope = this;
+			let data_paramters = scope.form.object;
+			let success_function = function(response){
+				scope.errors = response.message;
+				window.location.href = "/";
+			};
 
-      let failure_function = function(response){
-        scope.form.errors = response.message;
-      };
+			let failure_function = function(response){
+				scope.form.errors = response.message;
+			};
 
       let validation_function = function () {
         let result = true;
@@ -85,11 +85,11 @@ Vue.component('app_form_signup', {
         return result;
       };
 
-      this.request('/core/login/api/register/save','post',data_paramters, validation_function, success_function, failure_function);
-    },
-  },
-  template:
-      `
+			this.request('/core/login/api/register/save','post',data_paramters, validation_function, success_function, failure_function);
+		},
+	},
+	template:
+		`
   <div>
     <app_field label='Primeiro Nome' type="text" classes="form-control" v-model="form.object.first_name"></app_field>
 
@@ -109,7 +109,7 @@ Vue.component('app_form_signup', {
 	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='signup'></app_button>
   </div>
   `
-  ,
+	,
 });
 
 Vue.component('app_form_change_password', {
