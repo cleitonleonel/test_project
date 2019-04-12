@@ -69,17 +69,17 @@ Vue.component('app_form_signup', {
         }
         if(!validate_password(data_paramters.password)) {
           error_notify(null,"Senha inválida","Confira se sua senha tem mais de 8 caracteres, e contém letras e números");
-          return false;
+          result = false;
         }
         if(!validate_confirm_password(data_paramters.password,data_paramters.confirm_password)) {
           error_notify(null,"Confirmação de senha inválida","Confira se sua senha é igual a confirmação");
-          return false;
+          result = false;
         }
         if(!validate_email(data_paramters.email)) {
           error_notify(null,"E-mail inválido","Confira se seu e-mail foi digitado corretamente");
-          return false;
+          result = false;
         }
-        return true;
+        return result;
       };
 
       this.request('/core/login/api/register/save','post',data_paramters, validation_function, success_function, failure_function);
@@ -136,16 +136,16 @@ Vue.component('app_form_change_password', {
         }
         if(!validate_password(data_paramters.password)) {
           error_notify(null,"Senha inválida","Confira se sua senha tem mais de 8 caracteres, e contém letras e números");
-          return false;
+          result = false;
         }
         if(!validate_confirm_password(data_paramters.password,data_paramters.confirm_password)) {
           error_notify(null,"Confirmação de senha inválida","Confira se sua senha é igual a confirmação");
-          return false;
+          result = false;
         }
-        return true
+        return result;
       };
 
-      this.request('/core/change_password','post',data_paramters, null, success_function, failure_function);
+      this.request('/core/change_password','post',data_paramters, validation_function, success_function, failure_function);
     },
   },
   template:
