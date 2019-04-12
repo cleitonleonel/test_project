@@ -4,16 +4,16 @@ from django.shortcuts import render, redirect
 # from apps.project.management.actions.validators import check_islogged
 
 
-def index(request):
+def index_page(request):
     return render(request, "blank_page.html", {'base_page': 'base_page.html'})
 
 
-def login(request):
+def login_page(request):
     return render(request, "core/authentication/login.html",
                   {'base_page': 'core/authentication/base_authentication.html'})
 
 
-def signup(request):
+def signup_page(request):
     return render(request, "core/authentication/signup.html",
                   {'base_page': 'core/authentication/base_authentication.html'})
 
@@ -28,5 +28,8 @@ def logout_page(request):
 
 
 def change_password_page(request):
-    return render(request, "core/authentication/change_password.html",
-                  {'base_page': 'core/authentication/base_authentication.html'})
+    if request.user.is_authenticated:
+        return render(request, "core/authentication/change_password.html",
+                      {'base_page': 'core/authentication/base_authentication.html'})
+    else:
+        return redirect("/login")
