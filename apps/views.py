@@ -25,3 +25,8 @@ def logout_page(request):
     else:
         return render(request, "core/authentication/logout_error.html",
                       {'base_page': 'core/authentication/base_authentication.html'})
+
+
+def change_password_page(request):
+    return render(request, "core/authentication/change_password.html",
+                  {'base_page': 'core/authentication/base_authentication.html'})
