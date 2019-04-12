@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'apps/core/session_security/style.css' %}">
 
   {% block main_dependencies %}
 
@@ -499,8 +500,27 @@
   <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
   <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
   <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+  <script src="{% static 'apps/core/session_security/script.js' %}"></script>
   <script src="{% static 'js/otma-scripts.js' %}"></script>
 {% block secondary_dependencies %}
+{% load session_security_tags %}
+{% load static from staticfiles %}
+{% load i18n l10n %}
+{% localize off %}
+  <script type="text/javascript">
+  var sessionSecurity = new yourlabs.SessionSecurity({
+    pingUrl: '{% url 'session_security_ping' %}',
+    warnAfter: {{ request|warn_after|unlocalize }},
+    expireAfter: {{ request|expire_after|unlocalize }},
+    confirmFormDiscard: "{% trans 'You have unsaved changes in a form of this page.' %}"
+  });
 
+  /* Sets focus on the first element of the form */
+  $(".modal").on('shown.bs.modal', function () {
+      $(this).find("input:visible:first").focus();
+  });
+
+  </script>
+{% endlocalize %}
 {% endblock %}
 </html>

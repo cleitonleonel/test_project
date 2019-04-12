@@ -30,4 +30,5 @@ urlpatterns = [
     url(r'^logout/$', logout_page),
     url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',
         register_frontend),
+    url(r'session_security/', include('session_security.urls')),
 ]

@@ -2,3 +2,4 @@ django
 django-bower
 psycopg2-binary
 requests
+django-session-security
