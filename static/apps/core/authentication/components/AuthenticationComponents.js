@@ -163,3 +163,48 @@ Vue.component('app_form_change_password', {
   `
   ,
 });
+
+Vue.component('app_form_reset_password', {
+  mixins: [base_controller],
+  props:['form'],
+  methods:{
+    login: function(){
+      let scope = this;
+      let data_paramters = scope.form.object;
+      let success_function = function(response){
+        scope.errors = response.message;
+        window.location.href = "/";
+      };
+
+      let failure_function = function(response){
+        scope.form.errors = response.message;
+      };
+
+      let validation_function = function () {
+        let result = true;
+        let error_keys = {'email':'e-mail'};
+        for(let field in data_paramters){
+          if(!data_paramters[field]){
+            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório");
+            result = false;
+          }
+        }
+        if(!validate_email(data_paramters.email)) {
+          error_notify(null,"e-Mail inválido","Confira se o e-mail foi preenchido corretamente");
+          result = false;
+        }
+        return result;
+      };
+
+      this.request('/core/reset_password','post',data_paramters, validation_function, success_function, failure_function);
+    },
+  },
+  template:
+      `
+  <div>
+	  <app_input type="text" placeholder="e-Mail" classes="form-control" v-model="form.object.email"></app_input>
+	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='login' style="margin-top: 10px;"></app_button>
+  </div>
+  `
+  ,
+});
