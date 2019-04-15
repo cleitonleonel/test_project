@@ -38,8 +38,8 @@ Vue.component('app_form_login', {
 	  <app_input type="text" placeholder="Username ou email.." classes="form-control" v-model="form.object.username"></app_input>
 	  <div style='height: 10px;'></div>
 	  <app_input type="password" placeholder="Senha.." classes="form-control" v-model="form.object.password"></app_input>
-
 	  <app_button text="Entrar" classes='form-control btn btn-primary' title='Clique aqui para entrar' :callback='login'></app_button>
+	  <hr>
   </div>
   `
 	,
@@ -202,8 +202,13 @@ Vue.component('app_form_reset_password', {
   template:
       `
   <div>
-	  <app_input type="text" placeholder="e-Mail" classes="form-control" v-model="form.object.email"></app_input>
+    <p>
+      Informe seu email, enviaremos uma nova senha de acesso para ela.
+    </p>
+
+	  <app_input type="text" placeholder="Informe seu email" classes="form-control" v-model="form.object.email"></app_input>
 	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='login' style="margin-top: 10px;"></app_button>
+	  <hr>
   </div>
   `
   ,
