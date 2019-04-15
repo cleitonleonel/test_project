@@ -40,7 +40,7 @@ OBS¹: A configuração dos scripts será tratada abaixo.
 
 ### Scripts
 
-A execução do programa será dada pelo PyCharm. Ele executará linhas de código que serão como atalhos para o Terminal. Para criar um comando de execução, vá na parte de 
+A execução do programa será feita pelo PyCharm. Ele executará linhas de código que serão como atalhos para o Terminal. Para criar um comando de execução, vá na parte superior direita, e clique em ```Add configuration```
 
 ![Add configuration](https://i.imgur.com/nQFMlQO.jpg)
 
