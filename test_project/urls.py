@@ -33,4 +33,4 @@ urlpatterns = [
     url(r'api/apps/core/management/', include('otma.apps.core.management.urls')),
     url(r'^change_password/$', change_password_page),
     url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$', register_frontend),
-]
+]#+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
