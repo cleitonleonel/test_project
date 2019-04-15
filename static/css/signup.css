@@ -48,3 +48,10 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.reset-pass {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  background: rgb(248, 248, 250);
+  padding: 7px;
+  font-size: 1em;
+}

@@ -202,11 +202,10 @@ Vue.component('app_form_reset_password', {
   template:
       `
   <div>
-    <p>
-      Informe seu email, enviaremos uma nova senha de acesso para ela.
-    </p>
-
-	  <app_input type="text" placeholder="Informe seu email" classes="form-control" v-model="form.object.email"></app_input>
+		<div class="card-body text-left reset-pass">
+			Informe o email para receber uma nova senha de acesso.
+		</div>
+	  <app_input id="app_input" type="text" placeholder="Informe seu email" classes="form-control" v-model="form.object.email" style="margin-top: 10px;"></app_input>
 	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='login' style="margin-top: 10px;"></app_button>
 	  <hr>
   </div>
