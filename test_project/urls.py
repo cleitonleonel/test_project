@@ -16,22 +16,19 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-
 from apps.project.management.actions.api import register_frontend
-from apps.views import index, login, signup
+from apps.views import index_page, login_page, signup_page, logout_page, change_password_page
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^$', index),
-
-    # Rotas de autenticacao usando os recursos diretos do modulo de autenticacao
+    url(r'^$', index_page),
+    # Authentication rotes using the authentication modules resources.
     path('core/', include('otma.apps.core.authentication.urls')),
-    url(r'^login/$', login),
-    url(r'^signup/$', signup),
-
-    #url(r'core/', include('otma.apps.core.authentication.urls')),
-    url(r'^$', index),
-    url(r'^login/$', login),
-    url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$', register_frontend),
-
+    url(r'^login/$', login_page),
+    url(r'^signup/$', signup_page),
+    url(r'^logout/$', logout_page),
+    url(r'^change_password/$', change_password_page),
+    url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',
+        register_frontend),
 ]

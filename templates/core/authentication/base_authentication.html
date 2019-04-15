@@ -1,53 +1,78 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="pt-br">
   <head>
-    <meta charset="UTF-8">
-
-    <title>{% block title %}Melinux - Login{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--<link rel="icon" href="../../../../favicon.ico">-->
+    <title>{% block title %}{% endblock %}</title>
 
     {% load static %}
-      <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
-  <link rel=="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
-      <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
-      <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
-      <link rel="stylesheet" href="{% static 'css/core/authentication/otma-login.css' %}">
-    {% block primary_dependencies %}
-    {% endblock %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+
+    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
+    <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+
     <style>
-      colored:{
-        color: red;
-        background:blue;
+      .ui-pnotify-container {
+        text-align:left !important;
+        float: right;
+        padding-top:8px;
+        width: 300px;
       }
+
+      .ui-pnotify-title {
+        float: left;
+        padding-top: 5px;
+        font-size:14px;
+      }
+
+      .ui-pnotify-text {
+        clear: both;
+        padding-top:5px;
+        font-size:12px;
+      }
+
     </style>
   </head>
 
-  <body style="background: #eaeaea;">
-    <div id="app">
-      <app_field id="teste" value="teste" label="Testando componente" classes="colored" error="" placeholder="teste?" title="É so pra testar vei" type="text"></app_field>
-      <div class="panel-centered" style="border-radius: 5px;"> <!-- Manter esse painel mais pra cima.. -->
-        {% block main_content %}
+  <body class="text-center">
+    <div class="form-signin" style="position:relative;top: -50px;">
+      <h3 class="mb-3 ">
+        <img class="" src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" alt="" width="32" height="32">
+        <span class="" style="position:relative;top:4px;">Melinux</span>
+      </h3>
 
-        {% endblock %}
-      </div>
+      <hr>
+      {% block main_content %}
+
+      {% endblock %}
+      <hr>
+
+      <p class="text-muted">Não consegue entrar? <a href="#">clique aqui</a>
+        <br>&copy; 2017-2018
+      </p>
     </div>
-
-    {% load static %}
-      <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-      <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-      <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
-      <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
-      <script>
-        $(document).ready(function() {
-          $("body").niceScroll({
-              cursorcolor:"#57c6d5",
-              cursorwidth:"7px"
-          });
-        });
-      </script>
-    <script src="{% static 'components/base/FormsComponents.js' %}"></script>
-
-  <script src="{% static 'js/controllers/form-controller.js' %}"></script>{% block secondary_dependencies %}
-    {% endblock %}
   </body>
+  <script src="{% static 'js/otma-validations.js' %}"></script>
+  <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+  <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
+  <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
+  {% block secondary_dependencies %}
+  {% endblock %}
+  <script>
+    $(document).ready(function() {
+      $("body").niceScroll({
+          cursorcolor:"#57c6d5",
+          cursorwidth:"7px"
+      });
+    });
+  </script>
 </html>

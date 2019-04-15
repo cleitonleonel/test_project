@@ -1,0 +1,4 @@
+django
+django-bower
+psycopg2-binary
+requests

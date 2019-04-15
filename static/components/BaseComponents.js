@@ -1,3 +1,9 @@
+Vue.filter('isUpperCase', function (value) {
+  if (!value) return '';
+  value = value.toString();
+  return value.toUpperCase()
+});
+
 Vue.component('app-title',{
   props: ['src','title'],
   data: function () {
