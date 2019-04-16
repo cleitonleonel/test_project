@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^logout/$', logout_page),
     url(r'^change_password/$', change_password_page),
     url(r'^entities/$', entities),
+    path(r'^ent/$', include('otma.apps.entities.urls')),
     url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',
         register_frontend),
 ]
