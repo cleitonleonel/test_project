@@ -205,7 +205,6 @@ Vue.component('app_form_reset_password', {
     <p>
       Informe seu email, enviaremos uma nova senha de acesso para ela.
     </p>
-
 	  <app_input type="text" placeholder="Informe seu email" classes="form-control" v-model="form.object.email"></app_input>
 	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='login' style="margin-top: 10px;"></app_button>
 	  <hr>
