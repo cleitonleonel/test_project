@@ -31,8 +31,3 @@ def change_password_page(request):
 					{'base_page': 'core/authentication/base_authentication.html'})
 	else:
 		return redirect("/login")
-
-
-def reset_password_page(request):
-	return render(request, "core/authentication/reset_password.html",
-				{'base_page': 'core/authentication/base_authentication.html'})

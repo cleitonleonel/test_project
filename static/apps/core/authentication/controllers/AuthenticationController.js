@@ -3,6 +3,10 @@ var app = new Vue({
   mixins: [base_controller],
   data: function() {
     return {
+      pages: {
+        active: "login",
+      },
+
 			forms: {
 				login:{
 					object:{
@@ -59,4 +63,10 @@ var app = new Vue({
 			},
 		}
 	},
+
+	methods: {
+		change_page: function (page){
+			this.pages.active = page;
+		}
+	}
 });
