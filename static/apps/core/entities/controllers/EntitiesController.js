@@ -1,4 +1,4 @@
-var app = new Vue({
+let app = new Vue({
   el: '#app_entities',
   mixins: [base_controller],
   data: function() {
@@ -16,9 +16,37 @@ var app = new Vue({
 					},
 				},
 			},
+
+			entities: {
+        data: [],
+        dict: {},
+        loaded: false,
+        errors: [],
+      },
 		}
 	},
 	methods: {
+		load_entities: function() {
+      let scope = this;
+      let data_paramters = {};
+      let success_function = function(response) {
+        scope.errors = response.message;
+        scope.entities.data = response.object;
+        for (let index in scope.entities.data) {
+          scope.entities.dict[scope.entities.data[index].id] = scope.entities.data[index];
+        }
+      };
 
+      let failure_function = function(response) {
+        scope.errors = response.message;
+        scope.entities.loaded = null;
+      };
+
+      this.request('/api/ent/load/', 'get', data_paramters, null, success_function, failure_function);
+    },
+	},
+
+	mounted: function() {
+    this.load_entities();
 	},
 });

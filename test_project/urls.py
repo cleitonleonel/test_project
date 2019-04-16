@@ -24,12 +24,12 @@ urlpatterns = [
     url(r'^$', index_page),
     # Authentication rotes using the authentication modules resources.
     path('core/', include('otma.apps.core.authentication.urls')),
+    path('api/ent/', include('otma.apps.entities.urls')),
     url(r'^login/$', login_page),
     url(r'^signup/$', signup_page),
     url(r'^logout/$', logout_page),
     url(r'^change_password/$', change_password_page),
     url(r'^entities/$', entities),
-    path(r'^ent/$', include('otma.apps.entities.urls')),
     url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',
         register_frontend),
 ]
