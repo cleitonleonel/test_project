@@ -3,13 +3,13 @@
 
 {% block main_dependencies %}
 {% load static %}
-
+	<link rel="stylesheet" href="{% static 'css/core/entities/table.css' %}">
 {% endblock %}
 
 {% block main_content %}
 {% verbatim %}
-	<div id="app_entities">
-		{{ entities.data }}
+	<div id="app_entities" class="text-center">
+		<app_entities_table data="entities.data"></app_entities_table>
 	</div>
 {% endverbatim %}
 {% endblock %}
