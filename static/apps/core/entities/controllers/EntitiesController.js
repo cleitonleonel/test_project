@@ -5,11 +5,112 @@ let app = new Vue({
     return {
 			forms: {
 				entity:{
-					object:{
-						name:null,
-						type:null
+					options: {
+						type: {
+							PF: {
+								label: 'Pessoa Física',
+								value: 'PF'
+							},
+							PJ: {
+								label: 'Pessoa Jurídica',
+								value: 'PJ'
+							}
+						},
+						company_relation:{
+							Fu: {
+								label: 'Funcionário',
+								value: 'FUNCIONARIO'
+							},
+							Fo: {
+								label: 'Fornecedor',
+								value: 'FORNECEDOR'
+							},
+							Cl: {
+								label: 'Cliente',
+								value: 'CLIENTE'
+							},
+							Ba: {
+								label: 'Banco',
+								value: 'BANCO'
+							},
+							Tr: {
+								label: 'Trasnportador',
+								value: 'TRANSPORTADOR'
+							},
+							Re: {
+								label: 'Representante',
+								value: 'REPRESENTANTE'
+							}
+						},
+						activities: {
+							Co: {
+								label: 'Comércio',
+								value: 'COMERCIO'
+							},
+							Se: {
+								label: 'Serviço',
+								value: 'SERVICO'
+							},
+							In: {
+								label: 'Indústria',
+								value: 'INDUSTRIA'
+							},
+							Im: {
+								label: 'Importador',
+								value: 'IMPORTADOR'
+							},
+							Exp: {
+								label: 'Exportador',
+								value: 'EXPORTADOR'
+							},
+							PR: {
+								label: 'Produtor Rural',
+								value: 'PRODUTOR_RURAL'
+							},
+							Ex: {
+								label: 'Extravista',
+								value: 'EXTRAVISTA',
+							}
+						},
+						status: {
+							Hab: {
+								label: 'Habilitado',
+								value: 'HABILITADO'
+							},
+							Ina: {
+								label: 'Inativo',
+								value: 'INATIVO'
+							},
+							Sus: {
+								label: 'Suspenso',
+								value: 'SUSPENSO'
+							},
+							Blo: {
+								label: 'Bloqueado',
+								value: 'BLOQUEADO'
+							},
+							Des: {
+								label: 'Desabilitado',
+								value: 'DESABILITADO'
+							},
+						}
 					},
+
+					object:{
+						type: null,
+						official_doc: null,
+						name: null,
+						popular_name: null,
+						nationality: null,
+						company_relation: [],
+						activities: [],
+						status: null,
+						modifications: null,
+						comments: null
+					},
+
 					errors:{},
+
 					selected:{
 						index: null,
 						register: null
