@@ -11,12 +11,10 @@ Vue.component('app_entities_table',{
 			<th>Apelido</th>
 			<th>Nacionalidade</th>
 			<th>Relação</th>
+			<th>Atividade</th>
 			<th>Situação</th>
-			<th>Data de Criação</th>
-			<th>Ultima Atualização</th>
-			<th>Modificações</th>
-			<th>Variáveis</th>
-			<th>Comentários</th>
+			<th>Criação</th>
+			<th>Atualização</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -26,13 +24,11 @@ Vue.component('app_entities_table',{
 			<td>{{ entity.name }}</td>
 			<td>{{ entity.popular_name }}</td>
 			<td>{{ entity.nationality }}</td>
+			<td>{{ entity.activities }}</td>
 			<td>{{ entity.company_relation }}</td>
 			<td>{{ entity.status }}</td>
 			<td>{{ entity.creation_date }}</td>
 			<td>{{ entity.last_update }}</td>
-			<td>{{ entity.modifications }}</td>
-			<td>{{ entity.variables }}</td>
-			<td>{{ entity.comments }}</td>
 		</tr>
 		<tr v-else>
 			<td></td>
