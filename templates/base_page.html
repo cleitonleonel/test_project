@@ -12,16 +12,17 @@
     <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lockscreen.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
-
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
   {% block main_dependencies %}
 
   {% endblock %}
 </head>
-<body style="height:100%;">
+<body onload="StartTimers();" onmousemove="ResetTimers()">
 <div id="app" class="wrapper">
   <template v-if="controls.session_blocked==false">
     <nav id="sidebar" class="active">
@@ -531,6 +532,12 @@
       </div>
     </div>
   </div>
+
+  <div id="timeout">
+    <h1>Session About To Timeout</h1>
+    <p>You will be automatically logged out in 1 minute.<br />
+    To remain logged in move your mouse over this window.
+  </div>
 </div>
 
 </body>
@@ -550,6 +557,8 @@
   <script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
   <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
+
+  <!--<script src="{% static 'js/blocker.js' %}"></script>-->
 {% block secondary_dependencies %}
 
 {% endblock %}

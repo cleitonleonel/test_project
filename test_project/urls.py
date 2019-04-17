@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^$', index_page),
     # Authentication rotes using the authentication modules resources.
+    path('api/core/authentication/', include('otma.apps.core.authentication.urls')),
 
     url(r'^login/$', login_page),
     url(r'^signup/$', signup_page),
