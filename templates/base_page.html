@@ -472,6 +472,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item otma-fs-14" href="#">Perfil</a>
+          <a class="dropdown-item otma-fs-14" href="/change_password">Mudar Senha</a>
           <a class="dropdown-item otma-fs-14" href="/logout">Logout</a>
         </div>
       </div>
@@ -499,7 +500,8 @@
   <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
   <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
   <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
-  <script src="{% static 'apps/core/session_security/script.js' %}"></script>
+  <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
+  <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
   <script src="{% static 'js/otma-scripts.js' %}"></script>
 {% block secondary_dependencies %}
 {% load session_security_tags %}

@@ -1,10 +1,10 @@
 function notify(type,title,description){
-	var width = "400px"
+	var width = "400px";
   var notice = new PNotify({
   	title: title,
     text: description,
     width: width,
-    hide: type=='confirm' ? false : true,
+    hide: type!='confirm',
     delay: type=='error' ? 5000 : 5000,
     mouse_reset: false,
     type: type=='confirm' ? 'success' : type,
@@ -23,7 +23,7 @@ function notify(type,title,description){
   notice.get().click(function() {
 		notice.remove();
 	});
-  return (type=='error' ? false : true);
+  return (type!='error');
 }
 
 function confirm_notify(title,description){
