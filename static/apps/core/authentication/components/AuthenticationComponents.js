@@ -29,7 +29,7 @@ Vue.component('app_form_login', {
 				return result;
 			};
 
-			this.request('/core/login/api/authenticate/','post', data_paramters, validation_function, success_function, failure_function);
+			this.request('/core/login/','post', data_paramters, validation_function, success_function, failure_function);
 		},
 	},
 	template:
