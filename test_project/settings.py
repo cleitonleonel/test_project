@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    #'session_security',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'otma.apps.core.authentication',
@@ -94,6 +95,13 @@ DATABASES = {
         'SINGLE_TRANSACTION': False,
     }
 }
+
+SESSION_SECURITY_EXPIRE_AFTER = 300
+SESSION_SECURITY_WARN_AFTER =  280
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SECURITY_INSECURE = True
+
+REQUIREMENTS = r'conf/requirements.txt'
 
 
 # Password validation

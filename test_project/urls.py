@@ -29,7 +29,6 @@ urlpatterns = [
     url(r'^signup/$', signup_page),
     url(r'^logout/$', logout_page),
     #url(r'^change_password/$', change_password_page),
-    url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',register_frontend),
-
-    path('api/core/authentication', include('otma.apps.core.authentication.urls')),
+    url(r'api/(?P<company_repository>\w.+)/(?P<project_name>\w.+)/management/actions/register/frontend$',
+        register_frontend),
 ]
