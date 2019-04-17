@@ -1,5 +1,5 @@
 {% extends base_page %}
-{% block title %}Melinux - Login{% endblock %}
+{% block title %}MELINUX - Login{% endblock %}
 
 {% block main_dependencies %}
 {% load static %}
@@ -14,7 +14,17 @@
 {% block main_content %}
 <div id="app_core_authentication">
   {% csrf_token %}
-  <app_form_login :form="forms.login"></app_form_login>
+		<template v-if="pages.active=='login'">
+			<app_form_login :form="forms.login"></app_form_login>
+			<p class="text-muted">Não consegue entrar? <a href="#" @click="change_page('forgot_password')">clique aqui</a>
+		</template>
+
+		<template v-if="pages.active=='forgot_password'">
+			<app_form_reset_password :form="forms.reset_password"></app_form_reset_password>
+			<p class="text-muted"><a href="#" @click="change_page('login')">Clique aqui </a>para voltar
+		</template>
+		&copy; 2017-2018
+	</p>
 </div>
 {% endblock %}
 
