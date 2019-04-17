@@ -22,7 +22,7 @@
 
   {% endblock %}
 </head>
-<body onload="StartTimers();" onmousemove="ResetTimers()">
+<body><!-- onload="StartTimers();" onmousemove="ResetTimers()">-->
 <div id="app" class="wrapper">
   <template v-if="controls.session_blocked==false">
     <nav id="sidebar" class="active">
@@ -498,6 +498,7 @@
       </div>
     </div>
   </div>
+  </template>
 
   <template v-else>
      <div class="bg-image"></div>
@@ -545,6 +546,7 @@
       </div>
     </div>
   </div>
+  </template>
 </div>
 </div>
 
@@ -566,7 +568,7 @@
   <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
 
-  <!--<script src="{% static 'js/blocker.js' %}"></script>-->
+  <script src="{% static 'js/blocker.js' %}"></script>
 {% block secondary_dependencies %}
 
 {% endblock %}
