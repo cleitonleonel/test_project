@@ -8,9 +8,13 @@
   <title>{% block title %}MELINUX{% endblock %}</title>
   {% load static %}
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
+
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
   {% block main_dependencies %}
@@ -472,7 +476,7 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item otma-fs-14" href="#">Perfil</a>
-            <a class="dropdown-item otma-fs-14" href="/change_password">Mudar Senha</a>
+            <a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#exampleModal">Alterar Senha</a>
             <a class="dropdown-item otma-fs-14" href="#" @click="block_session()">Bloquear tela</a>
             <a class="dropdown-item otma-fs-14" href="/logout">Encerrar sessão</a>
           </div>
@@ -483,8 +487,8 @@
         {% block main_content %}
 
         {% endblock %}
-
       </div>
+
       <div class="otma-footer otma-fs-14">
         <div class="text-center">
           <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
@@ -504,6 +508,29 @@
       </div>
     </div>
   </template>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Alterar senha de acesso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div id="app_core_authentication">
+            {% csrf_token %}
+            <app_form_change_password :form="forms.change_password"></app_form_change_password>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>
@@ -513,10 +540,15 @@
   <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
   <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
+  <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+
   <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
+  <script src="{% static 'js/otma-validations.js' %}"></script>
   <script src="{% static 'js/otma-scripts.js' %}"></script>
 
   <script src="{% static 'js/controllers/BaseController.js' %}"></script>
+  <script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
+  <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
 {% block secondary_dependencies %}
 

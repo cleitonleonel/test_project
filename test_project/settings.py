@@ -171,9 +171,9 @@ BOWER_INSTALLED_APPS = (
 
 # Service for send Email configurations
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = 'contato@otmasolucoes.com'
+DEFAULT_FROM_EMAIL = 'melinuxsistemas@gmail.com'
 EMAIL_HOST_USER = profile.EMAIL_HOST_USER
 EMAIL_HOST_PASSWORD = profile.EMAIL_HOST_PASSWORD
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
-EMAIL_PORT = 465
+EMAIL_PORT = 587

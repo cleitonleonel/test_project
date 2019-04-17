@@ -3,6 +3,21 @@ var app = new Vue({
   mixins: [base_controller],
   data: function() {
     return {
+      forms: {
+        change_password:{
+					object:{
+						old_password: null,
+						password:null,
+	          confirm_password: null
+					},
+					errors:{},
+					selected:{
+						index: null,
+						register: null
+					},
+				},
+      },
+
       password: null,
       controls: {
         session_blocked: false,

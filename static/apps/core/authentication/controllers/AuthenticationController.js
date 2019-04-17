@@ -37,18 +37,7 @@ var app = new Vue({
 					},
 				},
 
-				change_password:{
-					object:{
-						old_password: null,
-						password:null,
-	          confirm_password: null
-					},
-					errors:{},
-					selected:{
-						index: null,
-						register: null
-					},
-				},
+
 
 				reset_password:{
 					object:{
