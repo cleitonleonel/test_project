@@ -8,12 +8,16 @@
   <title>{% block title %}MELINUX{% endblock %}</title>
   {% load static %}
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
+    <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/lockscreen.css' %}">
+
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
     <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
-
   {% block main_dependencies %}
 
   {% endblock %}
@@ -481,14 +485,62 @@
     <div class="page-content">
       {% block main_content %}
 
-      {% endblock %}
+        {% endblock %}
+      </div>
 
+      <div class="otma-footer otma-fs-14">
+        <div class="text-center">
+          <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
+          <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
+          <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
+        </div>
+      </div>
     </div>
-    <div class="otma-footer otma-fs-14">
-      <div class="text-center">
-        <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
-        <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
-        <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
+  </template>
+
+  <template v-else>
+     <div class="bg-image"></div>
+
+      <div class="bg-text">
+        <h1>I am John Doe</h1>
+        <p>And I'm a Photographer</p>
+      </div>
+
+    <div class="" style="width:100%;height:100%;">
+      <div style="width: 300px;height:200px;background: #e3e3e3;margin: auto;margin-top:50px;border-radius: 5px;box-shadow: 5px 5px 5px #777;">
+        <div style="text-align:center;font-size:10px;">Sessão Bloqueada</div>
+        <br>
+        <span style="border: 4px solid #888;width:86px;height:86px;border-radius:43px;">
+          <span style="border: 4px solid #888;width:82px;height:82px;border-radius:40px;">
+              <img src="{% static 'images/avatar.jpg' %}" style="height:80px;width:80px;border-radius:40px;margin-top:-3px;margin-left:-3px;">
+          </span>
+        </span>
+
+        <input type="password" v-model="password">
+        <a class="dropdown-item otma-fs-14" href="#" @click="unblock_session(password)">Continuar</a>
+      </div>
+    </div>
+  </template>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Alterar senha de acesso</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <div id="app_core_authentication">
+            {% csrf_token %}
+            <app_form_change_password :form="forms.change_password"></app_form_change_password>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+        </div>
       </div>
     </div>
   </div>
@@ -501,27 +553,17 @@
   <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
   <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
+  <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+
   <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
+  <script src="{% static 'js/otma-validations.js' %}"></script>
   <script src="{% static 'js/otma-scripts.js' %}"></script>
+
+  <script src="{% static 'js/controllers/BaseController.js' %}"></script>
+  <script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
+  <script src="{% static 'apps/AppComponents.js' %}"></script>
+  <script src="{% static 'apps/AppController.js' %}"></script>
 {% block secondary_dependencies %}
-{% load session_security_tags %}
-{% load static from staticfiles %}
-{% load i18n l10n %}
-{% localize off %}
-  <script type="text/javascript">
-  var sessionSecurity = new yourlabs.SessionSecurity({
-    pingUrl: '{% url 'session_security_ping' %}',
-    warnAfter: {{ request|warn_after|unlocalize }},
-    expireAfter: {{ request|expire_after|unlocalize }},
-    confirmFormDiscard: "{% trans 'You have unsaved changes in a form of this page.' %}"
-  });
 
-  /* Sets focus on the first element of the form */
-  $(".modal").on('shown.bs.modal', function () {
-      $(this).find("input:visible:first").focus();
-  });
-
-  </script>
-{% endlocalize %}
 {% endblock %}
 </html>
