@@ -29,7 +29,7 @@ Vue.component('app_form_login', {
 				return result;
 			};
 
-			this.request('/core/login/api/authenticate/','post', data_paramters, validation_function, success_function, failure_function);
+			this.request('/api/core/authentication/login/','post', data_paramters, validation_function, success_function, failure_function);
 		},
 	},
 	template:
@@ -38,8 +38,8 @@ Vue.component('app_form_login', {
 	  <app_input type="text" placeholder="Username ou email.." classes="form-control" v-model="form.object.username"></app_input>
 	  <div style='height: 10px;'></div>
 	  <app_input type="password" placeholder="Senha.." classes="form-control" v-model="form.object.password"></app_input>
-
 	  <app_button text="Entrar" classes='form-control btn btn-primary' title='Clique aqui para entrar' :callback='login'></app_button>
+	  <hr>
   </div>
   `
 	,
@@ -111,10 +111,15 @@ Vue.component('app_form_signup', {
   `
 	,
 });
-
+/*
 Vue.component('app_form_change_password', {
   mixins: [base_controller],
   props:['form'],
+  data: function(){
+    return {
+      error_keys:{'old_password':'Senha antiga', 'password':'Senha', 'confirm_password':'Confirmação de senha'}
+    }
+  },
   methods:{
     login: function(){
       let scope = this;
@@ -125,12 +130,14 @@ Vue.component('app_form_change_password', {
       };
 
       let failure_function = function(response){
-        scope.form.errors = response.message;
+        for(let field in response.message){
+          error_notify(null,"Falha na operação!",response.message[field]);
+        }
       };
 
       let validation_function = function () {
         let result = true;
-        let error_keys = {'old_password':'senha antiga', 'password':'senha', 'confirm_password':'confirmação de senha'};
+
         for(let field in data_paramters){
           if(!data_paramters[field]){
             error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório");
@@ -138,17 +145,17 @@ Vue.component('app_form_change_password', {
           }
         }
         if(!validate_password(data_paramters.password)) {
-          error_notify(null,"Senha inválida","Confira se sua senha tem mais de 8 caracteres, e contém letras e números");
+          error_notify(null,"Falha na operação!","Senha precisa ter no minímo 8 caracteres contendo letras e numeros.");
           result = false;
         }
         if(!validate_confirm_password(data_paramters.password,data_paramters.confirm_password)) {
-          error_notify(null,"Confirmação de senha inválida","Confira se sua senha é igual a confirmação");
+          error_notify(null,"Falha na operação!","Confirmação de senha está incorreta.");
           result = false;
         }
         return result;
       };
-
-      this.request('/core/change_password','post',data_paramters, validation_function, success_function, failure_function);
+			alert('envia esse carai.. quero ver essa porra funcionar')
+      this.request('/api/core/authentication/change_password','post',data_paramters, validation_function, success_function, failure_function);
     },
   },
   template:
@@ -159,6 +166,64 @@ Vue.component('app_form_change_password', {
 	  <app_input type="password" placeholder="Sua nova Senha" classes="form-control" v-model="form.object.password"></app_input>
 	  <app_input type="password" placeholder='Confirme a senha' classes="form-control" v-model="form.object.confirm_password"></app_input>
 	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='login'></app_button>
+  </div>
+  `
+  ,
+});
+*/
+Vue.component('app_form_reset_password', {
+  mixins: [base_controller],
+  props:['form'],
+  methods:{
+    reset_password: function(){
+      let scope = this;
+      let data_paramters = scope.form.object;
+      let success_function = function(response){
+        if(response.result==true){
+          success_notify("Operação realizada com sucesso!","Senha redefinida, verifique sua caixa de emails.");
+        }
+        else{
+          error_notify(null,"Erro!",response.message[field]);
+	        for(let field in response.message){
+	          error_notify(null,"Erro!",response.message[field]);
+	        }
+        }
+      };
+
+      let failure_function = function(response){
+        for(let field in response.message){
+          error_notify(null,"Erro!",response.message[field]);
+        }
+      };
+
+      let validation_function = function () {
+        let result = true;
+        let error_keys = {'email':'email'};
+        for(let field in data_paramters){
+          if(!data_paramters[field]){
+            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório");
+            result = false;
+          }
+        }
+        if(!validate_email(data_paramters.email)) {
+          error_notify(null,"Falha na operação","Email incorreto.");
+          result = false;
+        }
+        return result;
+      };
+
+      this.request('/api/core/authentication/reset_password','post',data_paramters, validation_function, success_function, failure_function);
+    },
+  },
+  template:
+  `
+  <div>
+		<div class="card-body text-left reset-pass">
+			Informe o email para receber uma nova senha de acesso.
+		</div>
+	  <app_input id="app_input" type="text" placeholder="Informe seu email" classes="form-control" v-model="form.object.email" style="margin-top: 10px;"></app_input>
+	  <app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='reset_password' style="margin-top: 10px;"></app_button>
+	  <hr>
   </div>
   `
   ,
