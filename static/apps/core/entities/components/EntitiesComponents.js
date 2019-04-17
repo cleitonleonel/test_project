@@ -2,13 +2,13 @@ Vue.component('app_entities_table',{
 	props: ['data'],
 	template:
 	`
-<table class="table-bordered table-hover table-striped" style="100%">
+<table class="table-bordered table-hover" style="100%">
 	<thead>
 		<tr class="otma-font">
 			<th>Tipo</th>
 			<th>Chave Oficial</th>
 			<th>Nome</th>
-			<th>Razão Social</th>
+			<th>Apelido</th>
 			<th>Nacionalidade</th>
 			<th>Relação</th>
 			<th>Situação</th>
@@ -20,13 +20,13 @@ Vue.component('app_entities_table',{
 		</tr>
 	</thead>
 	<tbody>
-		<tr v-if="entity.data" v-for="entity in data">
+		<tr v-if="entity.data != ''" v-for="entity in data">
 			<td>{{ entity.type }}</td>
-			<td>{{ entity.official_key }}</td>
+			<td>{{ entity.official_doc }}</td>
 			<td>{{ entity.name }}</td>
 			<td>{{ entity.popular_name }}</td>
 			<td>{{ entity.nationality }}</td>
-			<td>{{ entity.relations_company }}</td>
+			<td>{{ entity.company_relation }}</td>
 			<td>{{ entity.status }}</td>
 			<td>{{ entity.creation_date }}</td>
 			<td>{{ entity.last_update }}</td>
@@ -35,18 +35,18 @@ Vue.component('app_entities_table',{
 			<td>{{ entity.comments }}</td>
 		</tr>
 		<tr v-else>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
-			<td>a</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
 		</tr>
 	</tbody>
 </table>
@@ -54,10 +54,23 @@ Vue.component('app_entities_table',{
 });
 
 Vue.component('app_entities_form',{
-	props:['data','options'],
+	mixins:[base_controller],
+	props:['data','options','where'],
 	methods: {
 		save: function () {
-			alert('to tentando salvar mano, mas ainda n deu')
+			let scope = this;
+      let data_paramters = scope.data;
+      alert('INDEX:'+JSON.stringify(data_paramters));
+      let success_function = function(response) {
+        alert(JSON.stringify(response.object));
+        scope.entities.data.push(response.object);
+      };
+
+      let failure_function = function(response) {
+        scope.errors = response.message;
+      };
+
+      this.request('/api/entities/save/', 'post', data_paramters, null, success_function, failure_function);
 		}
 	},
 	template:
@@ -75,10 +88,14 @@ Vue.component('app_entities_form',{
 	</div>
 	<div class="row">
 		<div class="col-6">
-			<app_field label="Nome" title="Digite o nome da entidade" classes="form-control" type="text" id="name" v-model="data.name"></app_field>
+			<app_field label="Nome" title="Digite o nome da entidade" classes="form-control" type="text" id="name" v-model="data.name" v-if="data.type == 'PF'"></app_field>
+			<app_field label="Razão Social" title="Digite a razão social da entidade" classes="form-control" type="text" id="name" v-model="data.name" v-if="data.type == 'PJ'"></app_field>
+			<app_field_disabled placeholder="Escolha um tipo de entidade" classes="form-control" v-if="!data.type" style="margin-top: 24px;"></app_field_disabled>
 		</div>
 		<div class="col-6">
-			<app_field label="Razão Social" title="Digite a razão social da entidade" classes="form-control" type="text" id="popular_name" v-model="data.popular_name"></app_field>
+			<app_field label="Apelido" title="Digite o nome da entidade" classes="form-control" type="text" id="popular_name" v-model="data.popular_name" v-if="data.type == 'PF'"></app_field>
+			<app_field label="Nome Fantasia" title="Digite a razão social da entidade" classes="form-control" type="text" id="popular_name" v-model="data.popular_name" v-if="data.type == 'PJ'"></app_field>
+			<app_field_disabled placeholder="Escolha um tipo de entidade" classes="form-control" v-if="!data.type" style="margin-top: 24px;"></app_field_disabled>
 		</div>
 	</div>	
 	<div class="row">
@@ -100,12 +117,12 @@ Vue.component('app_entities_form',{
 	<div class="row">
 		<div class="col-12 text-left">
 			<sub style='text-align:left;padding-left:8px;color:#888;'>Comentários</sub>
-			<textarea style="width: 100%;" class="form-control"></textarea>
+			<textarea style="width: 100%;" class="form-control" v-model="data.comments"></textarea>
 		</div>		
 	</div>
 	<div class="row" style="margin-top: 10px;">
 		<div class="col-12">
-			<app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='save'></app_button>
+			<app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='save' type="button"></app_button>
 		</div>		
 	</div>
 </form>

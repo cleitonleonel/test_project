@@ -67,7 +67,7 @@ let app = new Vue({
 								label: 'Produtor Rural',
 								value: 'PRODUTOR_RURAL'
 							},
-							Ex: {
+							Ext: {
 								label: 'Extravista',
 								value: 'EXTRAVISTA',
 							}
@@ -75,23 +75,23 @@ let app = new Vue({
 						status: {
 							Hab: {
 								label: 'Habilitado',
-								value: 'HABILITADO'
+								value: 'HAB'
 							},
 							Ina: {
 								label: 'Inativo',
-								value: 'INATIVO'
+								value: 'INA'
 							},
 							Sus: {
 								label: 'Suspenso',
-								value: 'SUSPENSO'
+								value: 'SUS'
 							},
 							Blo: {
 								label: 'Bloqueado',
-								value: 'BLOQUEADO'
+								value: 'BLO'
 							},
 							Des: {
 								label: 'Desabilitado',
-								value: 'DESABILITADO'
+								value: 'DES'
 							},
 						}
 					},
@@ -105,7 +105,6 @@ let app = new Vue({
 						company_relation: [],
 						activities: [],
 						status: null,
-						modifications: null,
 						comments: null
 					},
 
@@ -140,7 +139,7 @@ let app = new Vue({
         scope.entities.loaded = null;
       };
 
-      this.request('/api/ent/load/', 'get', data_paramters, null, success_function, failure_function);
+      this.request('/api/entities/load/', 'get', data_paramters, null, success_function, failure_function);
     },
 	},
 
