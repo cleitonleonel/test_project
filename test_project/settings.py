@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    #'session_security',
+    # 'session_security',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'otma.apps.core.authentication',
@@ -174,6 +174,7 @@ BOWER_INSTALLED_APPS = (
     'jquery-nicescroll',
     'pnotify',
     'nprogress',
+    'moment',
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
     #'rateyo'
