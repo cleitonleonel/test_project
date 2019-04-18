@@ -13,8 +13,9 @@
 		</div>
 		<div>
 			{% csrf_token %}
-			<app_entities_form :data="forms.entity.object" :options="forms.entity.options"></app_entities_form>
+			<app_entities_form :data="forms.entity.object" :options="forms.entity.options" :entities="entities.data"></app_entities_form>
 		</div>
+
 	</div>
 
 {% endblock %}
