@@ -9,7 +9,7 @@
 {% block main_content %}
 	<div id="app_entities" class="text-center">
 		<div>
-			<app_entities_table :data="entities.data"></app_entities_table>
+			<app_entities_table :data="entities.data" :form="forms.entity.object"></app_entities_table>
 		</div>
 		<div>
 			{% csrf_token %}

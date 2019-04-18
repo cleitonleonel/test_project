@@ -1,6 +1,7 @@
 from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 
+
 # from apps.project.management.actions.validators import check_islogged
 
 
@@ -33,6 +34,7 @@ def change_password_page(request):
                       {'base_page': 'core/authentication/base_authentication.html'})
     else:
         return redirect("/login")
+
 
 def entities(request):
     return render(request, "core/entities/entities.html", {'base_page': 'base_page.html'})

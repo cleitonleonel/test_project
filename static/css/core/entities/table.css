@@ -3,6 +3,8 @@ tr.otma-font {
 }
 
 th {
+	background: #59aed5;
+	color: white;
 	padding-right: 9px;
 	padding-left: 9px;
 }

@@ -1,10 +1,26 @@
 Vue.component('app_entities_table',{
-	props: ['data'],
+	props: ['data','form'],
+	methods: {
+		edit: function () {
+			let scope = this;
+			scope.form.id = scope.data[0].id;
+			scope.form.type = scope.data[0].type;
+			scope.form.official_doc = scope.data[0].official_doc;
+			scope.form.name = scope.data[0].name;
+			scope.form.popular_name = scope.data[0].popular_name;
+			scope.form.activities = scope.data[0].activities;
+			scope.form.company_relation = scope.data[0].company_relation;
+			scope.form.status = scope.data[0].status;
+			scope.form.nationality = scope.data[0].nationality;
+			scope.form.comments = scope.data[0].comments;
+		}
+	},
 	template:
 	`
 <table class="table-bordered table-hover" style="100%">
 	<thead>
 		<tr class="otma-font">
+			<th>#</th>
 			<th>Tipo</th>
 			<th>Chave Oficial</th>
 			<th>Nome</th>
@@ -19,6 +35,7 @@ Vue.component('app_entities_table',{
 	</thead>
 	<tbody>
 		<tr v-if="entity.data != ''" v-for="entity in data">
+			<td style="padding-left: 5px;padding-right: 5px;color: #ffffff;cursor: pointer;"><a role="button" @click="edit()" class="btn btn-sm btn-primary">Editar</a></td>
 			<td>{{ entity.type }}</td>
 			<td>{{ entity.official_doc }}</td>
 			<td>{{ entity.name }}</td>
@@ -79,7 +96,7 @@ Vue.component('app_entities_form',{
 		<div class="col-6">
 			<app_field label="CPF" title="Digite seu CPF" id="official_doc" classes="form-control" v-model="data.official_doc" v-if="data.type == 'PF'"></app_field>
 			<app_field label="CNPJ" title="Digite seu CNPJ" id="official_doc" classes="form-control" v-model="data.official_doc" v-if="data.type == 'PJ'"></app_field>
-			<app_field_disabled placeholder="Escolha um tipo de entidade" classes="form-control" v-if="!data.type" style="margin-top: 24px;"></app_field_disabled>
+			<app_field_disabled placeholder="Escolha um tipo de entidade" classes="form-control" v-if="!data.type" style="margin-top: 23px;"></app_field_disabled>
 		</div>
 	</div>
 	<div class="row">
@@ -95,11 +112,18 @@ Vue.component('app_entities_form',{
 		</div>
 	</div>	
 	<div class="row">
-		<div class="col-6">
-			<app_select_multiple label="Atividades da Entidade" title="Selecione os tipo de atividade que a entidade exerce" :options="options.activities" id="activities" classes="form-control" v-model="data.activities" size="5"></app_select_multiple>
+		<div class="col-6 text-left">
+			<sub style='text-align:left;padding-left:8px;color:#888;margin-top: 1px;'>Atividades Exercidas</sub>
+			<select multiple title="Selecione os tipo de atividade que a entidade exerce" id="activities" class="form-control" v-model="data.activities" size="5">
+				<option v-for="op in options.activities" :value="op.value">{{ op.label }}</option>
+			</select>
 		</div>
-		<div class="col-6">
-			<app_select_multiple label="Relação com a Empresa" title="Selecione os tipos de relações da entidade com a empresa" :options="options.company_relation" id="company_relation" classes="form-control" v-model="data.company_relation" size="5"></app_select_multiple>
+		<div class="col-6 text-left">
+			<sub style='text-align:left;padding-left:8px;color:#888;margin-top: 1px;'>Relação com a Empresa</sub>
+			<select multiple title="Selecione os tipos de relações da entidade com a empresa" id="activities" class="form-control" v-model="data.company_relation" size="5">
+				<option v-for="op in options.company_relation" :value="op.value">{{ op.label }}</option>
+			</select>
+			<!--<app_select_multiple label="Relação com a Empresa" title="Selecione os tipos de relações da entidade com a empresa" :options="options.company_relation" id="company_relation" classes="form-control" v-model="data.company_relation" size="5"></app_select_multiple>-->
 		</div>
 	</div>
 	<div class="row">
@@ -118,7 +142,7 @@ Vue.component('app_entities_form',{
 	</div>
 	<div class="row" style="margin-top: 10px;">
 		<div class="col-12">
-			<app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='save' type="button"></app_button>
+			<app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='save' type="submit"></app_button>
 		</div>		
 	</div>
 </form>
