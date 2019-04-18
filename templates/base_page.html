@@ -590,27 +590,21 @@
 </body>
 {% load static %}
   {% load static %}
-  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
   <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+
   <script src="{% static 'apps/test_project/util/js/notify.js' %}"></script>
-  <script src="{% static 'apps/core/management/action.js' %}"></script>
   <script src="{% static 'apps/test_project/js/otma-scripts.js' %}"></script>
-  <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+  <script src="{% static 'apps/test_project/js/otma-validations.js' %}"></script>
 
-  <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
-  <script src="{% static 'js/otma-validations.js' %}"></script>
-  <script src="{% static 'js/otma-scripts.js' %}"></script>
-
-  <script src="{% static 'js/controllers/BaseController.js' %}"></script>
-  <script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
+  <script src="{% static 'apps/core/management/action.js' %}"></script>
+  <script src="{% static 'apps/test_project/js/controllers/BaseController.js' %}"></script>
+  <script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
   <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
 
   <script src="{% static 'js/blocker.js' %}"></script>
-{% block secondary_dependencies %}
+  {% block secondary_dependencies %}
 
   {% endblock %}
   <script>
