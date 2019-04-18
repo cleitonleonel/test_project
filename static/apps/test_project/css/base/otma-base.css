@@ -42,6 +42,7 @@ ul ul a {
 }
 
 #content {
+  font-family: monospace, sans-serif, serif;
   width: 100%;
   padding: 20px;
   min-height: 100vh;
@@ -72,7 +73,7 @@ ul ul a {
 }
 
 .otma-fs-14 {
-  font-size: 14px;
+  font-size: 12px;
 }
 /* Página */
 

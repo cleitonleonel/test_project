@@ -11,11 +11,13 @@ body, html {
   background-image: url("splash.jpg");
 
   /* Add the blur effect */
-  filter: blur(8px);
-  -webkit-filter: blur(8px);
+  filter: blur(0px);
+  -webkit-filter: blur(0px);
 
-  /* Full height */
-  height: 100%;
+  /* Full height and width */
+  height: 100vh;
+  width: 100vw;
+  transform: scale(1.1);
 
   /* Center and scale the image nicely */
   background-position: center;
@@ -25,17 +27,42 @@ body, html {
 
 /* Position text in the middle of the page/image */
 .bg-text {
-  background-color: rgb(0,0,0); /* Fallback color */
+  /*Cores do fundo*/
   background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+
+  /*Fonte*/
   color: white;
   font-weight: bold;
-  border: 3px solid #f1f1f1;
+  text-align: center;
+
+  /*Borda*/
+  border-radius: 5px;
+
+  /*Posicionamento*/
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  width: 80%;
   padding: 20px;
-  text-align: center;
+
+  /*Tamanho*/
+  width: 80%;
+}
+
+.avatar-container {
+
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.avatar-container .avatar {
+  border: 1px solid #000000;
+  border-radius: 40px;
+}
+
+.avatar-container .name {
+  margin-top: 30px;
+  font-family: "Open Sans Condensed", sans, sans-serif;
+  font-weight: 100;
 }

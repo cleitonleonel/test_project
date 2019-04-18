@@ -60,3 +60,26 @@ Vue.component('app_form_change_password', {
   `
   ,
 });
+
+Vue.component('app_otma_clock', {
+  data: function() {
+    return {
+      time: null
+    }
+  },
+  methods: {
+    get_time: function () {
+      this.time = moment().format('HH:mm:ss')
+    },
+  },
+  created: function() {
+    this.get_time();
+    setInterval(() => this.get_time(), 1 * 1000);
+  },
+  template:
+  `
+<div>
+<span>{{ time }}</span>  
+</div>
+  `
+});

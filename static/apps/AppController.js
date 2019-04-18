@@ -28,6 +28,7 @@ var app = new Vue({
         },
         session_activity: true,
         session_blocked: false,
+				clock: true,
         unlock_key: '123'
       }
     }
@@ -40,6 +41,10 @@ var app = new Vue({
 				this.controls.session.warning_timer = setTimeout(scope.alert_inactivity, this.controls.session.timeout_warning);
 	      this.controls.session.closer_timer = setTimeout(scope.block_session, this.controls.session.timeout_close);
       }
+		},
+
+		toggle_clock: function() {
+			this.controls.clock = !this.controls.clock
 		},
 
 		reset_timers: function(){
@@ -55,9 +60,6 @@ var app = new Vue({
 		alert_inactivity: function(){
 			if(this.controls.session_blocked==false){
 				$("#warning_session").modal('show');
-			}
-			else{
-				alert("ja ta bloqueado jovem kk")
 			}
 		},
 

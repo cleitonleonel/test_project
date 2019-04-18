@@ -43,7 +43,7 @@
   {% endblock %}
 </head>
 
-<body>
+<body style="height: 100vh;">
   <div class="wrapper" id="app" @mousemove="reset_timers()">
     <template v-if="controls.session_blocked==false">
       <nav id="sidebar" class="active">
@@ -522,28 +522,24 @@
     </template>
 
     <template v-else>
-      <div class="bg-image"></div>
-
-      <div class="bg-text">
-        <h1>I am John Doe</h1>
-        <p>And I'm a Photographer</p>
-      </div>
-
-      <div class="" style="width:100%;height:100%;">
-        <div style="width: 300px;height:200px;background: #e3e3e3;margin: auto;margin-top:50px;border-radius: 5px;box-shadow: 5px 5px 5px #777;">
-          <div style="text-align:center;font-size:10px;">Sessão Bloqueada</div>
-          <br>
-          <span style="border: 4px solid #888;width:86px;height:86px;border-radius:43px;">
-            <span style="border: 4px solid #888;width:82px;height:82px;border-radius:40px;">
-                <img src="{% static 'images/avatar.jpg' %}" style="height:80px;width:80px;border-radius:40px;margin-top:-3px;margin-left:-3px;">
-            </span>
-          </span>
-
-          <input type="password" v-model="password">
-          <a class="dropdown-item otma-fs-14" href="#" @click="unblock_session(password)">Continuar</a>
-        </div>
-      </div>
-    </template>
+			<div class="bg-image"></div>
+			<div class="row" v-if="controls.clock">
+				<div class="bg-text col-2">
+					<app_otma_clock style="color: white;margin-top: 10px;"></app_otma_clock>
+					<button type="button" @click="toggle_clock()" class="btn btn-outline-light">Entrar</button>
+				</div>
+			</div>
+			<div class="row" v-else>
+				<div class="bg-text col-2">
+					<span class="avatar-container text-center">
+						<img src="{% static 'images/avatar.jpg' %}" width="80px" height="80px" class="avatar"><br>
+						<span class="name">Bill Gates</span>
+					</span>
+					<input placeholder="Senha" type="password" v-model="password" class="form-control">
+					<a class="form-control btn btn-sm btn-info" href="#" @click="unblock_session(password)" style="margin-top: 10px;">Continuar</a>
+				</div>
+			</div>
+		</template>
 
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -572,7 +568,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="warning_session_label">Sua sessão será bloqueada em 1 minutos</h5>
+            <h5 class="modal-title" id="warning_session_label">Sua sessão será bloqueada em 1 minuto</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -580,7 +576,7 @@
 
           <div class="modal-body">
             <div>
-              Para evitar o bloqueio dessa sessão, basta mover o mouse ou pressionar qualquer tecla..
+              Para evitar o bloqueio dessa sessão, basta mover o mouse ou pressionar qualquer tecla
             </div>
           </div>
         </div>
@@ -592,6 +588,7 @@
   {% load static %}
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
   <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
+	<script src="{% static 'bower_components/moment/moment.js' %}"></script>
 
   <script src="{% static 'apps/test_project/util/js/notify.js' %}"></script>
   <script src="{% static 'apps/test_project/js/otma-scripts.js' %}"></script>
