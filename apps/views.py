@@ -30,5 +30,5 @@ def change_password_page(request):
         return redirect("/login")
 
 
-def entities(request):
+def entities_page(request):
     return render(request, "core/entities/entities.html", {'base_page': 'base_page.html'})
