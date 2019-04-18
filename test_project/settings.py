@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from conf import profile
 from conf.profile import POSTGRES_USER, POSTGRES_PASSWORD, BOWER_PATH
 import os
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    #'session_security',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'otma.apps.core.authentication',
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'session_security.middleware.SessionSecurityMiddleware',
 ]
 
 ROOT_URLCONF = 'test_project.urls'
@@ -92,6 +95,13 @@ DATABASES = {
         'SINGLE_TRANSACTION': False,
     }
 }
+
+SESSION_SECURITY_EXPIRE_AFTER = 300
+SESSION_SECURITY_WARN_AFTER =  280
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SECURITY_INSECURE = True
+
+REQUIREMENTS = r'conf/requirements.txt'
 
 
 # Password validation
@@ -167,3 +177,12 @@ BOWER_INSTALLED_APPS = (
     #'rateyo'
 
 )
+
+# Service for send Email configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = 'melinuxsistemas@gmail.com'
+EMAIL_HOST_USER = profile.EMAIL_HOST_USER
+EMAIL_HOST_PASSWORD = profile.EMAIL_HOST_PASSWORD
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
