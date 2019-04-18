@@ -1,8 +1,9 @@
 Vue.component('app_entities_table',{
 	props: ['data','form'],
 	methods: {
-		edit: function (key) {
+		edit: function () {
 			let scope = this;
+			scope.form.index = key;
 			scope.form.id = scope.data[key].id;
 			scope.form.type = scope.data[key].type;
 			scope.form.official_doc = scope.data[key].official_doc;
@@ -68,16 +69,16 @@ Vue.component('app_entities_table',{
 
 Vue.component('app_entities_form',{
 	mixins:[base_controller],
-	props:['data','options','where'],
+	props:['data','options','where', 'entities'],
 	methods: {
 		save: function () {
 			let scope = this;
       let data_paramters = scope.data;
-      alert('INDEX:'+JSON.stringify(data_paramters));
 
       let success_function = function(response) {
-        alert('to enviando essa merda'+JSON.stringify(response.object));
-        scope.entities.data.push(response.object);
+        if (scope.data.index) {
+          Vue.set(scope.entities, scope.data.index, response.object);
+        }
       };
 
       let failure_function = function(response) {
@@ -145,7 +146,7 @@ Vue.component('app_entities_form',{
 	</div>
 	<div class="row" style="margin-top: 10px;">
 		<div class="col-12">
-			<app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='save' type="submit"></app_button>
+			<app_button text="Enviar" classes='form-control btn btn-primary' title='Clique aqui para enviar' :callback='save' type="button"></app_button>
 		</div>		
 	</div>
 </form>
