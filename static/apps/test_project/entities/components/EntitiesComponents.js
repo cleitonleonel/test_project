@@ -1,18 +1,18 @@
 Vue.component('app_entities_table',{
 	props: ['data','form'],
 	methods: {
-		edit: function () {
+		edit: function (key) {
 			let scope = this;
-			scope.form.id = scope.data[0].id;
-			scope.form.type = scope.data[0].type;
-			scope.form.official_doc = scope.data[0].official_doc;
-			scope.form.name = scope.data[0].name;
-			scope.form.popular_name = scope.data[0].popular_name;
-			scope.form.activities = scope.data[0].activities;
-			scope.form.company_relation = scope.data[0].company_relation;
-			scope.form.status = scope.data[0].status;
-			scope.form.nationality = scope.data[0].nationality;
-			scope.form.comments = scope.data[0].comments;
+			scope.form.id = scope.data[key].id;
+			scope.form.type = scope.data[key].type;
+			scope.form.official_doc = scope.data[key].official_doc;
+			scope.form.name = scope.data[key].name;
+			scope.form.popular_name = scope.data[key].popular_name;
+			scope.form.activities = scope.data[key].activities;
+			scope.form.company_relation = scope.data[key].company_relation;
+			scope.form.status = scope.data[key].status;
+			scope.form.nationality = scope.data[key].nationality;
+			scope.form.comments = scope.data[key].comments;
 		}
 	},
 	template:
@@ -34,8 +34,8 @@ Vue.component('app_entities_table',{
 		</tr>
 	</thead>
 	<tbody>
-		<tr v-if="entity.data != ''" v-for="entity in data">
-			<td style="padding-left: 5px;padding-right: 5px;color: #ffffff;cursor: pointer;"><a role="button" @click="edit()" class="btn btn-sm btn-primary">Editar</a></td>
+		<tr v-if="entity.data != ''" v-for="(entity, index) in data">
+			<td style="padding-left: 5px;padding-right: 5px;"><a role="button" @click="edit(index)" class="btn btn-sm btn-primary" style="color: #ffffff;cursor: pointer;">Editar</a></td>
 			<td>{{ entity.type }}</td>
 			<td>{{ entity.official_doc }}</td>
 			<td>{{ entity.name }}</td>
@@ -74,8 +74,9 @@ Vue.component('app_entities_form',{
 			let scope = this;
       let data_paramters = scope.data;
       alert('INDEX:'+JSON.stringify(data_paramters));
+
       let success_function = function(response) {
-        alert(JSON.stringify(response.object));
+        alert('to enviando essa merda'+JSON.stringify(response.object));
         scope.entities.data.push(response.object);
       };
 
@@ -117,12 +118,14 @@ Vue.component('app_entities_form',{
 			<select multiple title="Selecione os tipo de atividade que a entidade exerce" id="activities" class="form-control" v-model="data.activities" size="5">
 				<option v-for="op in options.activities" :value="op.value">{{ op.label }}</option>
 			</select>
+			atividades: {{data.activities}}
 		</div>
 		<div class="col-6 text-left">
 			<sub style='text-align:left;padding-left:8px;color:#888;margin-top: 1px;'>Relação com a Empresa</sub>
 			<select multiple title="Selecione os tipos de relações da entidade com a empresa" id="activities" class="form-control" v-model="data.company_relation" size="5">
 				<option v-for="op in options.company_relation" :value="op.value">{{ op.label }}</option>
 			</select>
+			atividades: {{data.company_relation}}
 			<!--<app_select_multiple label="Relação com a Empresa" title="Selecione os tipos de relações da entidade com a empresa" :options="options.company_relation" id="company_relation" classes="form-control" v-model="data.company_relation" size="5"></app_select_multiple>-->
 		</div>
 	</div>
