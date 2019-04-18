@@ -1,0 +1,28 @@
+{% extends base_page %}
+{% block title %}MELINUX - Entidades{% endblock %}
+
+{% block main_dependencies %}
+{% load static %}
+	<link rel="stylesheet" href="{% static 'css/core/entities/table.css' %}">
+{% endblock %}
+
+{% block main_content %}
+	<div id="app_entities" class="text-center">
+		<div>
+			<app_entities_table :data="entities.data" :form="forms.entity.object"></app_entities_table>
+		</div>
+		<div>
+			{% csrf_token %}
+			<app_entities_form :data="forms.entity.object" :options="forms.entity.options"></app_entities_form>
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block secondary_dependencies %}
+{% load static %}
+	<script src="{% static 'js/controllers/BaseController.js' %}"></script>
+	<script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
+	<script src="{% static 'apps/core/entities/components/EntitiesComponents.js' %}"></script>
+	<script src="{% static 'apps/core/entities/controllers/EntitiesController.js' %}"></script>
+{% endblock %}

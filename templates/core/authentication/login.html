@@ -1,5 +1,5 @@
 {% extends base_page %}
-{% block title %}MELINUX - Login{% endblock %}
+{% block title %}Melinux - Login{% endblock %}
 
 {% block main_dependencies %}
 {% load static %}
@@ -13,23 +13,28 @@
 
 {% block main_content %}
 <div id="app_core_authentication">
-  {% csrf_token %}
-  <app_form_login :form="forms.login"></app_form_login>
+    {% csrf_token %}
+		<template v-if="pages.active=='login'">
+			<app_form_login :form="forms.login"></app_form_login>
+			<p class="text-muted">Não consegue entrar? <a href="#" @click="change_page('forgot_password')">clique aqui</a>
+		</template>
 
-	<p class="text-muted">Não consegue entrar? <a href="/forgot_password">clique aqui</a>
-		<br>&copy; 2017-2018
+		<template v-if="pages.active=='forgot_password'">
+			<app_form_reset_password :form="forms.reset_password"></app_form_reset_password>
+			<p class="text-muted"><a href="#" @click="change_page('login')">Clique aqui </a>para voltar
+		</template>
+		&copy; 2017-2018
 	</p>
 </div>
 {% endblock %}
 
 {% block secondary_dependencies %}
 {% load static %}
-<script src="{% static 'js/controllers/BaseController.js' %}"></script>
-<script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
+<script src="{% static 'apps/test_project/js/controllers/BaseController.js' %}"></script>
+<script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
 <script src="{% static 'apps/core/authentication/components/AuthenticationComponents.js' %}"></script>
 <script src="{% static 'apps/core/authentication/controllers/AuthenticationController.js' %}"></script>
 
-<script src="{% static 'js/components/input-components.js' %}"></script>
-<script src="{% static 'js/components/form-components.js' %}"></script>
-<!--<script src="{% static 'js/controllers/form-controller.js' %}"></script>-->
+<script src="{% static 'apps/test_project/js/components/input-components.js' %}"></script>
+<script src="{% static 'apps/test_project/js/components/form-components.js' %}"></script>
 {% endblock %}
