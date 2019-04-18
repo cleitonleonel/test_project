@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'otma.apps.core.authentication',
     'otma.apps.core.commons',
     'otma.apps.core.communications',
+    'otma.apps.core.management',
     'otma.apps.core.security',
     'otma.apps.entities',
     'djangobower',
@@ -136,15 +137,16 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
 STATIC_URL = '/static/'
-STATIC_ROOT = STATIC_URL
-STATICFILES_DIRS = [BASE_DIR+os.path.join('/static'), ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root/') #os.path.join(BASE_DIR, 'static/') #STATIC_URL
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'), ]
 
 AUTH_USER_MODEL = 'authentication.User'
+LOGIN_REDIRECT_URL = "/login"
+LOGIN_URL = '/login'
+
 ERRORS_MESSAGES = {
     'invalid': 'Conteúdo inválido',
     'document_invalid': 'Documento inválido',

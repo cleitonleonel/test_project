@@ -1,0 +1,91 @@
+input[type='checkbox']{
+  position: relative;
+  font-size: 10px !important;
+  border: 1px solid #BBB;
+  background: #DDD;
+  border-radius: 5px;
+  width: 17px;
+  height:17px;
+  top: -3px;
+
+  cursor: pointer;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+  -o-appearance:none;
+}
+
+input[type='checkbox']:after{
+  position: relative;
+  font-family: FontAwesome, sans-serif;
+  content: '';
+}
+
+input[type='checkbox']:checked{
+  position: relative;
+  background: #03c9a2;
+}
+
+input[type='checkbox']:checked:after{
+  font-size: 10px !important;
+  font-family: FontAwesome, sans-serif;
+  font-weight: normal;
+  position: absolute;
+  content: '\f00c';
+  opacity: 0.9;
+  color: #fff;
+  left: 3px;
+  top: 1px;
+
+}
+
+table tr td{
+  padding-left: 8px;
+  padding-right: 4px;
+  white-space:nowrap;
+}
+
+.table tbody td{
+  height: 20px !important;
+  padding-bottom: 0px !important;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+  vertical-align: top !important;
+}
+
+a:disabled {
+  background: red !important;
+  color: blue !important;
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+}
+.staggered-transition {
+    transition: all .5s ease;
+    overflow: hidden;
+    margin: 0;
+    height: 20px;
+}
+.staggered-enter, .staggered-leave {
+    opacity: 0;
+    height: 0;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active em versões anteriores a 2.1.8 */ {
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  [class*="col-"]{
+      margin-bottom: 15px;
+  }
+}
+
+.uppercase{
+	text-transform: uppercase;
+}

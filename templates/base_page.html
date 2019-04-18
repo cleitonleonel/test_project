@@ -11,19 +11,39 @@
     <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
 
-    <link rel="stylesheet" href="{% static 'css/base/otma-base.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/test_project/css/base/otma-base.css' %}">
     <link rel="stylesheet" href="{% static 'css/lockscreen.css' %}">
 
-    <link rel="stylesheet" href="{% static 'css/base/menus/otma-sidenav.css' %}">
-    <link rel="stylesheet" href="{% static 'css/base/menus/otma-topnav.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/test_project/css/base/menus/otma-sidenav.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/test_project/css/base/menus/otma-topnav.css' %}">
+
+    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
     <script src="{% static 'bower_components/font-awesome/js/all.js' %}"></script>
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
+
+    <style>
+      .ui-pnotify-container {
+        padding-top:8px;
+      }
+
+      .ui-pnotify-title {
+        padding-top:4px;
+        font-size:12px;
+      }
+
+      .ui-pnotify-text {
+        padding-top:5px;
+        font-size:10px;
+      }
+    </style>
   {% block main_dependencies %}
 
   {% endblock %}
 </head>
 
-<body >
+<body>
   <div class="wrapper" id="app" @mousemove="reset_timers()">
     <template v-if="controls.session_blocked==false">
       <nav id="sidebar" class="active">
@@ -568,24 +588,28 @@
     </div>
   </div>
 </body>
+{% load static %}
   {% load static %}
-  <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
-  <script src="{% static 'bower_components/jquery.nicescroll/dist/jquery.nicescroll.js' %}"></script>
-  <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.bundle.js' %}"></script>
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
   <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
 
-  <script src="{% static 'apps/core/util/js/notify.js' %}"></script>
-  <script src="{% static 'js/otma-validations.js' %}"></script>
-  <script src="{% static 'js/otma-scripts.js' %}"></script>
+  <script src="{% static 'apps/test_project/util/js/notify.js' %}"></script>
+  <script src="{% static 'apps/test_project/js/otma-scripts.js' %}"></script>
+  <script src="{% static 'apps/test_project/js/otma-validations.js' %}"></script>
 
-  <script src="{% static 'js/controllers/BaseController.js' %}"></script>
-  <script src="{% static 'apps/core/commons/components/FormsComponents.js' %}"></script>
+  <script src="{% static 'apps/core/management/action.js' %}"></script>
+  <script src="{% static 'apps/test_project/js/controllers/BaseController.js' %}"></script>
+  <script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
   <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
 
   <script src="{% static 'js/blocker.js' %}"></script>
-{% block secondary_dependencies %}
+  {% block secondary_dependencies %}
 
-{% endblock %}
+  {% endblock %}
+  <script>
+    window.addEventListener('load', function () {
+      register_action();
+    }, false);
+  </script>
 </html>

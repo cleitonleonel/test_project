@@ -1,0 +1,35 @@
+body{
+	font-family: 'Verdana', Geneva, sans-serif !important; /* Verdana, Geneva, sans-serif   || 'Roboto' */
+}
+
+[v-cloak] .v-cloak--hidden{
+	display: none;
+}
+
+.visible{
+	display: visible;
+}
+
+.wrong_field{
+	border: 1px solid #990000 !important;
+
+}
+
+.label_error{
+	font-size: 10px;
+	position: relative;
+	text-align: right;
+	margin-right: 5px;
+	margin-top:0px;
+	color: #990000;
+	float: right;
+	top: -20px;
+	width: 100%;
+}
+.clickable{
+	cursor: pointer;
+}
+
+.collapse
+
+.collapse.show
