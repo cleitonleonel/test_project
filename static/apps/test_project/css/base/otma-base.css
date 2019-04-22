@@ -42,7 +42,7 @@ ul ul a {
 }
 
 #content {
-  font-family: monospace, sans-serif, serif;
+  font-family: Arial, serif, sans-serif, monospace;
   width: 100%;
   padding: 20px;
   min-height: 100vh;

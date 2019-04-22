@@ -57,12 +57,12 @@ body, html {
 }
 
 .avatar-container .avatar {
-  border: 1px solid #000000;
+  border: 1px solid #ffffff;
   border-radius: 40px;
 }
 
 .avatar-container .name {
   margin-top: 30px;
-  font-family: "Open Sans Condensed", sans, sans-serif;
+  font-family: "Poiret One", sans, sans-serif;
   font-weight: 100;
 }
