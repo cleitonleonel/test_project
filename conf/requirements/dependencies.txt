@@ -1,4 +1,5 @@
-# command: pip install -r conf/requirements.txt --process-dependency-links
+# command: pip install -r conf/requirements/dependencies.txt --process-dependency-links
 https://github.com/otmasolucoes/apps.core.authentication/zipball/master
 https://github.com/otmasolucoes/apps.core.security/zipball/master
 https://github.com/otmasolucoes/apps.entities/zipball/master
+https://github.com/otmasolucoes/apps.core.management/zipball/master

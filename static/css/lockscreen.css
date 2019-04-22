@@ -1,0 +1,68 @@
+body, html {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.bg-image {
+  /* The image used */
+  background-image: url("splash.jpg");
+
+  /* Add the blur effect */
+  filter: blur(0px);
+  -webkit-filter: blur(0px);
+
+  /* Full height and width */
+  height: 100vh;
+  width: 100vw;
+  transform: scale(1.1);
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Position text in the middle of the page/image */
+.bg-text {
+  /*Cores do fundo*/
+  background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+
+  /*Fonte*/
+  color: white;
+  font-weight: bold;
+  text-align: center;
+
+  /*Borda*/
+  border-radius: 5px;
+
+  /*Posicionamento*/
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  padding: 20px;
+
+  /*Tamanho*/
+  width: 80%;
+}
+
+.avatar-container {
+
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.avatar-container .avatar {
+  border: 1px solid #000000;
+  border-radius: 40px;
+}
+
+.avatar-container .name {
+  margin-top: 30px;
+  font-family: "Open Sans Condensed", sans, sans-serif;
+  font-weight: 100;
+}
