@@ -45,8 +45,6 @@ let app = new Vue({
         },
         session_activity: true,
         session_blocked: false,
-				clock: true,
-        unlock_key: '123'
       }
     }
 	},
@@ -58,10 +56,6 @@ let app = new Vue({
 				this.controls.session.warning_timer = setTimeout(scope.alert_inactivity, this.controls.session.timeout_warning);
 	      this.controls.session.closer_timer = setTimeout(scope.block_session, this.controls.session.timeout_close);
       }
-		},
-
-		toggle_clock: function() {
-			this.controls.clock = !this.controls.clock
 		},
 
 		reset_timers: function(){
@@ -90,7 +84,6 @@ let app = new Vue({
 			let data_paramters = {};
 
 			let success_function = function(response){
-				alert("VEJA COMO VAI FICAR: "+JSON.stringify(response.object))
 				scope.user.session.blocked = response.object.session.blocked;
 				//scope.controls.session_blocked = false;
 				//scope.controls.clock = true;
@@ -116,16 +109,13 @@ let app = new Vue({
 			this.request('/api/core/authentication/block_session/','post', data_paramters, validation_function, success_function, failure_function);
 		},
 
-
 		unblock_session: function(){
 			let scope = this;
 			let data_paramters = {};
 			data_paramters['password'] = scope.password;
 
 			let success_function = function(response){
-				alert("VEJA A RESPOSTA:"+JSON.stringify(response.object))
 				scope.user = response.object;
-				scope.controls.clock = true;
 				scope.errors = response.message;
 			};
 
@@ -136,19 +126,26 @@ let app = new Vue({
 			};
 
 			let validation_function = function () {
-				return true;
+				let result = true;
+				let error_keys = {'username' : 'usuário', 'password' : 'senha'};
+				for(let field in data_paramters){
+					if(!data_paramters[field]){
+						error_notify(null,"Falha na operação!","O campo de "+error_keys[field]+' é obrigatório');
+						result = false;
+					}
+				}
+				return result;
 			};
 			this.request('/api/core/authentication/unblock_session/','post', data_paramters, validation_function, success_function, failure_function);
 		},
-
+		
 		get_user: function () {
 			let scope = this;
       let data_paramters = {};
       let success_function = function(response) {
-        if(response.result){
-          scope.user = response.object;
-	        scope.controls.page.loaded = true;
-	      }
+        scope.errors = response.message;
+        scope.user = response.object;
+        scope.controls.page.loaded = true;
       };
 
       let failure_function = function(response) {

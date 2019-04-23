@@ -1,3 +1,12 @@
+Vue.component('app_disable',{
+	props:[],
+	methods: {},
+	template:
+		`
+		
+		`
+});
+
 Vue.component('app_entities_table',{
 	mixins: [],
 	props: ['classes', 'data'],
@@ -28,12 +37,12 @@ Vue.component('app_entities_table',{
 					<td colspan='11'>Nenhum registro cadastrado.</td>
 				</tr>
 
-				<tr v-if='data.controls.loaded' v-for='item in data'>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+				<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
+					<td><button class="btn btn-sm btn-primary">Desativar {{index}}</button></td>
+					<td>{{entity.name}}</td>
+					<td>{{entity.official_doc}}</td>
+					<td>{{entity.popular_name}}</td>
+					<td>{{entity.nationality}}</td>
 					<td></td>
 					<td></td>
 					<td></td>
@@ -121,7 +130,7 @@ Vue.component('app_entities',{
 			data: {
 				objects: [],
 				selected: {object: null, index: null, backup: null},
-				controls: {loaded: false}
+				controls: {loaded: true}
 			},
 
 			forms:{

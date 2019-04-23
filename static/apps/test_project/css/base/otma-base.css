@@ -121,13 +121,13 @@ ul ul a {
         min-width: 80px;
         max-width: 80px;
         text-align: center;
-        margin-left: -80px !important;
+        margin-left: 0 !important;
     }
 
 
     /* Reappearing the sidebar on toggle button click */
     #sidebar {
-        margin-left: 0;
+        margin-left: -250px;
     }
 
 
