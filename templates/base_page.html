@@ -549,7 +549,7 @@
               {% csrf_token %}
               <input hidden v-model="username" value="user.username">
               <input placeholder="Senha" type="password" v-model="password" class="form-control">
-              <a class="form-control btn btn-sm btn-info" href="#" @click="unlock_session()" style="margin-top: 10px;">Continuar</a>
+              <a class="form-control btn btn-sm btn-info" href="#" @click="unblock_session()" style="margin-top: 10px;">Continuar</a>
             </form>
             <sub style="font-family: 'Ubuntu Light', 'Arial', sans;">Não é você? <u><a href="/logout">Clique aqui</a></u></sub>
           </div>
