@@ -531,14 +531,13 @@
       <template v-else>
         <div class="bg-image"></div>
         <div class="row" v-if="controls.clock">
-          <div class="bg-text col-2">
-            <app_otma_clock style="color: white;margin-top: 10px;"></app_otma_clock>
+          <div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2">
+            <app_otma_clock style="color: white;margin-top: 10px;font-family: 'Ubuntu Light', 'Arial', sans;font-size: 40px;"></app_otma_clock>
             <button type="button" @click="toggle_clock()" class="btn btn-outline-light">Entrar</button>
           </div>
         </div>
-
         <div class="row" v-else>
-          <div class="bg-text col-2">
+          <div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2">
             <span class="avatar-container text-center">
               <img src="https://instagram.fvix1-1.fna.fbcdn.net/vp/bfbe347721ac2660db821e59fca4fbd4/5D778AC8/t51.2885-15/e35/56306914_150849195950380_7677948646793237603_n.jpg?_nc_ht=instagram.fvix1-1.fna.fbcdn.net" width="80px" height="80px" class="avatar"><br>
               {% verbatim %}
@@ -550,8 +549,12 @@
               {% csrf_token %}
               <input hidden v-model="username" value="user.username">
               <input placeholder="Senha" type="password" v-model="password" class="form-control">
-              <a class="form-control btn btn-sm btn-info" href="#" @click="unblock_session()" style="margin-top: 10px;">Continuar</a>
+              <a class="form-control btn btn-sm btn-info" href="#" @click="unlock_session()" style="margin-top: 10px;">Continuar</a>
             </form>
+            <sub style="font-family: 'Ubuntu Light', 'Arial', sans;">Não é você? <u><a href="/logout">Clique aqui</a></u></sub>
+          </div>
+          <div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2"style="transform: translate(-50%, 200%);">
+            <app_otma_clock style="color: white;margin-top: 10px;font-family: 'Ubuntu Light', 'Arial', sans;font-size: 20px;"></app_otma_clock>
           </div>
         </div>
       </template>
@@ -602,8 +605,6 @@
 
 
   </div>
-
-
 </body>
 {% load static %}
   {% load static %}
