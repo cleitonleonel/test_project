@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block main_content %}
-<div id="app_core_authentication">
+<div id="app_core_authentication"  onchange="get_session_paramters_ip_api();">
     {% csrf_token %}
 		<template v-if="pages.active=='login'">
 			<app_form_login :form="forms.login"></app_form_login>
@@ -30,6 +30,7 @@
 
 {% block secondary_dependencies %}
 {% load static %}
+<script src="{% static 'apps/locales.js' %}"></script>
 <script src="{% static 'apps/test_project/js/controllers/BaseController.js' %}"></script>
 <script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
 <script src="{% static 'apps/core/authentication/components/AuthenticationComponents.js' %}"></script>

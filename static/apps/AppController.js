@@ -1,4 +1,10 @@
-var app = new Vue({
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+});
+
+let app = new Vue({
   el: '#app',
   mixins: [base_controller],
   data: function() {
@@ -18,7 +24,11 @@ var app = new Vue({
 				},
       },
 
+			user: {	},
+
+			username: null,
       password: null,
+
       controls: {
         session:{
           timeout_warning:10000,
@@ -70,15 +80,54 @@ var app = new Vue({
 			clearTimeout(this.controls.session.timeout_close);
 		},
 
-		unblock_session: function (pass){
-			if(pass==this.controls.unlock_key){
-				this.controls.session_blocked = false;
-			}
-			else{
-				alert("ta tentando futucar conta dos outros ne pilantra kk")
-			}
+		unlock_session: function(){
+			let scope = this;
+			let data_paramters = {};
+			data_paramters['password'] = scope.password;
+
+			let success_function = function(response){
+				scope.controls.session_blocked = false;
+				scope.controls.clock = true;
+				scope.errors = response.message;
+			};
+
+			let failure_function = function(response){
+				error_notify(null,'Senha inválida',"Senha preenchida incorretamente ou não existe")
+				scope.form.errors = response.message;
+
+			};
+
+			let validation_function = function () {
+				let result = true;
+				let error_keys = {'username' : 'usuário', 'password' : 'senha'};
+				for(let field in data_paramters){
+					if(!data_paramters[field]){
+						error_notify(null,"Falha na operação!","O campo de "+error_keys[field]+' é obrigatório');
+						result = false;
+					}
+				}
+				return result;
+			};
+			this.request('/api/core/authentication/unlock_session/','post', data_paramters, validation_function, success_function, failure_function);
+		},
+		
+		get_user: function () {
+			let scope = this;
+      let data_paramters = {};
+      let success_function = function(response) {
+        scope.errors = response.message;
+        scope.user = response.object;
+      };
+
+      let failure_function = function(response) {
+        scope.errors = response.message;
+      };
+
+      this.request('/api/core/authentication/get_user/', 'get', data_paramters, null, success_function, failure_function);
 		}
-
-
+	},
+	
+	mounted: function () {
+		this.get_user()
 	}
 });
