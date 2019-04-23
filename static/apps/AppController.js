@@ -24,15 +24,22 @@ let app = new Vue({
 				},
       },
 
-			user: {	},
+			user: {
+				session:{
+					blocked: null,
+				}
+			},
 
 			username: null,
       password: null,
 
       controls: {
+        page: {
+          loaded: false,
+        },
         session:{
-          timeout_warning:10000,
-					timeout_close:15000,
+          timeout_warning:120000,
+					timeout_close:150000,
 					warning_timer: null,
 					closer_timer: null,
         },
@@ -59,7 +66,7 @@ let app = new Vue({
 
 		reset_timers: function(){
 			let scope = this;
-			if(this.controls.session_blocked==false){
+			if(this.user.session.blocked==false){
 				clearTimeout(this.controls.session.warning_timer);
 				clearTimeout(this.controls.session.closer_timer);
 				$("#warning_session").modal('hide');
@@ -75,26 +82,24 @@ let app = new Vue({
 
 		block_session: function (){
 			$("#warning_session").modal('hide');
-			this.controls.session_blocked = true;
 			clearTimeout(this.controls.session.timeout_warning);
 			clearTimeout(this.controls.session.timeout_close);
-		},
+			//this.controls.session_blocked = true;
 
-		unlock_session: function(){
 			let scope = this;
 			let data_paramters = {};
-			data_paramters['password'] = scope.password;
 
 			let success_function = function(response){
-				scope.controls.session_blocked = false;
-				scope.controls.clock = true;
-				scope.errors = response.message;
+				alert("VEJA COMO VAI FICAR: "+JSON.stringify(response.object))
+				scope.user.session.blocked = response.object.session.blocked;
+				//scope.controls.session_blocked = false;
+				//scope.controls.clock = true;
+				//scope.errors = response.message;
 			};
 
 			let failure_function = function(response){
-				error_notify(null,'Senha inválida',"Senha preenchida incorretamente ou não existe")
-				scope.form.errors = response.message;
-
+				//error_notify(null,'Senha inválida',"Senha preenchida incorretamente ou não existe")
+				//scope.form.errors = response.message;
 			};
 
 			let validation_function = function () {
@@ -108,26 +113,57 @@ let app = new Vue({
 				}
 				return result;
 			};
-			this.request('/api/core/authentication/unlock_session/','post', data_paramters, validation_function, success_function, failure_function);
+			this.request('/api/core/authentication/block_session/','post', data_paramters, validation_function, success_function, failure_function);
 		},
-		
+
+
+		unblock_session: function(){
+			let scope = this;
+			let data_paramters = {};
+			data_paramters['password'] = scope.password;
+
+			let success_function = function(response){
+				alert("VEJA A RESPOSTA:"+JSON.stringify(response.object))
+				scope.user = response.object;
+				scope.controls.clock = true;
+				scope.errors = response.message;
+			};
+
+			let failure_function = function(response){
+				error_notify(null,'Senha inválida',"Senha preenchida incorretamente ou não existe")
+				scope.form.errors = response.message;
+
+			};
+
+			let validation_function = function () {
+				return true;
+			};
+			this.request('/api/core/authentication/unblock_session/','post', data_paramters, validation_function, success_function, failure_function);
+		},
+
 		get_user: function () {
 			let scope = this;
       let data_paramters = {};
       let success_function = function(response) {
-        scope.errors = response.message;
-        scope.user = response.object;
+        if(response.result){
+          scope.user = response.object;
+	        scope.controls.page.loaded = true;
+	      }
       };
 
       let failure_function = function(response) {
-        scope.errors = response.message;
+        window.location.href = "/login";
       };
 
       this.request('/api/core/authentication/get_user/', 'get', data_paramters, null, success_function, failure_function);
 		}
 	},
-	
-	mounted: function () {
+
+	created: function () {
 		this.get_user()
+	},
+
+	mounted: function () {
+
 	}
 });

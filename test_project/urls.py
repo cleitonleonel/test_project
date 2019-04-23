@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^$', index_page),
 
     path('api/core/authentication/', include('otma.apps.core.authentication.urls')),
+    path('api/entities/', include('otma.apps.entities.urls')),
 
     url(r'^login/$', login_page),
     url(r'^signup/$', signup_page),
