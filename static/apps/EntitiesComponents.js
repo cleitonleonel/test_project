@@ -18,7 +18,6 @@ Vue.component('app_entities_table', {
 	},
 	template: `
 		<div>
-			selecionado: {{form.entity.object}}
 			<table :class='classes' style='width:100%;'>
 				<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
 					<td>Tipo</td>
@@ -132,7 +131,11 @@ Vue.component('app_disable_entity', {
 	methods: {
 		disable: function(index) {
 			let scope = this;
-			let data_parameters = scope.data.objects[index];
+			let data_parameters = {
+				object: scope.data.objects[index].id,
+				password: scope.form.disable_confirm.password,
+				reason: scope.form.disable_confirm.reason
+			};
 			alert('ve se ta normal:'+data_parameters);
 			alert('olha so que foda essa porra caralho: '+JSON.stringify(data_parameters));
 
@@ -156,9 +159,14 @@ Vue.component('app_disable_entity', {
 	template:
 	`
 		<form>
-			<app_input type="password" placeholder="Senha" classes="form-control" v-model="form.password"></app_input>
-			<app_textarea classes='form-control' label='Motivo'  v-model='form.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
-			<button type="button" class="btn btn-primary" @click="disable(index)">Desativar</button>
+			<app_input type="password" placeholder="Senha" classes="form-control" v-model="form.disable_confirm.password"></app_input>
+			<app_textarea classes='form-control' label='Motivo'  v-model='form.disable_confirm.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+			</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-primary">Salvar mudanças</button>
+						</div>
+			<button type="button" class="btn btn-primary" @click="disable(form.entity.object.index)">Desativar</button>
 		</form>
 	
 	`
@@ -258,12 +266,8 @@ Vue.component('app_entities', {
 							</button>
 						</div>
 						<div class="modal-body">
-							<app_disable_entity :data='data' :form="forms.disable_confirm"></app_disable_entity>
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-							<button type="button" class="btn btn-primary">Salvar mudanças</button>
-						</div>
+							<app_disable_entity :data='data' :form="forms"></app_disable_entity>
+						
 					</div>
 				</div>
 			</div>
