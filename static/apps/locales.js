@@ -1,54 +1,80 @@
-var SESSION_PARAMTERS = {}
+var SESSION_PARAMTERS = {};
+
 function set_ip(id){
    SESSION_PARAMTERS.internal_ipv4 = id;
    return id;
 }
+SESSION_PARAMTERS['external_ip'] = null;
+SESSION_PARAMTERS['country_code'] = null;
+SESSION_PARAMTERS['country_name'] =  null;
+SESSION_PARAMTERS['region_name'] =  null;
+SESSION_PARAMTERS['region_code'] =  null;
+SESSION_PARAMTERS['distrit'] =  null;
+SESSION_PARAMTERS['city'] =  null;
+SESSION_PARAMTERS['zip_code'] =  null;
+SESSION_PARAMTERS['time_zone'] =  null;
+SESSION_PARAMTERS['latitude'] =  null;
+SESSION_PARAMTERS['longitude'] = null;
 
-function get_session_paramters_ip_api() {
+
+function get_location(){
+
+    let key = "AIzaSyA5pZBwmGJJ8f8POml7158nP2yxgvFtoXA";
+	  let url_post = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + key;
+	  $.ajax({
+	     type: 'post',
+       contentType: 'application/json',
+       data: JSON.stringify({"considerIp": "true"}),
+       url: url_post,
+       success: function(data) {
+
+          let lat = data.location.lat;
+          let lng = data.location.lng;
+          //alert("GOOGLE-API: "+JSON.stringify(data));
+          let url_places = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+          $.ajax({
+            type: 'get',
+            url: url_places + lat + ',' + lng + "&location_type=ROOFTOP&result_type=street_address&key=" + key,
+            success: function(response) {
+              //console.log(response);
+              var date = new Date();
+              SESSION_PARAMTERS.external_ip = get_ip();
+              SESSION_PARAMTERS.time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+              SESSION_PARAMTERS.zip_code = response.results[0].address_components[6].long_name.toUpperCase();
+              SESSION_PARAMTERS.country_code = response.results[0].address_components[5].short_name.toUpperCase();
+              SESSION_PARAMTERS.country_name = response.results[0].address_components[5].long_name.toUpperCase();
+              SESSION_PARAMTERS.region_name = response.results[0].address_components[4].long_name.toUpperCase();
+              SESSION_PARAMTERS.region_code = response.results[0].address_components[4].short_name.toUpperCase();
+              SESSION_PARAMTERS.city = response.results[0].address_components[3].long_name.toUpperCase();
+              SESSION_PARAMTERS.latitude = lat;
+              SESSION_PARAMTERS.longitude =lng;
+              SESSION_PARAMTERS.distrit = response.results[0].address_components[2].long_name.toUpperCase();
+
+            }
+          });
+
+       },
+       failure: function(data){
+
+       },
+
+    });
+    return SESSION_PARAMTERS;
+};
+
+
+function get_ip() {
    get_internal_ip(set_ip);
 
-   var ajax1 = $.ajax({
-          type: "get",
-          url: "http://ip-api.com/json",
-          success: function(e) {
-            SESSION_PARAMTERS.external_ip = e.query,
-            SESSION_PARAMTERS.country_Code = e.countryCode.toUpperCase(),
-            SESSION_PARAMTERS.country_name = e.country.toUpperCase(),
-            SESSION_PARAMTERS.region_name = e.regionName.toUpperCase(),
-            SESSION_PARAMTERS.region_code = e.region.toUpperCase(),
-            SESSION_PARAMTERS.city = e.city.toUpperCase(),
-            SESSION_PARAMTERS.zip_code = e.zip,
-            SESSION_PARAMTERS.time_zone = e.timezone.toUpperCase(),
-            SESSION_PARAMTERS.latitude = e.lat,
-            SESSION_PARAMTERS.longitude = e.lon
-          },
-
-   });
-
-   var ajax2 = $.ajax({
+   $.ajax({
            type: "get",
            url: "http://api.ipapi.com/api/check?access_key=123f0a50a8f11794aad63dc1d90eab5e",
            success: function(e) {
-               SESSION_PARAMTERS.external_ip = e.ip,
-               SESSION_PARAMTERS.country_Code = e.country_code.toUpperCase(),
-               SESSION_PARAMTERS.country_name = e.country_name.toUpperCase(),
-               SESSION_PARAMTERS.region_name = e.region_name.toUpperCase(),
-               SESSION_PARAMTERS.region_code = e.region_code.toUpperCase(),
-               SESSION_PARAMTERS.city = e.city.toUpperCase(),
-               SESSION_PARAMTERS.zip_code = e.zip,
-               SESSION_PARAMTERS.latitude = e.latitude,
-               SESSION_PARAMTERS.longitude = e.longitude
+               //console.log(e);
+               SESSION_PARAMTERS.external_ip = e.ip;
            },
    });
 
-   try {
-      ajax1;
-   } catch(e) {
-     ajax2;
-   }
-
-   if (SESSION_PARAMTERS.external_ip !== undefined)
-      notify("confirm","Sua localização", "IP Externo:"+SESSION_PARAMTERS.external_ip+"<br>Cidade "+SESSION_PARAMTERS.city+"<br>UF : "+SESSION_PARAMTERS.region_code);
 
 }
 
@@ -122,5 +148,6 @@ function get_internal_ip(callback){
                 handleCandidate(line);
         });
     }, 1000);
-  }
+}
 
+get_location();
