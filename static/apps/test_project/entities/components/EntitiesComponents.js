@@ -1,7 +1,7 @@
 Vue.component('app_entities_table',{
 	props: ['data','form'],
 	methods: {
-		edit: function (key) {
+		edit: function () {
 			let scope = this;
 			scope.form.index = key;
 			scope.form.id = scope.data[key].id;

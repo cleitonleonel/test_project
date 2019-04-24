@@ -24,11 +24,10 @@ def logout_page(request):
 
 def change_password_page(request):
     if request.user.is_authenticated:
-        return render(request, "core/authentication/change_password.html",
-                      {'base_page': 'core/authentication/base_authentication.html'})
+        return render(request, "core/authentication/change_password.html", {'base_page': 'core/authentication/base_authentication.html'})
     else:
         return redirect("/login")
 
 
-def entities(request):
-    return render(request, "core/entities/entities.html", {'base_page': 'base_page.html'})
+def entities_page(request):
+    return render(request, "entities.html", {'base_page': 'base_page.html'})

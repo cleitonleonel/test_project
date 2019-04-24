@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '@y-)04u*je#)vtl(ni$%d714c$8*27tz4z0b2u)ozc#*ljh8h6'
+GOOGLE_KEY = "AIzaSyA5pZBwmGJJ8f8POml7158nP2yxgvFtoXA"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -60,6 +61,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'session_security.middleware.SessionSecurityMiddleware',
 ]
+
+#CONTEXT_PROCESSORS = "django.core.context_processors.request"
 
 ROOT_URLCONF = 'test_project.urls'
 
@@ -167,13 +170,15 @@ OTMA_SERVER = "http://68.183.97.68"
 BOWER_PATH = BOWER_PATH
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'static')
 BOWER_INSTALLED_APPS = (
-    'bootstrap',
     'vue',
     'jquery',
-    'font-awesome',
+    'bootstrap',
+    'bootstrap-select',
+
     'jquery-nicescroll',
-    'pnotify',
+    'font-awesome',
     'nprogress',
+    'pnotify',
     'moment',
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
