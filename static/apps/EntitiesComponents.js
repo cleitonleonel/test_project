@@ -1,36 +1,37 @@
-Vue.component('app_disable',{
-	props:[],
-	methods: {},
-	template:
-		`
-		
-		`
-});
-
-Vue.component('app_entities_table',{
-	mixins: [],
-	props: ['classes', 'data'],
-	data: function(){
-		return {}
+Vue.component('app_entities_table', {
+	props: ['classes', 'data','form'],
+	methods: {
+		edit: function (key) {
+			let scope = this;
+			scope.form.entity.object.index = key;
+			scope.form.entity.object.id = scope.data.objects[key].id;
+			scope.form.entity.object.type = scope.data.objects[key].type;
+			scope.form.entity.object.official_doc = scope.data.objects[key].official_doc;
+			scope.form.entity.object.name = scope.data.objects[key].name;
+			scope.form.entity.object.popular_name = scope.data.objects[key].popular_name;
+			scope.form.entity.object.activities = scope.data.objects[key].activities;
+			scope.form.entity.object.company_relation = scope.data.objects[key].company_relation;
+			scope.form.entity.object.status = scope.data.objects[key].status;
+			scope.form.entity.object.nationality = scope.data.objects[key].nationality;
+			scope.form.entity.object.comments = scope.data.objects[key].comments;
+		},
 	},
-
-	methods: {},
-	mounted: function(){},
 	template: `
 		<div>
+			selecionado: {{form.entity.object}}
 			<table :class='classes' style='width:100%;'>
 				<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
-					<td>#</td>
 					<td>Tipo</td>
-					<td>Documento</td>
-					<td>Nome ou razão social</td>
-					<td>Nome popular</td>
+					<td>CPF/CNPJ</td>
+					<td>Nome/Razão Social</td>
+					<td>Apelido/Nome Fantasia</td>
 					<td>Nacionalidade</td>
 					<td>Relação</td>
 					<td>Atividade</td>
 					<td>Situação</td>
 					<td>Criação</td>
 					<td>Últ. Alteração</td>
+					<td>#</td>
 				</tr>
 
 				<tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
@@ -38,24 +39,27 @@ Vue.component('app_entities_table',{
 				</tr>
 
 				<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
-					<td><button class="btn btn-sm btn-primary">Desativar {{index}}</button></td>
-					<td>{{entity.name}}</td>
+					<td>{{entity.type}}</td>
 					<td>{{entity.official_doc}}</td>
+					<td>{{entity.name}}</td>
 					<td>{{entity.popular_name}}</td>
 					<td>{{entity.nationality}}</td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
+					<td>{{entity.company_relation}}</td>
+					<td>{{entity.activities}}</td>
+					<td>{{entity.status}}</td>
+					<td>{{entity.creation_date}}</td>
+					<td>{{entity.last_update}}</td>
+					<td style="padding-left: 5px;padding-right: 5px;">
+						<a role="button" @click="edit(index)" class="btn btn-sm btn-primary" style="color: #ffffff;cursor: pointer;">Editar {{index}}</a>
+						<a role="button" @click="edit(index)" data-toggle="modal" data-target="#modalExemplo" class="btn btn-sm btn-primary" style="color: #ffffff;cursor: pointer;margin-top: 5px;">Desativar</a>
+					</td>
 				</tr>
 			</table>
 		</div>
 	`,
 });
 
-Vue.component('app_entities_form',{
+Vue.component('app_entities_form', {
 	mixins: [],
 	props: ['form'],
 	data: function(){
@@ -122,7 +126,45 @@ Vue.component('app_entities_form',{
 	`,
 });
 
-Vue.component('app_entities',{
+Vue.component('app_disable_entity', {
+	mixins:[base_controller],
+	props:['data','form'],
+	methods: {
+		disable: function(index) {
+			let scope = this;
+			let data_parameters = scope.data.objects[index];
+			alert('ve se ta normal:'+data_parameters);
+			alert('olha so que foda essa porra caralho: '+JSON.stringify(data_parameters));
+
+			let success_function = function(response){
+				scope.data.objects.splice(index,1);
+				alert('pelo menos ta chegando aqui mano, podia ser pior')
+			};
+
+			let failure_function = function(response){
+				alert('Desculpa, eu só gosto de você como amigo')
+			};
+
+			let validation_function = function(response){
+				alert('Soldado ferido, para um pouco');
+				return true;
+			};
+
+			this.request('/api/entities/disable/', 'post', data_parameters, null, success_function, failure_function)
+		},
+	},
+	template:
+	`
+		<form>
+			<app_input type="password" placeholder="Senha" classes="form-control" v-model="form.password"></app_input>
+			<app_textarea classes='form-control' label='Motivo'  v-model='form.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+			<button type="button" class="btn btn-primary" @click="disable(index)">Desativar</button>
+		</form>
+	
+	`
+});
+
+Vue.component('app_entities', {
 	mixins: [base_controller],
 	props: [],
 	data: function(){
@@ -157,6 +199,11 @@ Vue.component('app_entities',{
 					object:{},
 					backup:{},
 					errors:{}
+				},
+				disable_confirm:{
+					object:{},
+					reason: null,
+					password: null
 				}
 			}
 		}
@@ -196,10 +243,30 @@ Vue.component('app_entities',{
 	},
 	template: `
 		<div>
-			<app_entities_table :data='data' classes='table-bordered table-hover'></app_entities_table>
+			<app_entities_table :form="forms" :data='data' classes='table-bordered table-hover'></app_entities_table>
 			<br>
 
 			<app_entities_form :form='forms.entity'></app_entities_form>
+			
+			<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">Título do modal</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<app_disable_entity :data='data' :form="forms.disable_confirm"></app_disable_entity>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+							<button type="button" class="btn btn-primary">Salvar mudanças</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	`,
 });
