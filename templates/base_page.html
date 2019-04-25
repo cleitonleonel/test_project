@@ -39,6 +39,14 @@
         padding-top:5px;
         font-size:10px;
       }
+
+      .center {
+        margin: auto;
+        margin-top: 130px;
+        padding: 70px 0;
+        width: 50%;
+        text-align:center;
+      }
     </style>
 
   {% block main_dependencies %}
@@ -48,8 +56,13 @@
 
 <body style="height: 100vh;">
   <div class="wrapper" id="app" @mousemove="reset_timers()">
+
     <template v-if="controls.page.loaded==false">
-      Aguarde.. carregando
+      <div class="center">
+        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+        <br>
+        <span style="margin-top:20px;">Aguarde, carregando...</span>
+      </div>
     </template>
 
     <template v-else>
