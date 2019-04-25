@@ -155,6 +155,7 @@ ERRORS_MESSAGES = {
     'document_invalid': 'Documento inválido',
 
     'required': 'Campo obrigatório',
+    'blank': 'Campo obrigatório',
     'unique':"Informação já cadastrada",
 
     'future_date':'Data de nascimento inválida',

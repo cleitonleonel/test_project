@@ -84,10 +84,10 @@ let app = new Vue({
 			let data_paramters = {};
 
 			let success_function = function(response){
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
 				scope.user.session.blocked = response.object.session.blocked;
-				//scope.controls.session_blocked = false;
-				//scope.controls.clock = true;
-				//scope.errors = response.message;
+
 			};
 
 			let failure_function = function(response){
