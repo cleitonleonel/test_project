@@ -1,9 +1,5 @@
 var SESSION_PARAMTERS = {};
 
-function set_ip(id){
-   SESSION_PARAMTERS.internal_ipv4 = id;
-   return id;
-}
 SESSION_PARAMTERS['external_ip'] = null;
 SESSION_PARAMTERS['country_code'] = null;
 SESSION_PARAMTERS['country_name'] =  null;
@@ -16,6 +12,11 @@ SESSION_PARAMTERS['time_zone'] =  null;
 SESSION_PARAMTERS['latitude'] =  null;
 SESSION_PARAMTERS['longitude'] = null;
 
+function set_ip(id){
+   SESSION_PARAMTERS.internal_ipv4 = id;
+   return id;
+}
+
 
 function get_location(){
 
@@ -26,17 +27,18 @@ function get_location(){
        contentType: 'application/json',
        data: JSON.stringify({"considerIp": "true"}),
        url: url_post,
-       success: function(data) {
 
-          let lat = data.location.lat;
-          let lng = data.location.lng;
-          //alert("GOOGLE-API: "+JSON.stringify(data));
+       success: function(data) {
+          console.log(JSON.stringify(data));
+          let lat = data.location.lat + 0.000507;
+          let lng = data.location.lng + 0.001963;
+
           let url_places = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
           $.ajax({
             type: 'get',
             url: url_places + lat + ',' + lng + "&location_type=ROOFTOP&result_type=street_address&key=" + key,
             success: function(response) {
-              //console.log(response);
+              console.log(JSON.stringify(response));
               var date = new Date();
               SESSION_PARAMTERS.external_ip = get_ip();
               SESSION_PARAMTERS.time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -151,3 +153,4 @@ function get_internal_ip(callback){
 }
 
 get_location();
+
