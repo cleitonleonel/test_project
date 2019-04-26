@@ -25,15 +25,11 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
-.form-signin .checkbox {
-  font-weight: 400;
-}
 .form-signin .form-control {
   position: relative;
   box-sizing: border-box;
   height: auto;
   padding: 10px;
-  font-size: 12px;
 }
 .form-signin .form-control:focus {
   z-index: 2;
@@ -53,5 +49,4 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.125);
   background: rgb(248, 248, 250);
   padding: 7px;
-  font-size: 1em;
 }

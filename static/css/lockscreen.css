@@ -25,44 +25,6 @@ body, html {
   background-size: cover;
 }
 
-.otma-logo {
-  font-family: "Poiret One", sans, sans-serif;
-  font-size: 21px;
-
-  color: white;
-  font-weight: bold;
-  text-align: center;
-
-  /*Posicionamento*/
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  z-index: 2;
-  padding: 20px;
-
-  /*Tamanho*/
-  width: 80%;
-}
-
-.otma-sub-logo {
-  font-family: 'Roboto', 'Arial', sans-serif;
-  font-size: 10px;
-
-  color: white;
-  font-weight: bold;
-  text-align: center;
-
-  /*Posicionamento*/
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  z-index: 2;
-  padding: 20px;
-
-  /*Tamanho*/
-  width: 80%;
-}
-
 /* Position text in the middle of the page/image */
 .bg-text {
   /*Cores do fundo*/
@@ -70,7 +32,6 @@ body, html {
 
   /*Fonte*/
   color: white;
-  font-weight: bold;
   text-align: center;
 
   /*Borda*/
@@ -100,6 +61,4 @@ body, html {
 
 .avatar-container .name {
   margin-top: 30px;
-  font-family: "Poiret One", sans, sans-serif;
-  font-weight: 100;
 }

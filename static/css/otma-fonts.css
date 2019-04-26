@@ -1,0 +1,97 @@
+@import "google-fonts.css";
+
+/*Fontes do menu lateral*/
+
+nav#sidebar {
+	font-family: "Poppins", Arial, sans-serif;
+}
+
+#sidebar ul li a {
+  font-size: 16px;
+}
+
+#sidebar.active ul li a {
+  font-size: 0.85em;
+}
+
+#sidebar.active ul li a i {
+  font-size: 1.8em;
+}
+
+#sidebar .sidebar-header strong {
+  font-size: 1.8em;
+}
+
+/*Fontes do menu superior*/
+
+.top-menu {
+	font-family: "Poppins", Arial, sans-serif;
+	font-size: 12px;
+}
+
+/*Fontes do conteúdo*/
+
+#content {
+	font-family: "Poppins", Arial, sans-serif;
+}
+
+p {
+	font-family: "Ubuntu Light", "Poppins", Arial, sans-serif;
+	font-size: 1.1em;
+  	font-weight: 300;
+}
+
+ul ul a {
+  font-size: 0.9em !important;
+}
+
+/*Classes de estilo*/
+	/*texto*/
+.otma-fs-10 {
+	font-size: 10px;
+}
+	/*subtitulos*/
+.otma-fs-12 {
+	font-size: 12px;
+}
+	/*títulos*/
+.otma-fs-14 {
+	font-size: 14px;
+}
+
+/*Página de Registro*/
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-control {
+  font-size: 12px;
+}
+
+.reset-pass {
+  font-size: 1em;
+}
+
+/*Tela de Bloqueio*/
+
+.bg-text {
+  font-weight: bold;
+}
+
+.avatar-container .name {
+  font-family: "Poiret One", sans, sans-serif;
+  font-weight: 100;
+}
+
+/*Media*/
+
+@media (max-width: 768px) {
+    #sidebar.active ul li a {
+        font-size: 0.85em;
+    }
+
+    #sidebar.active ul li a i {
+        font-size: 1.8em;
+    }
+}

@@ -96,4 +96,15 @@
   google.load("maps", "3.x", {other_params: "sensor=false", callback:initialize});
   */
 </script>
+
+	<script>
+	$("table#entity-table").scrollLeft(0)
+	</script>
+
+	<script>
+	$("#entity-container").niceScroll("#entity-table",{
+		cursorcolor:"#57c6d5",
+		cursorwidth:"7px"
+	});
+	</script>
 {% endblock %}

@@ -1,12 +1,3 @@
-Vue.component('app_disable',{
-	props:[],
-	methods: {},
-	template:
-		`
-		
-		`
-});
-
 Vue.component('app_entities_table',{
 	mixins: [],
 	props: ['forms', 'data', 'classes'],
@@ -33,9 +24,8 @@ Vue.component('app_entities_table',{
     }
   },
 	template: `
-		<div>
-			<div>
-				<table :class='classes' style='width:100%;'>
+		<div id="entity-container">
+			<table id="entity-table" :class='classes' style='width:100%;'>
 					<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
 						<td style='text-align:center;width:45px;'>#</td>
 						<td style='text-align:center;width:140px;'>Documento</td>
@@ -58,7 +48,7 @@ Vue.component('app_entities_table',{
 					</tr>
 
 					<template v-if='data.objects.length > 0'>
-						<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
+						<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
 							<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
 							<td style='text-align:center;width:140px;'>14.988.231/0001-13</td>
 							<td>{{ entity.name }}</td>
@@ -70,7 +60,7 @@ Vue.component('app_entities_table',{
 								<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
 								<span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
 								<span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
-								</td>
+							</td>
 							<td style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
 							<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
 							<td style="padding:5px;">
@@ -207,7 +197,7 @@ Vue.component('app_disable_entity', {
 			};
 
 			let failure_function = function(response){
-
+				this.error_notify("Falha", "A entidade não pôde ser excluída")
 			};
 
 			let validation_function = function(response){
@@ -324,36 +314,40 @@ Vue.component('app_entities',{
         alert('erro')
       };
 
-      this.request('/api/entity/all/', 'get', data_paramters, null, success_function, failure_function);
+      this.request('/api/entity/load/', 'get', data_paramters, null, success_function, failure_function);
     },
 
     save: function(){
 			let scope = this;
       let data_paramters = scope.forms.entity.object;
       let success_function = function(response) {
-        //alert("VEEIO: "+JSON.stringify(response))
         if(response.result){
           scope.forms.entity.errors = {};
           scope.data.objects[scope.form.index] = response.object;
-          //alert("troquei");
           scope.init_formulary();
-          alert("foi?")
         }
         else{
           scope.forms.entity.errors = response.message;
         }
-        //scope.forms.entity.object; = response.object;
-        //scope.data.controls.loaded = true;
       };
 
       let failure_function = function(response) {
         scope.forms.entity.errors = response.message;
-        //scope.errors = response.message;
-        //scope.entities.loaded = null;
-        alert('erro');
       };
 
-      this.request('/api/entity/save/', 'post', data_paramters, null, success_function, failure_function);
+      let validation_function = function () {
+				let result = true;
+				let error_keys = {'username' : 'usuário', 'password' : 'senha'};
+				for(let field in data_paramters){
+					if(!data_paramters[field]){
+						error_notify(null,"Falha na operação!","O campo de "+error_keys[field]);
+						result = false;
+					}
+				}
+				return result;
+			};
+
+      this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
 
 		disable: function(object, index) {

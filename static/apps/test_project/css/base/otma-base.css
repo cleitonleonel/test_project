@@ -2,14 +2,10 @@
 
 /* Root */
 body {
-  font-family: 'Poppins', sans-serif;
   background: #fafafa;
 }
 
 p {
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.1em;
-  font-weight: 300;
   line-height: 1.7em;
   color: #999;
 }
@@ -29,7 +25,6 @@ a[data-toggle="collapse"] {
 }
 
 ul ul a {
-  font-size: 0.9em !important;
   padding-left: 30px !important;
   background: #54b7d5;
 }
@@ -42,7 +37,6 @@ ul ul a {
 }
 
 #content {
-  font-family: serif, sans-serif monospace; /* monospace, sans-serif, serif;*/
   width: 100%;
   padding: 20px;
   min-height: 100vh;
@@ -54,13 +48,13 @@ ul ul a {
 }
 
 .otma-footer {
-  margin: 0 -20px 0 -20px;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding-top: 0.5em;
-  background: #f3f3f3;
-  border-top: solid 1px #e2e2e2;
+    margin: 0 -20px 0 -20px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-top: 0.5em;
+    background: #f3f3f3;
+    border-top: solid 1px #e2e2e2;
 }
 
 .otma-info-footer {
@@ -72,9 +66,6 @@ ul ul a {
   color: #989696;
 }
 
-.otma-fs-14 {
-  font-size: 12px;
-}
 /* Página */
 
 /* Essentials */
@@ -147,13 +138,11 @@ ul ul a {
     /* Downsize the navigation links font size */
     #sidebar.active ul li a {
         padding: 20px 10px;
-        font-size: 0.85em;
     }
 
     #sidebar.active ul li a i {
         margin-right:  0;
         display: block;
-        font-size: 1.8em;
         margin-bottom: 5px;
     }
 

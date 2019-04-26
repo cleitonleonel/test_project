@@ -4,7 +4,6 @@
   border-bottom: solid 1px #e2e2e2;
   margin: -20px -20px 0 -20px;
   height: 40px;
-  font-family: Poppins, monospace;
 }
 
 .menu-profile{
@@ -22,9 +21,5 @@
   margin-left: -5px;
   margin-top: 10px;
   cursor:pointer;
-}
-
-a.otma-fs-14 {
-  font-size: 12px;
 }
 /* MENU SUPERIOR */

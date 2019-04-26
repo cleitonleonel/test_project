@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
 
+		<link rel="stylesheet" href="{% static 'css/otma-fonts.css' %}">
     <link rel="stylesheet" href="{% static 'apps/test_project/css/base/otma-base.css' %}">
     <link rel="stylesheet" href="{% static 'css/lockscreen.css' %}">
 
@@ -517,10 +518,10 @@
               <img alt="Avatar" class="photo" src="https://avatars1.githubusercontent.com/u/39997031?s=400&u=017e03d9cac198018edf72d10da0d7085efa2276&v=4">
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item otma-fs-14" href="#">Perfil</a>
-              <a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#exampleModal">Alterar Senha</a>
-              <a class="dropdown-item otma-fs-14" href="#" @click="block_session()">Bloquear tela</a>
-              <a class="dropdown-item otma-fs-14" href="/logout">Encerrar sessão</a>
+              <a class="dropdown-item otma-fs-12" href="#">Perfil</a>
+              <a class="dropdown-item otma-fs-12" href="#" data-toggle="modal" data-target="#exampleModal">Alterar Senha</a>
+              <a class="dropdown-item otma-fs-12" href="#" @click="block_session()">Bloquear tela</a>
+              <a class="dropdown-item otma-fs-12" href="/logout">Encerrar sessão</a>
             </div>
           </div>
         </div>
@@ -531,7 +532,7 @@
          {% endblock %}
         </div>
 
-        <div class="otma-footer otma-fs-14">
+        <div class="otma-footer otma-fs-12">
           <div class="text-center">
             <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
             <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
@@ -565,8 +566,8 @@
 					</form>
 					<sub style="font-family: 'Ubuntu Light', 'Arial', sans-serif;">Não é você? <u><a href="/logout">Clique aqui</a></u></sub>
 				</div>
-				<div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2" style="transform: translate(-50%, 200%);">
-					<app_otma_clock style="color: white;margin-top: 10px;font-family: 'Ubuntu Light', 'Arial', sans-serif;font-size: 20px;"></app_otma_clock>
+				<div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2" style="transform: translate(-50%, 230%);">
+					<app_otma_clock style="color: white;font-family: 'Ubuntu Light', 'Arial', sans-serif;font-size: 20px;"></app_otma_clock>
 				</div>
 			</div>
 		</template>
