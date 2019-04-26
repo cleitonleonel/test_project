@@ -9,10 +9,19 @@ Vue.component('app_disable',{
 
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['classes', 'data'],
+	props: ['form', 'data', 'classes'],
 	data: function(){
 		return {}
 	},
+
+	methods: {
+		open: function(register, index){
+      this.form.object = JSON.parse(JSON.stringify(register));
+      this.form.backup = register;
+      this.form.index = index;
+	  },
+	},
+
 	filters: {
     moment: function (date) {
       return moment(date).format('DD/MM/YYYY, HH:mm:ss');
@@ -61,15 +70,14 @@ Vue.component('app_entities_table',{
 							<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
 							<td style="padding:5px;">
 								<div class="btn-group btn-group-xs" role="group" aria-label="...">
-								<button @click="edit(index)" type="button" class="btn btn-xs btn-info" title="Editar"><i class="fas fa-edit"></i> </button>
-								<button @click="edit(index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExemplo" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
+								<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
+								<button @click="disable(index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExemplo" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
 								</div>
 							</td>
 						</tr>
 					</template>
 				</table>
 			</div>
-
 		</div>
 	`,
 });
@@ -95,7 +103,7 @@ Vue.component('app_entities_form',{
 	template: `
 
 		<div>
-			errors: {{ form.errors }}
+			errors: {{ form }}
 			<div class='row'>
 				<div class='col-lg-2 col-md-3 col-sm-4 col-xs-12'>
 		      <app_nacionality classes='form-control' v-model='form.object.nationality'></app_nacionality>
@@ -218,7 +226,7 @@ Vue.component('app_disable_entity', {
 			<app_textarea classes='form-control' label='Justificativa'  v-model='form.disable_confirm.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
 		</form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" @click="disable(form.entity.object.index)" data-dismiss="modal">Desativar</button>
+			<!--<button type="button" class="btn btn-primary" @click="disable(form.entity.object.index)" data-dismiss="modal">Desativar</button>-->
 		</div>
 	</div>
 
@@ -284,7 +292,11 @@ Vue.component('app_entities',{
 					errors:{}
 				},
 				disable_confirm:{
-					object:{},
+					object:{
+						id: '',
+						reason: '',
+						password: '',
+					},
 					reason: null,
 					password: null
 				}
@@ -316,8 +328,11 @@ Vue.component('app_entities',{
       let success_function = function(response) {
         //alert("VEEIO: "+JSON.stringify(response))
         if(response.result){
-          alert('ae.. tudo certo pra incluir')
           scope.forms.entity.errors = {};
+          scope.data.objects[scope.form.index] = response.object;
+          //alert("troquei");
+          scope.init_formulary();
+          alert("foi?")
         }
         else{
           scope.forms.entity.errors = response.message;
@@ -328,16 +343,40 @@ Vue.component('app_entities',{
 
       let failure_function = function(response) {
         scope.forms.entity.errors = response.message;
-
         //scope.errors = response.message;
         //scope.entities.loaded = null;
-        alert('erro')
+        alert('erro');
       };
 
       this.request('/api/entity/save/', 'post', data_paramters, null, success_function, failure_function);
     },
 
-    open: function(){},
+		disable: function(object, index) {
+			let scope = this;
+			let data_parameters = {
+				id: object.id,
+				reason: scope.forms.disable_confirm.object.reason,
+				password: scope.forms.disable_confirm.object.password,
+			};
+
+			let success_function = function(response){
+				this.success_notify('Entidade desabilitada com sucesso', '');
+				scope.data.objects.splice(index,1);
+				alert("legal");
+			};
+
+			let failure_function = function(response){
+				alert("deu erro");
+			};
+
+			let validation_function = function(response){
+				alert('Soldado ferido, para um pouco');
+				return true;
+			};
+
+			this.request('/api/entities/disable/', 'post', data_parameters, null, success_function, failure_function)
+		},
+
     init_formulary: function(){
       this.forms.entity.object = {
         nationality: "BR",
@@ -349,8 +388,6 @@ Vue.component('app_entities',{
         commercial_status: "HAB",
         company_relations: [],
         activities: [],
-
-
       }
     },
 	},
@@ -362,15 +399,39 @@ Vue.component('app_entities',{
 	template: `
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity">Adicionar</a>
-			<app_entities_table :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
+			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_disable_entity">Desativar</a>
 
-			<app_modal id="modal_entity">
+			<app_entities_table :form='forms.entity' :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
+
+			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>
 			    <h5>Adicionar entidade</h5>
 			  </template>
 
 			  <template v-slot:content>
 			    <app_entities_form :form='forms.entity' :callback='save'></app_entities_form>
+			  </template>
+			</app_modal>
+
+			<app_modal id="modal_disable_entity" classes='modal-dialog modal-sm'>
+			  <template v-slot:title>
+			    <h5>Desativar entidade</h5>
+			  </template>
+
+			  <template v-slot:content>
+			    <p style="border: 1px solid #ced4da;background: #f5f5f5; border-radius: 5px;padding: 5px;color: #000;">
+						<span style="font-size: 1.1em;">Atenção!</span>
+						<span style="font-size: 0.8em;">Esta é uma operação de alto risco! Se fizer isto, a entidade não será mais exibida nesta lista! Por isso, pedimos uma confirmação de senha e uma justificativa, que será salva junto com as informações de alteração.</span>
+					</p>
+
+					<form autocomplete="off">
+						<input autocomplete="false" name="hidden" type="text" style="display:none;">
+						<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable_confirm.object.password"></app_field>
+						<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable_confirm.object.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+					</form>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" @click="disable(forms.entity.object, forms.entity.index)">Desativar</button>
+					</div>
 			  </template>
 			</app_modal>
 		</div>

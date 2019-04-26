@@ -22,7 +22,7 @@ from apps.project.management.actions.api import register_frontend
 from apps.views import index_page, login_page, signup_page, logout_page, entities_page
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     url(r'^$', index_page),
 
     path('api/core/authentication/', include('otma.apps.core.authentication.urls')),
