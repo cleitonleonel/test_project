@@ -9,19 +9,24 @@ Vue.component('app_disable',{
 
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['form', 'data', 'classes'],
+	props: ['forms', 'data', 'classes'],
 	data: function(){
 		return {}
 	},
 
 	methods: {
 		open: function(register, index){
-      this.form.object = JSON.parse(JSON.stringify(register));
-      this.form.backup = register;
-      this.form.index = index;
+      this.forms.entity.object = JSON.parse(JSON.stringify(register));
+      this.forms.entity.backup = register;
+      this.forms.entity.index = index;
 	  },
-	},
 
+	  select: function(register, index){
+      this.forms.disable.object = JSON.parse(JSON.stringify(register));
+      this.forms.disable.backup = register;
+      this.forms.disable.index = index;
+	},
+	},
 	filters: {
     moment: function (date) {
       return moment(date).format('DD/MM/YYYY, HH:mm:ss');
@@ -70,8 +75,8 @@ Vue.component('app_entities_table',{
 							<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
 							<td style="padding:5px;">
 								<div class="btn-group btn-group-xs" role="group" aria-label="...">
-								<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
-								<button @click="disable(index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExemplo" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
+									<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
+									<button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
 								</div>
 							</td>
 						</tr>
@@ -192,8 +197,8 @@ Vue.component('app_disable_entity', {
 			let scope = this;
 			let data_parameters = {
 				object: scope.data.objects[index].id,
-				password: scope.form.disable_confirm.password,
-				reason: scope.form.disable_confirm.reason
+				password: scope.form.disable.password,
+				reason: scope.form.disable.reason
 			};
 
 			let success_function = function(response){
@@ -222,8 +227,8 @@ Vue.component('app_disable_entity', {
 		</p>
 		<form autocomplete="off">
 			<input autocomplete="false" name="hidden" type="text" style="display:none;">
-			<app_field type="password" label="Senha" classes="form-control" v-model="form.disable_confirm.password"></app_field>
-			<app_textarea classes='form-control' label='Justificativa'  v-model='form.disable_confirm.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+			<app_field type="password" label="Senha" classes="form-control" v-model="form.disable.password"></app_field>
+			<app_textarea classes='form-control' label='Justificativa'  v-model='form.disable.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
 		</form>
 		<div class="modal-footer">
 			<!--<button type="button" class="btn btn-primary" @click="disable(form.entity.object.index)" data-dismiss="modal">Desativar</button>-->
@@ -291,7 +296,7 @@ Vue.component('app_entities',{
 					backup:{},
 					errors:{}
 				},
-				disable_confirm:{
+				disable:{
 					object:{
 						id: '',
 						reason: '',
@@ -355,8 +360,8 @@ Vue.component('app_entities',{
 			let scope = this;
 			let data_parameters = {
 				id: object.id,
-				reason: scope.forms.disable_confirm.object.reason,
-				password: scope.forms.disable_confirm.object.password,
+				reason: scope.forms.disable.object.reason,
+				password: scope.forms.disable.object.password,
 			};
 
 			let success_function = function(response){
@@ -401,7 +406,7 @@ Vue.component('app_entities',{
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity">Adicionar</a>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_disable_entity">Desativar</a>
 
-			<app_entities_table :form='forms.entity' :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>
@@ -415,23 +420,25 @@ Vue.component('app_entities',{
 
 			<app_modal id="modal_disable_entity" classes='modal-dialog modal-sm'>
 			  <template v-slot:title>
-			    <h5>Desativar entidade</h5>
+			    <h5><i class="fas fa-exclamation-triangle"></i> Atenção</h5>
 			  </template>
 
 			  <template v-slot:content>
-			    <p style="border: 1px solid #ced4da;background: #f5f5f5; border-radius: 5px;padding: 5px;color: #000;">
-						<span style="font-size: 1.1em;">Atenção!</span>
-						<span style="font-size: 0.8em;">Esta é uma operação de alto risco! Se fizer isto, a entidade não será mais exibida nesta lista! Por isso, pedimos uma confirmação de senha e uma justificativa, que será salva junto com as informações de alteração.</span>
+			    <p style="">
+						<span style="font-size: 0.9em;">
+							Deseja mesmo desativar o registro <b><u>{{ forms.disable.object.name }} ({{ forms.disable.object.official_document }})</u></b> do sistema?<br>
+							Por questões de segurança essa operação exige uma confirmação por senha e uma justificativa.
+						</span>
 					</p>
 
 					<form autocomplete="off">
-						<input autocomplete="false" name="hidden" type="text" style="display:none;">
-						<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable_confirm.object.password"></app_field>
-						<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable_confirm.object.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+						<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable.object.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+						<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable.object.password"></app_field>
 					</form>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" @click="disable(forms.entity.object, forms.entity.index)">Desativar</button>
-					</div>
+
+					<br>
+
+					<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'>Desativar</button>
 			  </template>
 			</app_modal>
 		</div>
