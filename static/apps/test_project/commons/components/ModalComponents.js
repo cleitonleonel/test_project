@@ -1,5 +1,5 @@
 Vue.component('app_modal', {
-  props:['id', 'classes'],
+  props:['id', 'classes',],
   template:
   `
   <div class="modal fade" :id="id" tabindex="-1" role="dialog" :aria-labelledby="id" aria-hidden="true">

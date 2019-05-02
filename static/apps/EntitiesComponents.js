@@ -2,7 +2,8 @@ Vue.component('app_entities_table',{
 	mixins: [],
 	props: ['forms', 'data', 'classes'],
 	data: function(){
-		return {}
+		return {
+		}
 	},
 
 	methods: {
@@ -10,22 +11,60 @@ Vue.component('app_entities_table',{
       this.forms.entity.object = JSON.parse(JSON.stringify(register));
       this.forms.entity.backup = register;
       this.forms.entity.index = index;
+      $('#get_activities').selectpicker('val', this.forms.entity.object.get_activities);
+      $('#get_company_relations').selectpicker('val', this.forms.entity.object.get_company_relations);
+      //$('.selectpicker').selectpicker('render');
 	  },
 
 	  select: function(register, index){
-      this.forms.disable.object = JSON.parse(JSON.stringify(register));
-      this.forms.disable.backup = register;
+      this.forms.disable.object = {
+        id: register.id,
+        name: register.name,
+        official_document: register.official_document,
+        reason: "",
+        password: "",
+      }
+      //this.forms.disable.backup = register;
       this.forms.disable.index = index;
 	},
 	},
 	filters: {
     moment: function (date) {
       return moment(date).format('DD/MM/YYYY, HH:mm:ss');
-    }
+    },
+
+    company_relations_label: function(value){
+      value = value.replace("'","").replace("'","")
+      let company_relations = {
+				'CLI': "Cliente",
+				'FOR': "Fornecedor",
+				'FUN': "Funcionário",
+				'REP': "Representante",
+				'TRA': "Transporte",
+				'CON': "Contador",
+				'BAN': "Banco",
+			}
+      return company_relations[value]
+    },
+
+    activity_label: function(value){
+      value = value.replace("'","").replace("'","")
+      let activities = {
+				'COM': "Comércio",
+				'SER': "Serviço",
+				'IND': "Indústria",
+				'IMP': "Importador",
+				'EXP': "Exportador",
+				'PRO': "Produtor Rural",
+				'EXT': "Extravista",
+			}
+      return activities[value]
+    },
   },
 	template: `
-		<div id="entity-container">
-			<table id="entity-table" :class='classes' style='width:100%;'>
+		<div style="border: 1px solid #eee;box-sizing: border-box;">
+			<div id="entity-container">
+				<table id="entity-table" :class='classes' style='width:100%;'>
 					<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
 						<td style='text-align:center;width:45px;'>#</td>
 						<td style='text-align:center;width:140px;'>Documento</td>
@@ -48,13 +87,21 @@ Vue.component('app_entities_table',{
 					</tr>
 
 					<template v-if='data.objects.length > 0'>
-						<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
+						<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
 							<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
-							<td style='text-align:center;width:140px;'>14.988.231/0001-13</td>
-							<td>{{ entity.name }}</td>
+							<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
+							<td>{{ entity.name }} - {{ entity.is_active }}</td>
 							<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
-							<td style='text-align:center;width:160px;'>{{ entity.company_relation }}</td>
-							<td style='text-align:center;width:160px;'>{{ entity.activities }}</td>
+							<td style='text-align:center;width:160px;'>
+								<span v-for="(relation,index) in entity.get_company_relations">
+									{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
+								</span>
+							</td>
+							<td style='text-align:center;width:160px;'>
+								<span v-for="(activity,index) in entity.get_activities">
+									{{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
+								</span>
+							</td>
 							<td style='text-align:center;width:60px;'>
 								<span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
 								<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
@@ -96,9 +143,7 @@ Vue.component('app_entities_form',{
 	},
 	mounted: function(){},
 	template: `
-
 		<div>
-			errors: {{ form }}
 			<div class='row'>
 				<div class='col-lg-2 col-md-3 col-sm-4 col-xs-12'>
 		      <app_nacionality classes='form-control' v-model='form.object.nationality'></app_nacionality>
@@ -139,11 +184,11 @@ Vue.component('app_entities_form',{
 		    </div>
 
 		    <div class='col-lg-3 col-md-6 col-sm-6 col-xs-12'>
-		      <app_select_multiple classes='form-control' label='Tipo de relação' v-model='form.object.company_relations' :options='form.options.company_relations' empty="Não definido" title='Selecione os tipos de relações que essa entidade tem com a empresa.'></app_select_multiple>
+		      <app_select_multiple id='get_company_relations' classes='form-control' label='Tipo de relação' v-model='form.object.get_company_relations' :options='form.options.company_relations' empty="Não definido" title='Selecione os tipos de relações que essa entidade tem com a empresa.'></app_select_multiple>
 		    </div>
 
 		    <div class='col-lg-3 col-md-6 col-sm-6 col-xs-12'>
-		      <app_entity_activities classes='form-control' v-model='form.object.activities'></app_entity_activities>
+		      <app_select_multiple id='get_activities' classes='form-control' label='Tipo de atividade' v-model='form.object.get_activities' :options='form.options.activities' empty="Não definido" title='Selecione os tipos de atividades que essa entidade desempenha.'></app_select_multiple>
 		    </div>
 		  </div>
 
@@ -162,72 +207,6 @@ Vue.component('app_entities_form',{
 	    </div>
 		</div>
 	`,
-});
-
-Vue.component('app_disable_entity', {
-	mixins:[base_controller],
-	props:['data','form'],
-	methods: {
-		clean_form: function(){
-			let scope = this;
-			scope.form.entity.object.index 						= '';
-			scope.form.entity.object.id 							= '';
-			scope.form.entity.object.type 						= 'PJ';
-			scope.form.entity.object.official_doc 		= '';
-			scope.form.entity.object.name 						= '';
-			scope.form.entity.object.popular_name 		= '';
-			scope.form.entity.object.activities 			= '';
-			scope.form.entity.object.company_relation = '';
-			scope.form.entity.object.status 					= '';
-			scope.form.entity.object.nationality 			= 'BR';
-			scope.form.entity.object.comments 				= '';
-		},
-
-		disable: function(index) {
-			let scope = this;
-			let data_parameters = {
-				object: scope.data.objects[index].id,
-				password: scope.form.disable.password,
-				reason: scope.form.disable.reason
-			};
-
-			let success_function = function(response){
-				this.success_notify('Entidade desabilitada com sucesso', '');
-				scope.data.objects.splice(index,1);
-			};
-
-			let failure_function = function(response){
-				this.error_notify("Falha", "A entidade não pôde ser excluída")
-			};
-
-			let validation_function = function(response){
-				alert('Soldado ferido, para um pouco');
-				return true;
-			};
-
-			this.request('/api/entities/disable/', 'post', data_parameters, null, success_function, failure_function)
-		},
-	},
-	template:
-	`
-	<div class="modal-body">
-		<p style="border: 1px solid #ced4da;background: #f5f5f5; border-radius: 5px;padding: 5px;color: #000;">
-			<span style="font-size: 1.1em;">Atenção!</span>
-			<span style="font-size: 0.8em;">Esta é uma operação de alto risco! Se fizer isto, a entidade não será mais exibida nesta lista! Por isso, pedimos uma confirmação de senha e uma justificativa, que será salva junto com as informações de alteração.</span>
-		</p>
-		<form autocomplete="off">
-			<input autocomplete="false" name="hidden" type="text" style="display:none;">
-			<app_field type="password" label="Senha" classes="form-control" v-model="form.disable.password"></app_field>
-			<app_textarea classes='form-control' label='Justificativa'  v-model='form.disable.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
-		</form>
-		<div class="modal-footer">
-			<!--<button type="button" class="btn btn-primary" @click="disable(form.entity.object.index)" data-dismiss="modal">Desativar</button>-->
-		</div>
-	</div>
-
-
-
-	`
 });
 
 Vue.component('app_entities',{
@@ -261,6 +240,16 @@ Vue.component('app_entities',{
 							{'value': 'BAN', 'label':'Banco'},
 						],
 
+						activities:[
+							{'value': 'COM', 'label':'Comércio'},
+							{'value': 'SER', 'label':'Serviço'},
+							{'value': 'IND', 'label':'Indústria'},
+							{'value': 'IMP', 'label':'Importador'},
+							{'value': 'EXP', 'label':'Exportador'},
+							{'value': 'PRO', 'label':'Produtor Rural'},
+							{'value': 'EXT', 'label':'Extravista'},
+						],
+
 						commercial_status:[
 							{'value': 'HAB', 'label':'Habilitado'},
 							{'value': 'BLO', 'label':'Bloqueado'},
@@ -282,18 +271,22 @@ Vue.component('app_entities',{
 		        commercial_status: "HAB",
 		        company_relations: [],
 		        activities: [],
+
+		        get_company_relations: [],
+		        get_activities: [],
 		      },
 					backup:{},
 					errors:{}
 				},
+
 				disable:{
 					object:{
-						id: '',
+						id: null,
 						reason: '',
 						password: '',
 					},
-					reason: null,
-					password: null
+
+					errors: {},
 				}
 			}
 		}
@@ -314,16 +307,31 @@ Vue.component('app_entities',{
         alert('erro')
       };
 
-      this.request('/api/entity/load/', 'get', data_paramters, null, success_function, failure_function);
+      this.request('/api/entity/all/', 'get', data_paramters, null, success_function, failure_function);
     },
 
     save: function(){
 			let scope = this;
+			let is_update = false;
+			scope.forms.entity.object.company_relations = scope.forms.entity.object.get_company_relations;
+			scope.forms.entity.object.activities = scope.forms.entity.object.get_activities;
       let data_paramters = scope.forms.entity.object;
+
+      if(scope.forms.entity.object.id){
+        is_update = true;
+      }
       let success_function = function(response) {
         if(response.result){
+          $('#modal_entity').modal('hide');
           scope.forms.entity.errors = {};
-          scope.data.objects[scope.form.index] = response.object;
+          if(is_update){
+            Vue.set(scope.data.objects, scope.forms.entity.object.index, response.object);
+            //scope.$emit('update_object', scope.forms.entity.object.index, response.object)
+          }
+          else{
+            scope.data.objects.push(response.object);
+          }
+          $('#modal_entity').modal('hide');
           scope.init_formulary();
         }
         else{
@@ -347,33 +355,27 @@ Vue.component('app_entities',{
 				return result;
 			};
 
-      this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
+      this.request('/api/entity/save/', 'post', data_paramters, null, success_function, failure_function);
     },
 
 		disable: function(object, index) {
 			let scope = this;
-			let data_parameters = {
-				id: object.id,
-				reason: scope.forms.disable.object.reason,
-				password: scope.forms.disable.object.password,
-			};
-
+			let data_parameters = scope.forms.disable.object;
 			let success_function = function(response){
-				this.success_notify('Entidade desabilitada com sucesso', '');
-				scope.data.objects.splice(index,1);
-				alert("legal");
+				Vue.set(scope.data.objects, index, response.object);
+				success_notify('Operação realizada com sucesso!', '');
+				$('#modal_disable_entity').modal('hide');
 			};
 
 			let failure_function = function(response){
-				alert("deu erro");
+				scope.forms.disable.errors = response.message;
 			};
 
 			let validation_function = function(response){
-				alert('Soldado ferido, para um pouco');
 				return true;
 			};
 
-			this.request('/api/entities/disable/', 'post', data_parameters, null, success_function, failure_function)
+			this.request('/api/entity/disable/', 'post', data_parameters, null, success_function, failure_function)
 		},
 
     init_formulary: function(){
@@ -387,8 +389,17 @@ Vue.component('app_entities',{
         commercial_status: "HAB",
         company_relations: [],
         activities: [],
+        get_company_relations: [],
+        get_activities: [],
       }
     },
+
+    update_object: function(index, object){
+     let scope = this;
+     //scope.data.objects[index] = object;
+     Vue.set(scope.data.objects, index, object);
+     alert('troquei');
+    }
 	},
 
 	mounted: function(){
@@ -397,8 +408,7 @@ Vue.component('app_entities',{
 	},
 	template: `
 		<div>
-			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity">Adicionar</a>
-			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_disable_entity">Desativar</a>
+			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
 			<app_entities_table :forms='forms' :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
 
@@ -420,19 +430,19 @@ Vue.component('app_entities',{
 			  <template v-slot:content>
 			    <p style="">
 						<span style="font-size: 0.9em;">
-							Deseja mesmo desativar o registro <b><u>{{ forms.disable.object.name }} ({{ forms.disable.object.official_document }})</u></b> do sistema?<br>
+							Deseja mesmo desativar o registro <b><u>{{ forms.disable.object.name }} ({{ forms.disable.object.official_document }})</u></b> do sistema?
 							Por questões de segurança essa operação exige uma confirmação por senha e uma justificativa.
 						</span>
 					</p>
 
 					<form autocomplete="off">
-						<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable.object.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
-						<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable.object.password"></app_field>
+						<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable.object.reason' :error="forms.disable.errors.reason" title='Qual o motivo de desativar esta entidade?'></app_textarea>
+						<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable.object.password" :error="forms.disable.errors.password"></app_field>
 					</form>
 
 					<br>
 
-					<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'>Desativar</button>
+					<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'> <i class="fas fa-trash-alt"></i> Desativar</button>
 			  </template>
 			</app_modal>
 		</div>

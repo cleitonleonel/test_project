@@ -41,7 +41,7 @@ Vue.component('app_textarea', {
   		<sub v-if="label" style='text-align:left;padding-left:8px;color:#888;'>{{ label }}</sub>
   		<textarea :id="id" v-if='error' :value="value" :class="classes" :type="type" v-on:input="$emit('input', $event.target.value)" :placeholder="placeholder" :title="title" style="border: 1px solid #a82d29;"></textarea>
   		<textarea :id="id" v-else :value="value" :class="classes" :type="type" v-on:input="$emit('input', $event.target.value)" :placeholder="placeholder" :title="title"></textarea>
-  		<label v-if='error' style='font-size:10px;color: #c84141;position:relative;top:0px;float:right;'>{{ error }}</label>
+  		<label v-if='error' style='font-size:10px;color: #c84141;position:relative;top:0px;float:right;'>{{ error[0] }}</label>
   		<span v-if='error' class='clearfix'></span>
 		</div>
   	`
