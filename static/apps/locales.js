@@ -60,10 +60,8 @@ function get_location(){
               SESSION_PARAMTERS.latitude = lat;
               SESSION_PARAMTERS.longitude =lng;
               SESSION_PARAMTERS.distrit = response.results[0].address_components[2].long_name.toUpperCase();
-              alert("VEJA OS PARAMETROS:"+JSON.stringify(SESSION_PARAMTERS))
             }
           });
-
        },
        failure: function(data){
 
