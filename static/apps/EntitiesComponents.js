@@ -209,6 +209,73 @@ Vue.component('app_entities_form',{
 	`,
 });
 
+Vue.component('app_disable_entity', {
+	mixins:[base_controller],
+	props:['data','form'],
+	methods: {
+		clean_form: function(){
+			let scope = this;
+			scope.form.entity.object.index 						= '';
+			scope.form.entity.object.id 							= '';
+			scope.form.entity.object.type 						= 'PJ';
+			scope.form.entity.object.official_document 		= '';
+			scope.form.entity.object.name 						= '';
+			scope.form.entity.object.popular_name 		= '';
+			scope.form.entity.object.activities 			= '';
+			scope.form.entity.object.company_relation = '';
+			scope.form.entity.object.status 					= '';
+			scope.form.entity.object.nationality 			= 'BR';
+			scope.form.entity.object.comments 				= '';
+		},
+
+		disable: function(index) {
+			let scope = this;
+			let data_parameters = {
+				object: scope.data.objects[index].id,
+				password: scope.form.disable.password,
+				reason: scope.form.disable.reason
+			};
+
+			let success_function = function(response){
+				this.success_notify('Entidade desabilitada com sucesso', '');
+				scope.data.objects.splice(index,1);
+			};
+
+			let failure_function = function(response){
+				this.error_notify("Falha", "A entidade não pôde ser excluída")
+			};
+
+			let validation_function = function(response){
+				alert('Soldado ferido, para um pouco');
+				return true;
+			};
+
+
+			this.request('/api/entities/disable/', 'post', data_parameters, null, success_function, failure_function)
+		},
+	},
+	template:
+	`
+	<div class="modal-body">
+		<p style="border: 1px solid #ced4da;background: #f5f5f5; border-radius: 5px;padding: 5px;color: #000;">
+			<span style="font-size: 1.1em;">Atenção!</span>
+			<span style="font-size: 0.8em;">Esta é uma operação de alto risco! Se fizer isto, a entidade não será mais exibida nesta lista! Por isso, pedimos uma confirmação de senha e uma justificativa, que será salva junto com as informações de alteração.</span>
+		</p>
+		<form autocomplete="off">
+			<input autocomplete="false" name="hidden" type="text" style="display:none;">
+			<app_field type="password" label="Senha" classes="form-control" v-model="form.disable.password"></app_field>
+			<app_textarea classes='form-control' label='Justificativa'  v-model='form.disable.reason' title='Qual o motivo de desativar esta entidade?'></app_textarea>
+		</form>
+		<div class="modal-footer">
+			<!--<button type="button" class="btn btn-primary" @click="disable(form.entity.object.index)" data-dismiss="modal">Desativar</button>-->
+		</div>
+	</div>
+
+
+
+	`
+});
+
 Vue.component('app_entities',{
 	mixins: [base_controller],
 	props: [],
@@ -343,16 +410,103 @@ Vue.component('app_entities',{
         scope.forms.entity.errors = response.message;
       };
 
-      let validation_function = function () {
-				let result = true;
-				let error_keys = {'username' : 'usuário', 'password' : 'senha'};
-				for(let field in data_paramters){
-					if(!data_paramters[field]){
-						error_notify(null,"Falha na operação!","O campo de "+error_keys[field]);
+	    let validation_function = function () {
+        let result = true;
+        let error_keys = {'official_document' : 'Documento', 'name' : 'Nome', 'popular_name' : 'Razão Social', 'nationality' : 'Nacionalidade', 'company_relation' : 'Relação com a empresa'};
+        for(let field in data_paramters){
+          if(!data_paramters[field]){
+            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório.");
+            result = false;
+          }
+        }
+
+				if (!validate_cpf(data_paramters.official_document)){
+					var strCpf = data_paramters.official_document;
+
+					if (!/[0-9]{11}/.test(strCpf)) return false;
+					if (strCpf === "00000000000") return false;
+
+					var soma = 0;
+					for (var i=1; i <= 9; i++) {
+						soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
+					}
+
+					var resto = soma % 11;
+					if (resto === 10 || resto === 11 || resto < 2) {
+						resto = 0;
+					} else {
+						resto = 11 - resto;
+					}
+					if (resto !== parseInt(strCpf.substring(9, 10))) {
+							return false;
+					}
+
+					soma = 0;
+					for (var i = 1; i <= 10; i++) {
+							soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
+					}
+
+					resto = soma % 11;
+					if (resto === 10 || resto === 11 || resto < 2) {
+							resto = 0;
+					} else {
+							resto = 11 - resto;
+					}
+					if (resto !== parseInt(strCpf.substring(10, 11))) {
+							return false;
+					}
+
+					return true;
+				}
+
+				if(!validate_cnpj(data_paramters.official_document)) {
+						var c = official_document;
+							var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+
+					if((c = c.replace(/[^\d]/g,"")).length !== 14)
+							return false;
+
+					if(/0{14}/.test(c))
+							return false;
+
+					for (var i=0, n=0; i < 12; n += c[i] * b[++i]);
+						if(c[12] !== (((n %= 11) < 2) ? 0 : 11 - n))
+								return false;
+
+					for (var i=0, n=0; i <= 12; n += c[i] * b[i++]);
+						if(c[13] !== (((n %= 11) < 2) ? 0 : 11 - n))
+								return false;
+
+					return true;
+				}
+				if(!validate_official_doc(data_paramters.official_document)) {
+						error_notify(null,"Documento inválido","Confira se digitou corretamente os dígitos de seu cpf/cnpj.");
+						result = false;
+				}
+				if(!validate_name(data_paramters.name)) {
+						var name = InStr(data_paramters," ");
+						if (name === 0){
+							result = false;
+						}
+						error_notify(null,"Nome inválido","Confira se digitou corretamente.");
 						result = false;
 					}
-				}
-				return result;
+					if(!validate_popular_name(data_paramters.popular_name)) {
+						if (data_paramters.popular_name < 3) {
+							result = false;
+						}
+						error_notify(null,"Razão social inválida","Confira se digitou corretamente.");
+						result = false;
+					}
+					if(!validate_nationality(data_paramters.nationality)) {
+						error_notify(null,"Nacionalidade inválida","Confira se digitou corretamente sua nacionalidade.");
+						result = false;
+					}
+					if(!validate_company_relation(data_paramters.company_relation)) {
+						error_notify(null,"Relação com a 	empresa inválida","Confira se digitou corretamente sua relação com a empresa.");
+						result = false;
+					}
+					return result;
 			};
 
       this.request('/api/entity/save/', 'post', data_paramters, null, success_function, failure_function);

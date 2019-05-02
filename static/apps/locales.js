@@ -17,7 +17,6 @@ function set_ip(id){
    return id;
 }
 
-
 function get_location(){
 
     let key = "AIzaSyA5pZBwmGJJ8f8POml7158nP2yxgvFtoXA";
@@ -27,11 +26,21 @@ function get_location(){
        contentType: 'application/json',
        data: JSON.stringify({"considerIp": "true"}),
        url: url_post,
-
        success: function(data) {
-          console.log(JSON.stringify(data));
+          //console.log('<---- Geolocation GOOGLEAPIS -------->');
+
+          console.log("Latitude  : "+data.location.lat);
+          console.log("Longitude : "+data.location.lng);
+          console.log("Aproximação : "+data.accuracy);
+
+          //data.location.lat = -20.3341824;
+          //data.location.lng = -40.3750912;
+          //20.3341824 - Longitude: -40.3750912
           let lat = data.location.lat + 0.000507;
           let lng = data.location.lng + 0.001963;
+          //console.log("<------ LOCALIZAÇÃO CORRIGIDA ------->");
+          //console.log("Latitude  : "+lat);
+          //console.log("Longitude : "+lng);
 
           let url_places = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
           $.ajax({
@@ -51,7 +60,6 @@ function get_location(){
               SESSION_PARAMTERS.latitude = lat;
               SESSION_PARAMTERS.longitude =lng;
               SESSION_PARAMTERS.distrit = response.results[0].address_components[2].long_name.toUpperCase();
-
             }
           });
 
@@ -152,5 +160,39 @@ function get_internal_ip(callback){
     }, 1000);
 }
 
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  alert("Latitude: " + position.coords.latitude +
+  " - Longitude: " + position.coords.longitude);
+}
+//getLocation()
+
+//navigator.geolocation.getCurrentPosition(success, error, options);
 get_location();
+var options = {
+
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 20
+};
+
+function success(pos) {
+  var crd = pos.coords;
+
+  console.log('<----- Geolocation do Navegador -------->');
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`More or less ${crd.accuracy} meters.`);
+};
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+};
 

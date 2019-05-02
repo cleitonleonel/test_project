@@ -175,11 +175,10 @@ BOWER_INSTALLED_APPS = (
     'jquery',
     'bootstrap',
     'bootstrap-select',
-
     'jquery-nicescroll',
     'font-awesome',
     'nprogress',
-    'pnotify',
+    'pnotify#3.2.1',
     'moment',
     #https://github.com/snokier/v-contextmenu
     #'vue-resize-mixin',
