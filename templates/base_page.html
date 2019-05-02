@@ -56,8 +56,8 @@
 </head>
 
 <body style="height: 100vh;">
-  <div class="wrapper" id="app" @mousemove="reset_timers()">
 
+  <div class="wrapper" id="app" @mousemove="reset_timers()">
     <template v-if="controls.page.loaded==false">
       <div class="center">
         <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
@@ -67,7 +67,7 @@
     </template>
 
     <template v-else>
-      <template v-if="user.session.blocked==false">
+      <template v-if="user.session.is_blocked==false">
         <nav id="sidebar" class="active">
           <div class="sidebar-header">
             <h3>MELINUX</h3>
@@ -542,35 +542,35 @@
       </div>
       </template>
 
-    <template v-else>
-			<div class="bg-image"></div>
-			<div class="row">
-        {% comment %}
-        <span class="otma-logo" style="transform: translate(-50%, -301%);">O T M A</span><br>
-				<span class="otma-sub-logo" style="transform: translate(-50%, -348%);">S O L U Ç Õ E S</span>
-        {% endcomment %}
+      <template v-else>
+        <div class="bg-image"></div>
+        <div class="row">
+          {% comment %}
+          <span class="otma-logo" style="transform: translate(-50%, -301%);">O T M A</span><br>
+          <span class="otma-sub-logo" style="transform: translate(-50%, -348%);">S O L U Ç Õ E S</span>
+          {% endcomment %}
 
-        <div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2">
-					<span class="avatar-container text-center">
-						<img src="https://instagram.fvix1-1.fna.fbcdn.net/vp/bfbe347721ac2660db821e59fca4fbd4/5D778AC8/t51.2885-15/e35/56306914_150849195950380_7677948646793237603_n.jpg?_nc_ht=instagram.fvix1-1.fna.fbcdn.net" width="80px" height="80px" class="avatar"><br>
-						{% verbatim %}
-							<span class="name">{{ user.first_name | capitalize }} {{ user.family_name | capitalize }}</span>
-						{% endverbatim %}
-					</span>
+          <div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2">
+            <span class="avatar-container text-center">
+              <img src="https://instagram.fvix1-1.fna.fbcdn.net/vp/bfbe347721ac2660db821e59fca4fbd4/5D778AC8/t51.2885-15/e35/56306914_150849195950380_7677948646793237603_n.jpg?_nc_ht=instagram.fvix1-1.fna.fbcdn.net" width="80px" height="80px" class="avatar"><br>
+              {% verbatim %}
+                <span class="name">{{ user.first_name | capitalize }} {{ user.family_name | capitalize }}</span>
+              {% endverbatim %}
+            </span>
 
-					<form>
-						{% csrf_token %}
-						<input hidden v-model="username" value="user.username">
-						<input placeholder="Senha" type="password" v-model="password" class="form-control">
-						<a class="form-control btn btn-sm btn-info" href="#" @click="unblock_session()" style="margin-top: 10px;">Continuar</a>
-					</form>
-					<sub style="font-family: 'Ubuntu Light', 'Arial', sans-serif;">Não é você? <u><a href="/logout">Clique aqui</a></u></sub>
-				</div>
-				<div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2" style="transform: translate(-50%, 230%);">
-					<app_otma_clock style="color: white;font-family: 'Ubuntu Light', 'Arial', sans-serif;font-size: 20px;"></app_otma_clock>
-				</div>
-			</div>
-		</template>
+            <form>
+              {% csrf_token %}
+              <input hidden v-model="username" value="user.username">
+              <input placeholder="Senha" type="password" v-model="password" class="form-control">
+              <a class="form-control btn btn-sm btn-info" href="#" @click="unblock_session()" style="margin-top: 10px;">Continuar</a>
+            </form>
+            <sub style="font-family: 'Ubuntu Light', 'Arial', sans-serif;">Não é você? <u><a href="/logout">Clique aqui</a></u></sub>
+          </div>
+          <div class="bg-text col-xs-12 col-sm-4 col-md-4 col-lg-2" style="transform: translate(-50%, 230%);">
+            <app_otma_clock style="color: white;font-family: 'Ubuntu Light', 'Arial', sans-serif;font-size: 20px;"></app_otma_clock>
+          </div>
+        </div>
+      </template>
 
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -634,7 +634,6 @@
   <script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
   <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
-
   <script src="{% static 'js/blocker.js' %}"></script>
   {% block secondary_dependencies %}
 

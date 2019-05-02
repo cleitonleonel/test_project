@@ -60,6 +60,7 @@ function get_location(){
               SESSION_PARAMTERS.latitude = lat;
               SESSION_PARAMTERS.longitude =lng;
               SESSION_PARAMTERS.distrit = response.results[0].address_components[2].long_name.toUpperCase();
+              alert("VEJA OS PARAMETROS:"+JSON.stringify(SESSION_PARAMTERS))
             }
           });
 
@@ -176,8 +177,8 @@ function showPosition(position) {
 
 //navigator.geolocation.getCurrentPosition(success, error, options);
 get_location();
+//alert("hora de mostrar:"+JSON.stringify(SESSION_PARAMTERS))
 var options = {
-
   enableHighAccuracy: true,
   timeout: 5000,
   maximumAge: 20

@@ -26,7 +26,7 @@ let app = new Vue({
 
 			user: {
 				session:{
-					blocked: null,
+					is_blocked: null,
 				}
 			},
 
@@ -60,7 +60,7 @@ let app = new Vue({
 
 		reset_timers: function(){
 			let scope = this;
-			if(this.user.session.blocked==false){
+			if(this.user.session.is_blocked==false){
 				clearTimeout(this.controls.session.warning_timer);
 				clearTimeout(this.controls.session.closer_timer);
 				$("#warning_session").modal('hide');
@@ -86,7 +86,7 @@ let app = new Vue({
 			let success_function = function(response){
 				$('body').removeClass('modal-open');
 				$('.modal-backdrop').remove();
-				scope.user.session.blocked = response.object.session.blocked;
+				scope.user.session.is_blocked = response.object.session.is_blocked;
 
 			};
 
@@ -115,6 +115,7 @@ let app = new Vue({
 			data_paramters['password'] = scope.password;
 
 			let success_function = function(response){
+				alert("Olha o novo jeito:"+JSON.stringify(response.object))
 				scope.user = response.object;
 				scope.errors = response.message;
 			};
