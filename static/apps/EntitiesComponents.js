@@ -411,105 +411,13 @@ Vue.component('app_entities',{
       };
 
 	    let validation_function = function () {
+	    	console.log('validando, pera aí');
         let result = true;
-        let error_keys = {'official_document' : 'Documento', 'name' : 'Nome', 'popular_name' : 'Razão Social', 'nationality' : 'Nacionalidade', 'company_relation' : 'Relação com a empresa'};
-        for(let field in data_paramters){
-          if(!data_paramters[field]){
-            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório.");
-            result = false;
-          }
-        }
 
-				if (!validate_cpf(data_paramters.official_document)){
-					var strCpf = data_paramters.official_document;
-
-					if (!/[0-9]{11}/.test(strCpf)) return false;
-					if (strCpf === "00000000000") return false;
-
-					var soma = 0;
-					for (var i=1; i <= 9; i++) {
-						soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
-					}
-
-					var resto = soma % 11;
-					if (resto === 10 || resto === 11 || resto < 2) {
-						resto = 0;
-					} else {
-						resto = 11 - resto;
-					}
-					if (resto !== parseInt(strCpf.substring(9, 10))) {
-							return false;
-					}
-
-					soma = 0;
-					for (var i = 1; i <= 10; i++) {
-							soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
-					}
-
-					resto = soma % 11;
-					if (resto === 10 || resto === 11 || resto < 2) {
-							resto = 0;
-					} else {
-							resto = 11 - resto;
-					}
-					if (resto !== parseInt(strCpf.substring(10, 11))) {
-							return false;
-					}
-
-					return true;
-				}
-
-				if(!validate_cnpj(data_paramters.official_document)) {
-						var c = official_document;
-							var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
-
-					if((c = c.replace(/[^\d]/g,"")).length !== 14)
-							return false;
-
-					if(/0{14}/.test(c))
-							return false;
-
-					for (var i=0, n=0; i < 12; n += c[i] * b[++i]);
-						if(c[12] !== (((n %= 11) < 2) ? 0 : 11 - n))
-								return false;
-
-					for (var i=0, n=0; i <= 12; n += c[i] * b[i++]);
-						if(c[13] !== (((n %= 11) < 2) ? 0 : 11 - n))
-								return false;
-
-					return true;
-				}
-				if(!validate_official_doc(data_paramters.official_document)) {
-						error_notify(null,"Documento inválido","Confira se digitou corretamente os dígitos de seu cpf/cnpj.");
-						result = false;
-				}
-				if(!validate_name(data_paramters.name)) {
-						var name = InStr(data_paramters," ");
-						if (name === 0){
-							result = false;
-						}
-						error_notify(null,"Nome inválido","Confira se digitou corretamente.");
-						result = false;
-					}
-					if(!validate_popular_name(data_paramters.popular_name)) {
-						if (data_paramters.popular_name < 3) {
-							result = false;
-						}
-						error_notify(null,"Razão social inválida","Confira se digitou corretamente.");
-						result = false;
-					}
-					if(!validate_nationality(data_paramters.nationality)) {
-						error_notify(null,"Nacionalidade inválida","Confira se digitou corretamente sua nacionalidade.");
-						result = false;
-					}
-					if(!validate_company_relation(data_paramters.company_relation)) {
-						error_notify(null,"Relação com a 	empresa inválida","Confira se digitou corretamente sua relação com a empresa.");
-						result = false;
-					}
-					return result;
+				return result;
 			};
 
-      this.request('/api/entity/save/', 'post', data_paramters, null, success_function, failure_function);
+      this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
 
 		disable: function(object, index) {
