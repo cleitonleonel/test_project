@@ -411,12 +411,104 @@ Vue.component('app_entities',{
       };
 
 	    let validation_function = function () {
-	    	console.log('validando, pera aí');
-        let result = true;
+	    	//alert('DATA: ' + JSON.stringify(data_paramters));
+	    	//console.lg('validando, pera aí');
+
+				let validate_cpf = function (strCpf) {
+					alert(strCpf);
+
+					if (!/[0-9]{11}/.test(strCpf)) return false;
+
+					if (strCpf.length < 11) return false;
+
+					if (strCpf.length > 11) return false;
+
+					if (strCpf === "00000000000") return false;
+
+					let soma = 0;
+
+					for (let i = 1; i <= 9; i++) {
+							soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
+					}
+
+					let resto = soma % 11;
+
+					if (resto === 10 || resto === 11 || resto < 2) {
+							resto = 0;
+					} else {
+							resto = 11 - resto;
+					}
+
+					if (resto !== parseInt(strCpf.substring(9, 10))) {
+							return false;
+					}
+
+					soma = 0;
+
+					for (let i = 1; i <= 10; i++) {
+							soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
+					}
+					resto = soma % 11;
+
+					if (resto === 10 || resto === 11 || resto < 2) {
+							resto = 0;
+					} else {
+							resto = 11 - resto;
+					}
+
+					if (resto !== parseInt(strCpf.substring(10, 11))) {
+							return false;
+					}
+
+					return true;
+				};
+
+        let validate_cnpj = function (strCnpj){
+        	alert(strCnpj);
+        	let c = strCnpj;
+          let b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+
+					if((c = c.replace(/[^\d]/g,"")).length !== 14)
+							return false;
+
+					if(/0{14}/.test(c))
+							return false;
+
+					for (let i = 0, n = 0; i < 12; n += c[i] * b[++i]);
+						if(c[12] !== (((n %= 11) < 2) ? 0 : 11 - n))
+								return false;
+
+					for (let i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
+						if(c[13] !== (((n %= 11) < 2) ? 0 : 11 - n))
+								return false;
+
+					return true;
+        };
+
+				if (data_paramters.type === 'PF') {
+					//console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
+					let strCpf = data_paramters.official_document;
+					if (!validate_cpf(strCpf)) {
+							alert("Seu CPF é inválido!!!");
+							return;
+					} else {
+						alert("Seu CPF é válido!!!");
+					}
+				}
+
+				if (data_paramters.type === 'PJ') {
+					//console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
+					let strCpf = data_paramters.official_document;
+					if (!validate_cnpj(strCpf)) {
+							alert("Seu CNPJ é inválido!!!");
+							return;
+					} else {
+						alert("Seu CNPJ é válido!!!");
+					}
+				}
 
 				return result;
 			};
-
       this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
 
