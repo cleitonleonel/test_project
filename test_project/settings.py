@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-from conf import profile
 from conf.profile import POSTGRES_USER, POSTGRES_PASSWORD, BOWER_PATH
 import os
 
@@ -38,13 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    # 'session_security',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'otma.apps.core.authentication',
     'otma.apps.core.commons',
     'otma.apps.core.communications',
-    'otma.apps.core.management',
     'otma.apps.core.security',
     'otma.apps.entities',
     'djangobower',
@@ -59,7 +56,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'session_security.middleware.SessionSecurityMiddleware',
 ]
 
 #CONTEXT_PROCESSORS = "django.core.context_processors.request"
@@ -100,13 +96,6 @@ DATABASES = {
     }
 }
 
-SESSION_SECURITY_EXPIRE_AFTER = 300
-SESSION_SECURITY_WARN_AFTER =  280
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_SECURITY_INSECURE = True
-
-REQUIREMENTS = r'conf/requirements.txt'
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -140,16 +129,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+REQUIREMENTS = r'conf/requirements/dependencies.txt'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root/') #os.path.join(BASE_DIR, 'static/') #STATIC_URL
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'static'), ]
+STATIC_ROOT = STATIC_URL
+STATICFILES_DIRS = [BASE_DIR+os.path.join('/static'), ]
 
 AUTH_USER_MODEL = 'authentication.User'
-LOGIN_REDIRECT_URL = "/login"
-LOGIN_URL = '/login'
-
 ERRORS_MESSAGES = {
     'invalid': 'Conteúdo inválido',
     'document_invalid': 'Documento inválido',
@@ -185,12 +175,3 @@ BOWER_INSTALLED_APPS = (
     #'rateyo'
 
 )
-
-# Service for send Email configurations
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = 'melinuxsistemas@gmail.com'
-EMAIL_HOST_USER = profile.EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = profile.EMAIL_HOST_PASSWORD
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
