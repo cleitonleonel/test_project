@@ -155,8 +155,8 @@ Vue.component('app_entities_form',{
 
 		    <div class='col-lg-2 col-md-6 col-sm-4 col-xs-12'>
 		      <template v-if="form.object.nationality=='BR'">
-			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'"></app_field>
-			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else=""></app_field>
+			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'" ></app_field>
+			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else="" ></app_field>
 		      </template>
 
 		      <template v-else>
@@ -165,8 +165,8 @@ Vue.component('app_entities_form',{
 		    </div>
 
 				<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12'>
-		      <app_field classes='form-control' label='Nome completo' v-model='form.object.name' :error='form.errors.name' title='Informe o nome completo.' v-if="form.object.type== 'PF'"></app_field>
-		      <app_field classes='form-control' label='Razão social' v-model='form.object.name' :error='form.errors.name' title='Informe a razão social.' v-else></app_field>
+		      <app_field classes='form-control' label='Nome completo' v-model='form.object.name' :error='form.errors.name' title='Informe o nome completo.' v-if="form.object.type=='PF'"></app_field>
+		      <app_field classes='form-control' label='Razão social' v-model='form.object.name' :error='form.errors.name' title='Informe a razão social.' v-else="form.object.type=='PJ'"></app_field>
 		    </div>
 
 		    <div class='col-lg-2 col-md-4 col-sm-12 col-xs-12'>
@@ -464,25 +464,57 @@ Vue.component('app_entities',{
 				};
 
         let validate_cnpj = function (strCnpj){
-        	alert(strCnpj);
-        	let c = strCnpj;
-          let b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
 
-					if((c = c.replace(/[^\d]/g,"")).length !== 14)
-							return false;
+            let cnpj = strCnpj.replace(/[^\d]+/g,'');
 
-					if(/0{14}/.test(c))
-							return false;
+            if(cnpj == '') return false;
 
-					for (let i = 0, n = 0; i < 12; n += c[i] * b[++i]);
-						if(c[12] !== (((n %= 11) < 2) ? 0 : 11 - n))
-								return false;
+            if (cnpj.length != 14)
+                return false;
 
-					for (let i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
-						if(c[13] !== (((n %= 11) < 2) ? 0 : 11 - n))
-								return false;
+            // Elimina CNPJs invalidos conhecidos
+            if (cnpj == "00000000000000" ||
+                cnpj == "11111111111111" ||
+                cnpj == "22222222222222" ||
+                cnpj == "33333333333333" ||
+                cnpj == "44444444444444" ||
+                cnpj == "55555555555555" ||
+                cnpj == "66666666666666" ||
+                cnpj == "77777777777777" ||
+                cnpj == "88888888888888" ||
+                cnpj == "99999999999999")
+                return false;
 
-					return true;
+            // Valida DVs
+            let tamanho = cnpj.length - 2
+            let numeros = cnpj.substring(0,tamanho);
+            let digitos = cnpj.substring(tamanho);
+            let soma = 0;
+            let pos = tamanho - 7;
+            for (i = tamanho; i >= 1; i--) {
+              soma += numeros.charAt(tamanho - i) * pos--;
+              if (pos < 2)
+                    pos = 9;
+            }
+            let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(0))
+                return false;
+
+            tamanho = tamanho + 1;
+            numeros = cnpj.substring(0,tamanho);
+            soma = 0;
+            pos = tamanho - 7;
+            for (i = tamanho; i >= 1; i--) {
+              soma += numeros.charAt(tamanho - i) * pos--;
+              if (pos < 2)
+                    pos = 9;
+            }
+            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+            if (resultado != digitos.charAt(1))
+                  return false;
+
+            return true;
+
         };
 
 				if (data_paramters.type === 'PF') {
@@ -497,9 +529,9 @@ Vue.component('app_entities',{
 				}
 
 				if (data_paramters.type === 'PJ') {
-					//console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
-					let strCpf = data_paramters.official_document;
-					if (!validate_cnpj(strCpf)) {
+					console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
+					let strCnpj = data_paramters.official_document;
+					if (!validate_cnpj(strCnpj)) {
 							alert("Seu CNPJ é inválido!!!");
 							return;
 					} else {
@@ -507,7 +539,7 @@ Vue.component('app_entities',{
 					}
 				}
 
-				return result;
+				return true;
 			};
       this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },

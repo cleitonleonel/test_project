@@ -5,7 +5,7 @@ Vue.component('app_entities_table',{
 			let scope = this;
 			scope.form.id = scope.data[key].id;
 			scope.form.type = scope.data[key].type;
-			scope.form.official_doc = scope.data[key].official_doc;
+			scope.form.official_document = scope.data[key].official_document;
 			scope.form.name = scope.data[key].name;
 			scope.form.popular_name = scope.data[key].popular_name;
 			scope.form.activities = scope.data[key].activities;
@@ -37,7 +37,7 @@ Vue.component('app_entities_table',{
 		<tr v-if="entity.data != ''" v-for="(entity, index) in data">
 			<td style="padding-left: 5px;padding-right: 5px;"><a role="button" @click="edit(index)" class="btn btn-sm btn-primary" style="color: #ffffff;cursor: pointer;">Editar</a></td>
 			<td>{{ entity.type }}</td>
-			<td>{{ entity.official_doc }}</td>
+			<td>{{ entity.official_document }}</td>
 			<td>{{ entity.name }}</td>
 			<td>{{ entity.popular_name }}</td>
 			<td>{{ entity.nationality }}</td>
@@ -86,7 +86,7 @@ Vue.component('app_entities_form',{
 
 			let validation_function = function () {
         let result = true;
-        let error_keys = {'official_doc' : 'Documento', 'name' : 'Nome', 'popular_name' : 'Razão Social', 'nationality' : 'Nacionalidade', 'company_relation' : 'Relação com a empresa'};
+        let error_keys = {'official_document' : 'Documento', 'name' : 'Nome', 'popular_name' : 'Razão Social', 'nationality' : 'Nacionalidade', 'company_relation' : 'Relação com a empresa'};
         for(let field in data_paramters){
           if(!data_paramters[field]){
             error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório.");
@@ -94,8 +94,8 @@ Vue.component('app_entities_form',{
           }
         }
 
-				if (!validate_cpf(data_paramters.official_doc)){
-					var strCpf = data_paramters.official_doc;
+				if (!validate_cpf(data_paramters.official_document)){
+					var strCpf = data_paramters.official_document;
 
 					if (!/[0-9]{11}/.test(strCpf)) return false;
 					if (strCpf === "00000000000") return false;
@@ -133,8 +133,8 @@ Vue.component('app_entities_form',{
 					return true;
 				}
 
-        if(!validate_cnpj(data_paramters.official_doc)) {
-        	var c = official_doc;
+        if(!validate_cnpj(data_paramters.official_document)) {
+        	var c = official_document;
           var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
 
 					if((c = c.replace(/[^\d]/g,"")).length != 14)
@@ -153,7 +153,7 @@ Vue.component('app_entities_form',{
 
 					return true;
         }
-        if(!validate_official_doc(data_paramters.official_doc)) {
+        if(!validate_official_doc(data_paramters.official_document)) {
           error_notify(null,"Documento inválido","Confira se digitou corretamente os dígitos de seu cpf/cnpj.");
           result = false;
         }
@@ -183,8 +183,8 @@ Vue.component('app_entities_form',{
 			<app_select label="Tipo de Entidade" title="Selecione o tipo de entidade" :options="options.type" id="type" classes="form-control" v-model="data.type"></app_select>
 		</div>
 		<div class="col-6">
-			<app_field label="CPF" title="Digite seu CPF" id="official_doc" classes="form-control" v-model="data.official_doc" v-if="data.type == 'PF'"></app_field>
-			<app_field label="CNPJ" title="Digite seu CNPJ" id="official_doc" classes="form-control" v-model="data.official_doc" v-if="data.type == 'PJ'"></app_field>
+			<app_field label="CPF" title="Digite seu CPF" id="official_document" classes="form-control" v-model="data.official_document"  v-if="data.type =='PF'"></app_field>
+			<app_field label="CNPJ" title="Digite seu CNPJ" id="official_document" classes="form-control" v-model="data.official_document" v-if="data.type == 'PJ'"></app_field>
 			<app_field_disabled placeholder="Escolha um tipo de entidade" classes="form-control" v-if="!data.type" style="margin-top: 23px;"></app_field_disabled>
 		</div>
 	</div>
