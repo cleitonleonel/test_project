@@ -154,7 +154,20 @@ let app = new Vue({
       };
 
       this.request('/api/core/authentication/get_user/', 'get', data_paramters, null, success_function, failure_function);
-		}
+		},
+
+		remove_context: function(){
+			//this.context.local = {}
+		},
+
+		handleClick: function(vm, event) {
+			console.log(vm, event)
+			this.remove_context();
+		},
+		handleSubmenuShow: function(vm, placement) {
+			console.log(vm, placement)
+			this.remove_context();
+		},
 	},
 
 	created: function () {

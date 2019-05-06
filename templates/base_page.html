@@ -30,17 +30,14 @@
       .ui-pnotify-container {
         padding-top:8px;
       }
-
       .ui-pnotify-title {
         padding-top:4px;
         font-size:12px;
       }
-
       .ui-pnotify-text {
         padding-top:5px;
         font-size:10px;
       }
-
       .center {
         margin: auto;
         margin-top: 130px;
@@ -618,7 +615,6 @@
 
   </div>
 </body>
-{% load static %}
   {% load static %}
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
   <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
@@ -627,8 +623,7 @@
   <script src="{% static 'apps/test_project/util/js/notify.js' %}"></script>
   <script src="{% static 'apps/test_project/js/otma-scripts.js' %}"></script>
   <script src="{% static 'apps/test_project/js/otma-validations.js' %}"></script>
-
-  <script src="{% static 'apps/core/management/action.js' %}"></script>
+  <script src="{% static 'apps/core/authentication/action.js' %}"></script>
 
   <script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
   <script src="{% static 'apps/AppComponents.js' %}"></script>
@@ -642,9 +637,4 @@
       register_action();
     }, false);
   </script>
-
-	 <script>
-    //alert(app.test_session("{{ request.session.locked }}"))
-  </script>
 </html>
-
