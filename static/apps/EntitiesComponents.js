@@ -413,133 +413,48 @@ Vue.component('app_entities',{
 	    let validation_function = function () {
 	    	//alert('DATA: ' + JSON.stringify(data_paramters));
 	    	//console.lg('validando, pera aí');
-
-				let validate_cpf = function (strCpf) {
-					alert(strCpf);
-
-					if (!/[0-9]{11}/.test(strCpf)) return false;
-
-					if (strCpf.length < 11) return false;
-
-					if (strCpf.length > 11) return false;
-
-					if (strCpf === "00000000000") return false;
-
-					let soma = 0;
-
-					for (let i = 1; i <= 9; i++) {
-							soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
-					}
-
-					let resto = soma % 11;
-
-					if (resto === 10 || resto === 11 || resto < 2) {
-							resto = 0;
-					} else {
-							resto = 11 - resto;
-					}
-
-					if (resto !== parseInt(strCpf.substring(9, 10))) {
-							return false;
-					}
-
-					soma = 0;
-
-					for (let i = 1; i <= 10; i++) {
-							soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
-					}
-					resto = soma % 11;
-
-					if (resto === 10 || resto === 11 || resto < 2) {
-							resto = 0;
-					} else {
-							resto = 11 - resto;
-					}
-
-					if (resto !== parseInt(strCpf.substring(10, 11))) {
-							return false;
-					}
-
-					return true;
-				};
-
-        let validate_cnpj = function (strCnpj){
-
-            let cnpj = strCnpj.replace(/[^\d]+/g,'');
-
-            if(cnpj == '') return false;
-
-            if (cnpj.length != 14)
-                return false;
-
-            // Elimina CNPJs invalidos conhecidos
-            if (cnpj == "00000000000000" ||
-                cnpj == "11111111111111" ||
-                cnpj == "22222222222222" ||
-                cnpj == "33333333333333" ||
-                cnpj == "44444444444444" ||
-                cnpj == "55555555555555" ||
-                cnpj == "66666666666666" ||
-                cnpj == "77777777777777" ||
-                cnpj == "88888888888888" ||
-                cnpj == "99999999999999")
-                return false;
-
-            // Valida DVs
-            let tamanho = cnpj.length - 2
-            let numeros = cnpj.substring(0,tamanho);
-            let digitos = cnpj.substring(tamanho);
-            let soma = 0;
-            let pos = tamanho - 7;
-            for (i = tamanho; i >= 1; i--) {
-              soma += numeros.charAt(tamanho - i) * pos--;
-              if (pos < 2)
-                    pos = 9;
-            }
-            let resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-            if (resultado != digitos.charAt(0))
-                return false;
-
-            tamanho = tamanho + 1;
-            numeros = cnpj.substring(0,tamanho);
-            soma = 0;
-            pos = tamanho - 7;
-            for (i = tamanho; i >= 1; i--) {
-              soma += numeros.charAt(tamanho - i) * pos--;
-              if (pos < 2)
-                    pos = 9;
-            }
-            resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
-            if (resultado != digitos.charAt(1))
-                  return false;
-
-            return true;
-
-        };
-
 				if (data_paramters.type === 'PF') {
 					//console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
-					let strCpf = data_paramters.official_document;
-					if (!validate_cpf(strCpf)) {
+					//let strCpf = data_paramters.official_document;
+					if (!validate_cpf(data_paramters.official_document)) {
 							alert("Seu CPF é inválido!!!");
 							return;
 					} else {
 						alert("Seu CPF é válido!!!");
 					}
-				}
+          if (!validate_name(data_paramters.name)){
+             alert("Digite um nome válido.")
+             return;
+          }
 
-				if (data_paramters.type === 'PJ') {
-					console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
-					let strCnpj = data_paramters.official_document;
-					if (!validate_cnpj(strCnpj)) {
-							alert("Seu CNPJ é inválido!!!");
-							return;
-					} else {
-						alert("Seu CNPJ é válido!!!");
-					}
-				}
+          if (!validate_data(data_paramters.birthdate_foundation)){
+             alert("Data Inválida!!!")
+             return;
+          } else {
+             alert("Data está ok!!!")
+          }
 
-				return true;
+        }
+
+        if (data_paramters.type === 'PJ') {
+            console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
+            //let strCnpj = data_paramters.official_document;
+            if (!validate_cnpj(data_paramters.official_document)) {
+                alert("Seu CNPJ é inválido!!!");
+                return;
+            } else {
+              alert("Seu CNPJ é válido!!!");
+            }
+
+            if (!validate_name(data_paramters.name)){
+             alert("Digite um nome valido")
+             return;
+            }
+
+        }
+
+
+        return true;
 			};
       this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
