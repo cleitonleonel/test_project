@@ -24,9 +24,8 @@
   }
 
   .table_entities td{
-    font-size:12px;
     height: 26px;
-    padding: 0px 4px 0px 4px;
+    padding: 0 4px 0 4px;
   }
 
   .table_entities button{
@@ -35,8 +34,10 @@
   }
 </style>
 {% load static %}
+<script src="{% static 'apps/test_project/commons/components/ModalComponents.js' %}"></script>
+<script src="{% static 'apps/EntitiesComponents.js' %}"></script>
 <link rel="stylesheet" href="{% static 'bower_components/bootstrap-select/dist/css/bootstrap-select.min.css' %}">
-
+<script src="{% static 'bower_components/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
 {% endblock %}
 
 {% block main_content %}
@@ -72,9 +73,28 @@
 
 {% block secondary_dependencies %}
 {% load static %}
-<script src="{% static 'bower_components/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
-<script src="{% static 'apps/test_project/commons/components/ModalComponents.js' %}"></script>
-<script src="{% static 'apps/EntitiesComponents.js' %}"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+  /*function initialize() {
+      var loc = {};
+      var geocoder = new google.maps.Geocoder();
+      if(google.loader.ClientLocation) {
+          loc.lat = google.loader.ClientLocation.latitude;
+          loc.lng = google.loader.ClientLocation.longitude;
+
+          var latlng = new google.maps.LatLng(loc.lat, loc.lng);
+          geocoder.geocode({'latLng': latlng}, function(results, status) {
+              if(status == google.maps.GeocoderStatus.OK) {
+                  alert(results[0]['formatted_address']);
+              };
+          });
+      }
+  }
+
+  google.load("maps", "3.x", {other_params: "sensor=false", callback:initialize});
+  */
+</script>
 
 	<script>
 	$("table#entity-table").scrollLeft(0)
