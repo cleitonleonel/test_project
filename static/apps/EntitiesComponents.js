@@ -1,12 +1,39 @@
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['forms', 'data', 'classes'],
+	props: ['forms', 'data', 'classes', 'table'],
 	data: function(){
 		return {
 		}
 	},
 
 	methods: {
+		aumentar_fonte: function(){
+			const font = this.table.fontSize;
+			if (font < 18) {
+				this.table.fontSize += 1;
+			}
+			else {	}
+		},
+
+		diminuir_fonte: function(){
+			const font = this.table.fontSize;
+			if (font <= 9){	}
+			else {
+				this.table.fontSize -= 1;
+			}
+
+		},
+
+		toggle_border: function() {
+			const table = this.table.tableBordered;
+			this.table.tableBordered = !table
+		},
+
+		toggle_strip: function() {
+			const table = this.table.tableStriped;
+			this.table.tableStriped = !table
+		},
+
 		open: function(register, index){
       this.forms.entity.object = JSON.parse(JSON.stringify(register));
       this.forms.entity.backup = register;
@@ -63,8 +90,14 @@ Vue.component('app_entities_table',{
   },
 	template: `
 		<div style="border: 1px solid #eee;box-sizing: border-box;">
+			<button @click="aumentar_fonte()">+</button> {{ table.fontSize }}
+			<button @click="diminuir_fonte()">-</button>
+			<div class="btn-group-sm">
+				<button class="btn btn-info" @click="toggle_border()">Borda</button>
+				<button class="btn btn-info" @click="toggle_strip()">Listra</button>
+			</div>
 			<div id="entity-container">
-				<table id="entity-table" :class='classes' style='width:100%;'>
+				<table id="entity-table" :class="{'table-striped': table.tableStriped, 'table-bordered': table.tableBordered}" style='width:100%;' :style="{fontSize: table.fontSize + 'px'}">
 					<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
 						<td style='text-align:center;width:45px;'>#</td>
 						<td style='text-align:center;width:140px;'>Documento</td>
@@ -155,8 +188,8 @@ Vue.component('app_entities_form',{
 
 		    <div class='col-lg-2 col-md-6 col-sm-4 col-xs-12'>
 		      <template v-if="form.object.nationality=='BR'">
-			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'" ></app_field>
-			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else="" ></app_field>
+			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'"></app_field>
+			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else></app_field>
 		      </template>
 
 		      <template v-else>
@@ -165,8 +198,8 @@ Vue.component('app_entities_form',{
 		    </div>
 
 				<div class='col-lg-6 col-md-12 col-sm-12 col-xs-12'>
-		      <app_field classes='form-control' label='Nome completo' v-model='form.object.name' :error='form.errors.name' title='Informe o nome completo.' v-if="form.object.type=='PF'"></app_field>
-		      <app_field classes='form-control' label='Razão social' v-model='form.object.name' :error='form.errors.name' title='Informe a razão social.' v-else="form.object.type=='PJ'"></app_field>
+		      <app_field classes='form-control' label='Nome completo' v-model='form.object.name' :error='form.errors.name' title='Informe o nome completo.' v-if="form.object.type== 'PF'"></app_field>
+		      <app_field classes='form-control' label='Razão social' v-model='form.object.name' :error='form.errors.name' title='Informe a razão social.' v-else></app_field>
 		    </div>
 
 		    <div class='col-lg-2 col-md-4 col-sm-12 col-xs-12'>
@@ -285,6 +318,12 @@ Vue.component('app_entities',{
 				objects: [],
 				selected: {object: null, index: null, backup: null},
 				controls: {loaded: false}
+			},
+
+			table_styles: {
+				fontSize: 12,
+				tableBordered: true,
+				tableStriped: false,
 			},
 
 			forms:{
@@ -511,7 +550,7 @@ Vue.component('app_entities',{
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles"></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>
