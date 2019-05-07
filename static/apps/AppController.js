@@ -9,6 +9,23 @@ let app = new Vue({
   mixins: [base_controller],
   data: function() {
     return {
+      diego: "pasti",
+      app: {
+        controls:{
+          contextmenu:{
+            contextoptions:{
+              global: [
+                {'label':"Configurações", "options":[
+                  {'label':"Texto", "options":[]},
+                  {'label':"Tabela", "options":[]},
+                ]},
+                {'label':"Sair", "options":[]},
+              ],
+              local: [],
+            }
+          }
+        }
+      },
       forms: {
         change_password:{
 					object:{
@@ -138,6 +155,19 @@ let app = new Vue({
 				return result;
 			};
 			this.request('/api/core/authentication/unblock_session/','post', data_paramters, validation_function, success_function, failure_function);
+		},
+
+		remove_context: function(){
+			this.context.local = {}
+		},
+
+		handleClick: function(vm, event) {
+			console.log(vm, event)
+			this.remove_context();
+		},
+		handleSubmenuShow: function(vm, placement) {
+			console.log(vm, placement)
+			this.remove_context();
 		},
 		
 		get_user: function () {

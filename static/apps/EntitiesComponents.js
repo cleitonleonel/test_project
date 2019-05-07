@@ -90,7 +90,7 @@ Vue.component('app_entities_table',{
 						<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
 							<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
 							<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
-							<td>{{ entity.name }} - {{ entity.is_active }}</td>
+							<td>{{ entity.name }}</td>
 							<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
 							<td style='text-align:center;width:160px;'>
 								<span v-for="(relation,index) in entity.get_company_relations">
@@ -284,7 +284,17 @@ Vue.component('app_entities',{
 			data: {
 				objects: [],
 				selected: {object: null, index: null, backup: null},
-				controls: {loaded: false}
+				controls: {
+					loaded: false,
+
+					contextmenu:{
+            contextoptions:[
+              {"label":"Adicionar", "options":[]},
+              {"label":"Editar", "options":[]},
+              {"label":"Desativar", "options":[]},
+            ],
+          },
+				},
 			},
 
 			forms:{
@@ -546,6 +556,8 @@ Vue.component('app_entities',{
         get_company_relations: [],
         get_activities: [],
       }
+
+      alert("VEJA O APP:"+JSON.stringify(app));
     },
 
     update_object: function(index, object){
