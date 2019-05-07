@@ -98,7 +98,7 @@ let app = new Vue({
 
 					object:{
 						type: null,
-						official_doc: null,
+						official_document: null,
 						name: null,
 						popular_name: null,
 						nationality: null,

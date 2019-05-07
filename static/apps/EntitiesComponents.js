@@ -1,12 +1,39 @@
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['forms', 'data', 'classes'],
+	props: ['forms', 'data', 'classes', 'table'],
 	data: function(){
 		return {
 		}
 	},
 
 	methods: {
+		aumentar_fonte: function(){
+			const font = this.table.fontSize;
+			if (font < 18) {
+				this.table.fontSize += 1;
+			}
+			else {	}
+		},
+
+		diminuir_fonte: function(){
+			const font = this.table.fontSize;
+			if (font <= 9){	}
+			else {
+				this.table.fontSize -= 1;
+			}
+
+		},
+
+		toggle_border: function() {
+			const table = this.table.tableBordered;
+			this.table.tableBordered = !table
+		},
+
+		toggle_strip: function() {
+			const table = this.table.tableStriped;
+			this.table.tableStriped = !table
+		},
+
 		open: function(register, index){
       this.forms.entity.object = JSON.parse(JSON.stringify(register));
       this.forms.entity.backup = register;
@@ -63,8 +90,14 @@ Vue.component('app_entities_table',{
   },
 	template: `
 		<div style="border: 1px solid #eee;box-sizing: border-box;">
+			<button @click="aumentar_fonte()">+</button> {{ table.fontSize }}
+			<button @click="diminuir_fonte()">-</button>
+			<div class="btn-group-sm">
+				<button class="btn btn-info" @click="toggle_border()">Borda</button>
+				<button class="btn btn-info" @click="toggle_strip()">Listra</button>
+			</div>
 			<div id="entity-container">
-				<table id="entity-table" :class='classes' style='width:100%;'>
+				<table id="entity-table" :class="{'table-striped': table.tableStriped, 'table-bordered': table.tableBordered}" style='width:100%;' :style="{fontSize: table.fontSize + 'px'}">
 					<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
 						<td style='text-align:center;width:45px;'>#</td>
 						<td style='text-align:center;width:140px;'>Documento</td>
@@ -156,7 +189,7 @@ Vue.component('app_entities_form',{
 		    <div class='col-lg-2 col-md-6 col-sm-4 col-xs-12'>
 		      <template v-if="form.object.nationality=='BR'">
 			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'"></app_field>
-			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else=""></app_field>
+			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else></app_field>
 		      </template>
 
 		      <template v-else>
@@ -297,6 +330,12 @@ Vue.component('app_entities',{
 				},
 			},
 
+			table_styles: {
+				fontSize: 12,
+				tableBordered: true,
+				tableStriped: false,
+			},
+
 			forms:{
 				entity:{
 					options:{
@@ -423,101 +462,48 @@ Vue.component('app_entities',{
 	    let validation_function = function () {
 	    	//alert('DATA: ' + JSON.stringify(data_paramters));
 	    	//console.lg('validando, pera aí');
-
-				let validate_cpf = function (strCpf) {
-					alert(strCpf);
-
-					if (!/[0-9]{11}/.test(strCpf)) return false;
-
-					if (strCpf.length < 11) return false;
-
-					if (strCpf.length > 11) return false;
-
-					if (strCpf === "00000000000") return false;
-
-					let soma = 0;
-
-					for (let i = 1; i <= 9; i++) {
-							soma += parseInt(strCpf.substring(i - 1, i)) * (11 - i);
-					}
-
-					let resto = soma % 11;
-
-					if (resto === 10 || resto === 11 || resto < 2) {
-							resto = 0;
-					} else {
-							resto = 11 - resto;
-					}
-
-					if (resto !== parseInt(strCpf.substring(9, 10))) {
-							return false;
-					}
-
-					soma = 0;
-
-					for (let i = 1; i <= 10; i++) {
-							soma += parseInt(strCpf.substring(i - 1, i)) * (12 - i);
-					}
-					resto = soma % 11;
-
-					if (resto === 10 || resto === 11 || resto < 2) {
-							resto = 0;
-					} else {
-							resto = 11 - resto;
-					}
-
-					if (resto !== parseInt(strCpf.substring(10, 11))) {
-							return false;
-					}
-
-					return true;
-				};
-
-        let validate_cnpj = function (strCnpj){
-        	alert(strCnpj);
-        	let c = strCnpj;
-          let b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
-
-					if((c = c.replace(/[^\d]/g,"")).length !== 14)
-							return false;
-
-					if(/0{14}/.test(c))
-							return false;
-
-					for (let i = 0, n = 0; i < 12; n += c[i] * b[++i]);
-						if(c[12] !== (((n %= 11) < 2) ? 0 : 11 - n))
-								return false;
-
-					for (let i = 0, n = 0; i <= 12; n += c[i] * b[i++]);
-						if(c[13] !== (((n %= 11) < 2) ? 0 : 11 - n))
-								return false;
-
-					return true;
-        };
-
 				if (data_paramters.type === 'PF') {
 					//console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
-					let strCpf = data_paramters.official_document;
-					if (!validate_cpf(strCpf)) {
+					//let strCpf = data_paramters.official_document;
+					if (!validate_cpf(data_paramters.official_document)) {
 							alert("Seu CPF é inválido!!!");
 							return;
 					} else {
 						alert("Seu CPF é válido!!!");
 					}
-				}
+          if (!validate_name(data_paramters.name)){
+             alert("Digite um nome válido.")
+             return;
+          }
 
-				if (data_paramters.type === 'PJ') {
-					//console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
-					let strCpf = data_paramters.official_document;
-					if (!validate_cnpj(strCpf)) {
-							alert("Seu CNPJ é inválido!!!");
-							return;
-					} else {
-						alert("Seu CNPJ é válido!!!");
-					}
-				}
+          if (!validate_data(data_paramters.birthdate_foundation)){
+             alert("Data Inválida!!!")
+             return;
+          } else {
+             alert("Data está ok!!!")
+          }
 
-				return result;
+        }
+
+        if (data_paramters.type === 'PJ') {
+            console.log('OFFICIAL_DOC' + JSON.stringify(data_paramters.official_document));
+            //let strCnpj = data_paramters.official_document;
+            if (!validate_cnpj(data_paramters.official_document)) {
+                alert("Seu CNPJ é inválido!!!");
+                return;
+            } else {
+              alert("Seu CNPJ é válido!!!");
+            }
+
+            if (!validate_name(data_paramters.name)){
+             alert("Digite um nome valido")
+             return;
+            }
+
+        }
+
+
+        return true;
 			};
       this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
@@ -576,7 +562,7 @@ Vue.component('app_entities',{
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-bordered table-hover'></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles"></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>
