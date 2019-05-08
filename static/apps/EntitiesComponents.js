@@ -47,9 +47,39 @@ var contextmenux_actions = {
 	}
 }
 
+Vue.component('app_search',{
+	props:['search'],
+	template:`
+	<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="coluna">Buscar por:</label>
+			<select v-model="search.field" class="form-control">
+				<option>Documento</option>
+				<option>Nome ou Razão Social</option>
+				<option>Apelido ou Nome Fantasia</option>
+				<option>Relação</option>
+				<option>Atividade</option>
+				<option>Status</option>
+				<option>Criação</option>
+				<option>Última Alteração</option>
+			</select>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0;" for="busca"></label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Digite o que você deseja encontrar" aria-label="Digite o que você deseja encontrar" aria-describedby="basic-addon2" v-model="search.text">
+				<div class="input-group-append">
+					<button class="btn btn-outline-info" type="button"><i class="fas fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	`
+});
+
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['forms', 'data', 'classes', 'table', 'controls'],
+	props: ['forms', 'data', 'classes', 'table', 'controls', 'search'],
 	data: function(){
 		return {
 		}
@@ -138,7 +168,7 @@ Vue.component('app_entities_table',{
     },
   },
 	template: `
-		<div style="border: 1px solid #eee;box-sizing: border-box;">
+		<div style=""><!--border: 1px solid #eee;box-sizing: border-box;">-->
 			<div id="entity-container">
 				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
 					<thead>
@@ -441,6 +471,11 @@ Vue.component('app_entities',{
 				tableStriped: false,
 			},
 
+			search: {
+				field: 'Documento',
+				text: '',
+			},
+
 			forms:{
 				entity:{
 					options:{
@@ -573,11 +608,13 @@ Vue.component('app_entities',{
 					//let strCpf = data_paramters.official_document;
 					if (!validate_cpf(data_paramters.official_document)) {
 							alert("Seu CPF é inválido!!!");
-							return false;
+							return;
+					} else {
+						alert("Seu CPF é válido!!!");
 					}
           if (!validate_name(data_paramters.name)){
              alert("Digite um nome válido.")
-             return false;
+             return;
           }
 
           if (!validate_data(data_paramters.birthdate_foundation)){
@@ -600,6 +637,7 @@ Vue.component('app_entities',{
             }
 
         }
+
 
         return true;
 			};
@@ -647,6 +685,23 @@ Vue.component('app_entities',{
      //scope.data.objects[index] = object;
      Vue.set(scope.data.objects, index, object);
     },
+
+		filter_entities: function () {
+			let scope = this;
+			let base_filter = true;
+
+			let filtered_list = scope.data.objects.filter(function (item) {
+				if (scope.search.text != '' && scope.search.text != null) {
+					base_filter = scope.apply_busca(item);
+				}
+				return base_filter;
+			});
+			return filtered_list;
+		},
+
+		apply_busca: function(item){
+			return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
+		},
 	},
 
 	mounted: function(){
@@ -654,11 +709,18 @@ Vue.component('app_entities',{
 		this.init_formulary();
 		this.app_controls.contextmenu.contextoptions.local = this.controls.contextmenu.contextoptions;
 	},
+
+	computed: {
+		result_list: function() {
+			let result_list = this.filter_entities();
+			return result_list;
+		}
+	},
 	template: `
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls"></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="search"></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>
