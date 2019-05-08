@@ -457,20 +457,16 @@ Vue.component('app_entities',{
 					//let strCpf = data_paramters.official_document;
 					if (!validate_cpf(data_paramters.official_document)) {
 							alert("Seu CPF é inválido!!!");
-							return;
-					} else {
-						alert("Seu CPF é válido!!!");
+							return false;
 					}
           if (!validate_name(data_paramters.name)){
              alert("Digite um nome válido.")
-             return;
+             return false;
           }
 
           if (!validate_data(data_paramters.birthdate_foundation)){
              alert("Data Inválida!!!")
-             return;
-          } else {
-             alert("Data está ok!!!")
+             return false;
           }
 
         }
@@ -480,18 +476,14 @@ Vue.component('app_entities',{
             //let strCnpj = data_paramters.official_document;
             if (!validate_cnpj(data_paramters.official_document)) {
                 alert("Seu CNPJ é inválido!!!");
-                return;
-            } else {
-              alert("Seu CNPJ é válido!!!");
-            }
+                return false;
 
             if (!validate_name(data_paramters.name)){
-             alert("Digite um nome valido")
-             return;
+               alert("Digite um nome valido")
+               return false;
             }
 
         }
-
 
         return true;
 			};
