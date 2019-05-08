@@ -24,9 +24,8 @@
   }
 
   .table_entities td{
-    font-size:12px;
     height: 26px;
-    padding: 0px 4px 0px 4px;
+    padding: 0 4px 0 4px;
   }
 
   .table_entities button{
@@ -35,8 +34,10 @@
   }
 </style>
 {% load static %}
+<script src="{% static 'apps/test_project/commons/components/ModalComponents.js' %}"></script>
+<script src="{% static 'apps/EntitiesComponents.js' %}"></script>
 <link rel="stylesheet" href="{% static 'bower_components/bootstrap-select/dist/css/bootstrap-select.min.css' %}">
-
+<script src="{% static 'bower_components/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
 {% endblock %}
 
 {% block main_content %}
@@ -74,6 +75,7 @@
 {% load static %}
 <script src="{% static 'bower_components/bootstrap-select/dist/js/bootstrap-select.min.js' %}"></script>
 <script src="{% static 'apps/test_project/commons/components/ModalComponents.js' %}"></script>
+<script src="{% static 'apps/EntitiesValidations.js' %}"></script>
 <script src="{% static 'apps/EntitiesComponents.js' %}"></script>
 
 	<script>
