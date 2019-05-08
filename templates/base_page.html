@@ -53,9 +53,28 @@
         border: 1px solid #ccc;
       }
 
+      .v-contextmenu .v-contextmenu {
+        margin-left: 0px;
+      }
+
+      .v-contextmenu .v-contextmenu .v-contextmenu-submenu{
+        margin-left: 0px !important;
+        padding-left: 15px !important;
+
+        padding-right: 20px !important;
+        margin-right: 0px !important;
+      }
+
       .v-contextmenu-item {
-        padding-left: 7px !important;
+        margin-left: 0px;
+        padding-left: 15px !important;
+        padding-right: 0px;
+        width: 100%;
+        margin-right:0px;
+
+        /*padding-left: 7px !important;
         margin-left: 4px;
+        padding*/
       }
 
       .v-contextmenu-submenu {
@@ -63,8 +82,8 @@
         margin-left: 0px;
       }
 
-      .v-contextmenu .v-contextmenu-divide{
-        border-bottom: 1px solid #c9c6c6 !important;
+      .v-contextmenu .v-contextmenu-divider{
+        border-bottom: 1px solid #bbb !important;
       }
 
       .vcontext_icon:before{
@@ -582,8 +601,61 @@
               <!--<template v-for='item in app.controls.contextmenu.contextoptions.global'>
                 <v-contextmenu-item class='vcontext_icon' style='padding-right: 7px;width:180px;'>{{ item.label }}</v-contextmenu-item>
               </template>-->
+              <template v-for='item in app.controls.contextmenu.contextoptions.local'>
+                <template v-if="item.type == 'divider'">
+                  <v-contextmenu-item divider></v-contextmenu-item>
+                </template>
+
+                <template v-else>
+                  <v-contextmenu-item class='' style='padding-left: 0px;padding-right: 7px;width:180px;'>
+                    <template v-if="item.options.length > 0">
+                      <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="item.label" class=''>
+                        <template v-for="submenu in item.options">
+                          <template v-if="submenu.options.length > 0">
+                            <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="submenu.label" class=''>
+                              <template v-for="sub_submenu in submenu.options">
+                                <template v-if="sub_submenu.callback">
+                                  <template v-if="sub_submenu.is_enable">
+                                    <v-contextmenu-item v-on:click="sub_submenu.callback">{{ sub_submenu.label }}
+                                      <span v-if="sub_submenu.is_checked==true" style="padding-left: 10px;">
+                                        <i class="fas fa-check"></i>
+                                      </span>
+                                    </v-contextmenu-item>
+                                  </template>
+
+                                  <template v-else>
+                                    <v-contextmenu-item v-on:click="sub_submenu.callback" disabled>{{ sub_submenu.label }}
+                                      <span v-if="sub_submenu.is_checked==true" style="padding-left: 10px;">
+                                        <i class="fas fa-check"></i>
+                                      </span>
+                                    </v-contextmenu-item>
+                                  </template>
+
+                                </template>
+
+                                <template v-else>
+                                  sem calback
+                                  <v-contextmenu-item @click="handleClick">{{ sub_submenu.label }}</v-contextmenu-item>
+                                </template>
+
+                              </template>
+                            </v-contextmenu-submenu>
+                          </template>
+
+                          <template v-else>
+                            <v-contextmenu-item @click="handleClick">{{ submenu.label }}</v-contextmenu-item>
+                          </template>
+                        </template>
+                      </v-contextmenu-submenu>
+                    </template>
+                    <template v-else>{{ item.label }}</template>
+
+                  </v-contextmenu-item>
+                </template>
+              </template>
 
               <v-contextmenu-item divider></v-contextmenu-item>
+
               <template v-for='item in app.controls.contextmenu.contextoptions.global'>
                 <v-contextmenu-item class='' style='padding-left: 0px;padding-right: 7px;width:180px;'>
                   <template v-if="item.options.length > 0">

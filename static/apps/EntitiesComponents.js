@@ -1,6 +1,55 @@
+var contextmenux_actions = {
+	methods: {
+		use_borders: function(){
+			this.controls.table.styles.bordered = true;
+			this.controls.contextmenu.contextoptions[6].options[1].options[0].is_checked = true;
+			this.controls.contextmenu.contextoptions[6].options[1].options[1].is_checked = false;
+		},
+
+		not_use_borders: function(){
+			this.controls.table.styles.bordered = false;
+			this.controls.contextmenu.contextoptions[6].options[1].options[0].is_checked = false;
+			this.controls.contextmenu.contextoptions[6].options[1].options[1].is_checked = true;
+		},
+
+		use_striped: function(){
+			this.controls.table.styles.striped = true;
+		},
+
+		not_use_striped: function(){
+			this.controls.table.styles.striped = false;
+		},
+
+		increase_font_size: function(){
+			if(this.controls.table.styles.font_size < 18){
+				this.controls.table.styles.font_size = this.controls.table.styles.font_size + 1;
+				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = true;
+				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = true;
+			}
+			else{
+				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = false;
+			}
+
+		},
+
+		decrease_font_size: function(){
+			if(this.controls.table.styles.font_size >= 9){
+				this.controls.table.styles.font_size = this.controls.table.styles.font_size - 1;
+				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = true;
+				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = true;
+			}
+			else{
+				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = false;
+			}
+		}
+
+
+	}
+}
+
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['forms', 'data', 'classes', 'table'],
+	props: ['forms', 'data', 'classes', 'table', 'controls'],
 	data: function(){
 		return {
 		}
@@ -90,67 +139,65 @@ Vue.component('app_entities_table',{
   },
 	template: `
 		<div style="border: 1px solid #eee;box-sizing: border-box;">
-			<button @click="aumentar_fonte()">+</button> {{ table.fontSize }}
-			<button @click="diminuir_fonte()">-</button>
-			<div class="btn-group-sm">
-				<button class="btn btn-info" @click="toggle_border()">Borda</button>
-				<button class="btn btn-info" @click="toggle_strip()">Listra</button>
-			</div>
 			<div id="entity-container">
-				<table id="entity-table" :class="{'table-striped': table.tableStriped, 'table-bordered': table.tableBordered}" style='width:100%;' :style="{fontSize: table.fontSize + 'px'}">
-					<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
-						<td style='text-align:center;width:45px;'>#</td>
-						<td style='text-align:center;width:140px;'>Documento</td>
-						<td>Nome ou razão social</td>
-						<td style='text-align:center;width:120px;'>Nome popular</td>
-						<td style='text-align:center;width:160px;'>Relação</td>
-						<td style='text-align:center;width:160px;'>Atividade</td>
-						<td style='text-align:center;width:60px;'>Status</td>
-						<td style='text-align:center;width:135px;'>Criação</td>
-						<td style='text-align:center;width:135px;'>Últ. Alteração</td>
-						<td style='text-align:center;width:80px;'></td>
-					</tr>
-
-					<tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
-						<td colspan='11'>Aguarde.. carregando os registros</td>
-					</tr>
-
-					<tr v-if='data.controls.loaded==true && data.objects.length==0' style='font-size: 12px;text-align:center;'>
-						<td colspan='11'>Nenhum registro cadastrado</td>
-					</tr>
-
-					<template v-if='data.objects.length > 0'>
-						<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
-							<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
-							<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
-							<td>{{ entity.name }}</td>
-							<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
-							<td style='text-align:center;width:160px;'>
-								<span v-for="(relation,index) in entity.get_company_relations">
-									{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
-								</span>
-							</td>
-							<td style='text-align:center;width:160px;'>
-								<span v-for="(activity,index) in entity.get_activities">
-									{{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
-								</span>
-							</td>
-							<td style='text-align:center;width:60px;'>
-								<span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
-								<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
-								<span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
-								<span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
-							</td>
-							<td style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
-							<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
-							<td style="padding:5px;">
-								<div class="btn-group btn-group-xs" role="group" aria-label="...">
-									<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
-									<button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
-								</div>
-							</td>
+				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
+					<thead>
+						<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
+							<td style='text-align:center;width:45px;'>#</td>
+							<td style='text-align:center;width:140px;'>Documento</td>
+							<td>Nome ou razão social</td>
+							<td style='text-align:center;width:120px;'>Nome popular</td>
+							<td style='text-align:center;width:160px;'>Relação</td>
+							<td style='text-align:center;width:160px;'>Atividade</td>
+							<td style='text-align:center;width:60px;'>Status</td>
+							<td style='text-align:center;width:135px;'>Criação</td>
+							<td style='text-align:center;width:135px;'>Últ. Alteração</td>
+							<td style='text-align:center;width:80px;'></td>
 						</tr>
-					</template>
+					</thead>
+
+					<tbody>
+						<tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
+							<td colspan='11'>Aguarde.. carregando os registros</td>
+						</tr>
+
+						<tr v-if='data.controls.loaded==true && data.objects.length==0' style='font-size: 12px;text-align:center;'>
+							<td colspan='11'>Nenhum registro cadastrado</td>
+						</tr>
+
+						<template v-if='data.objects.length > 0'>
+							<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
+								<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
+								<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
+								<td>{{ entity.name }}</td>
+								<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
+								<td style='text-align:center;width:160px;'>
+									<span v-for="(relation,index) in entity.get_company_relations">
+										{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
+									</span>
+								</td>
+								<td style='text-align:center;width:160px;'>
+									<span v-for="(activity,index) in entity.get_activities">
+										{{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
+									</span>
+								</td>
+								<td style='text-align:center;width:60px;'>
+									<span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
+									<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
+									<span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
+									<span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
+								</td>
+								<td style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
+								<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
+								<td style="padding:5px;">
+									<div class="btn-group btn-group-xs" role="group" aria-label="...">
+										<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
+										<button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
+									</div>
+								</td>
+							</tr>
+						</template>
+					</tbody>
 				</table>
 			</div>
 		</div>
@@ -310,8 +357,8 @@ Vue.component('app_disable_entity', {
 });
 
 Vue.component('app_entities',{
-	mixins: [base_controller],
-	props: [],
+	mixins: [base_controller, contextmenux_actions],
+	props: ['app_controls'],
 	data: function(){
 		return {
 			data: {
@@ -319,20 +366,78 @@ Vue.component('app_entities',{
 				selected: {object: null, index: null, backup: null},
 				controls: {
 					loaded: false,
+				}
+			},
 
-					contextmenu:{
-            contextoptions:[
-              {"label":"Adicionar", "options":[]},
-              {"label":"Editar", "options":[]},
-              {"label":"Desativar", "options":[]},
-            ],
-          },
-				},
+			controls: {
+				table:{
+          styles:{
+	          bordered: true,
+	          striped: true,
+	          font_size: 12,
+          }
+        },
+
+				contextmenu:{
+          contextoptions:[
+            {"type":"submenu-item", "label":"Entidade selecionada", "options":[
+              {"type":"menu-item", "label":"Visualizar ficha", "options":[]},
+              {"type":"menu-item", "label":"Contatos", "options":[]},
+              {"type":"menu-item", "label":"Endereços", "options":[]},
+							{"type":"menu-item", "label":"Crédito", "options":[]},
+							{"type":"menu-item", "label":"Visualizar histórico", "options":[]},
+							{"type":"menu-item", "label":"Desativar", "options":[]},
+						]},
+						{"type":"menu-item", "label":"Adicionar entidade", "options":[]},
+
+            {"type":"divider", "label":"", "options":[]},
+            {"type":"menu-item", "label":"Colunas", "options":[
+              {"type":"menu-item", "label":"Documento", "options":[]},
+              {"type":"menu-item", "label":"Nome ou razão social", "options":[]},
+              {"type":"menu-item", "label":"Nome popular", "options":[]},
+              {"type":"menu-item", "label":"Relação com a empresa", "options":[]},
+              {"type":"menu-item", "label":"Atividades", "options":[]},
+              {"type":"menu-item", "label":"Status", "options":[]},
+              {"type":"menu-item", "label":"Criação", "options":[]},
+              {"type":"menu-item", "label":"Última alteração", "options":[]},
+            ]},
+
+            {"type":"submenu-item", "label":"Ordenação", "options":[
+							{"type":"submenu-item", "label":"Primária", "options":[
+								{"type":"menu-item", "label":"Aumentar texto", "options":[]},
+								{"type":"menu-item", "label":"Diminuir texto", "options":[]},
+							]},
+
+							{"type":"submenu-item", "label":"Adicionais", "options":[
+								{"type":"menu-item", "label":"Aumentar texto", "options":[]},
+								{"type":"menu-item", "label":"Diminuir texto", "options":[]},
+							]},
+						]},
+
+            {"type":"menu-item", "label":"Paginação", "options":[]},
+
+            {"type":"submenu-item", "label":"Estilos", "options":[
+							{"type":"submenu-item", "label":"Tamanho do texto", "options":[
+								{"type":"menu-item", "label":"Aumentar texto", "callback":this.increase_font_size, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"Diminuir texto", "callback":this.decrease_font_size, "is_checked":false, "is_enable":true, "options":[]},
+							]},
+							{"type":"submenu-item", "label":"Bordas", "options":[
+								{"type":"menu-item", "label":"Com bordas", "callback":this.use_borders, "is_checked":true, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"Sem bordas", "callback":this.not_use_borders, "is_checked":false, "is_enable":true, "options":[]},
+							]},
+							{"type":"submenu-item", "label":"Linhas", "options":[
+								{"type":"menu-item", "label":"Diferenciadas", "callback":this.use_striped, "options":[]},
+								{"type":"menu-item", "label":"Simples", "callback":this.not_use_striped, "options":[]},
+							]},
+            ]},
+          ],
+        },
+
+
 			},
 
 			table_styles: {
 				fontSize: 12,
-				tableBordered: true,
 				tableStriped: false,
 			},
 
@@ -409,6 +514,7 @@ Vue.component('app_entities',{
 	},
 
 	methods: {
+
 		load: function() {
       let scope = this;
       let data_paramters = {};
@@ -542,27 +648,25 @@ Vue.component('app_entities',{
         get_company_relations: [],
         get_activities: [],
       }
-
-      alert("VEJA O APP:"+JSON.stringify(app));
     },
 
     update_object: function(index, object){
      let scope = this;
      //scope.data.objects[index] = object;
      Vue.set(scope.data.objects, index, object);
-     alert('troquei');
-    }
+    },
 	},
 
 	mounted: function(){
 		this.load();
 		this.init_formulary();
+		this.app_controls.contextmenu.contextoptions.local = this.controls.contextmenu.contextoptions;
 	},
 	template: `
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles"></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls"></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>

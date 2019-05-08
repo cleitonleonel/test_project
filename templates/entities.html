@@ -43,7 +43,7 @@
 {% block main_content %}
 <div>
 	{% csrf_token %}
-  <app_entities></app_entities>
+  <app_entities :app_controls="app.controls"></app_entities>
 
   {% comment %}
   <div class="modal fade" id="modal_entity" tabindex="-1" role="dialog" aria-labelledby="modal_entity" aria-hidden="true">

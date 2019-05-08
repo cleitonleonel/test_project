@@ -15,10 +15,6 @@ let app = new Vue({
           contextmenu:{
             contextoptions:{
               global: [
-                {'label':"Configurações", "options":[
-                  {'label':"Texto", "options":[]},
-                  {'label':"Tabela", "options":[]},
-                ]},
                 {'label':"Sair", "options":[]},
               ],
               local: [],
