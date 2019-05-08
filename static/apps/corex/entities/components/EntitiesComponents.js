@@ -89,7 +89,7 @@ Vue.component('app_entities_form',{
         let error_keys = {'official_doc' : 'Documento', 'name' : 'Nome', 'popular_name' : 'Razão Social', 'nationality' : 'Nacionalidade', 'company_relation' : 'Relação com a empresa'};
         for(let field in data_paramters){
           if(!data_paramters[field]){
-            error_notify(null,"Erro!","O campo de "+error_keys[field]+" é obrigatório.");
+            error_notify(null,"Erro!","O caaaaampo de "+error_keys[field]+" é obrigatório.");
             result = false;
           }
         }
