@@ -569,19 +569,35 @@ Vue.component('app_entities',{
      //scope.data.objects[index] = object;
      Vue.set(scope.data.objects, index, object);
      alert('troquei');
-    }
+    },
+
+		filter_entities: function () {
+			let scope = this;
+			let base_filter = true;
+
+			let filtered_list = scope.data.objects.filter(function (item) {
+				if (scope.search.text != '' && scope.search.text != null) {
+					base_filter = scope.apply_busca(item);
+				}
+				return base_filter;
+			});
+			return filtered_list;
+		},
+
+		apply_busca: function(item){
+			return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
+		},
 	},
 
 	mounted: function(){
 		this.load();
 		this.init_formulary();
 	},
+
 	computed: {
-		filteredLoaded: function () {
-			let entities = this.data.object;
-			return entities.filter((entity) => {
-				return entity.name.match(this.search.text);
-			});
+		result_list: function() {
+			let result_list = this.filter_entities();
+			return result_list;
 		}
 	},
 	template: `
