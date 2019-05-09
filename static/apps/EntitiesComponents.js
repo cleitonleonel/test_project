@@ -1,25 +1,73 @@
-Vue.component('app_entities_table',{
-  mixins: [],
-  props: ['forms', 'data', 'classes', 'table'],
-  data: function(){
-    return {
-      table_fields: [
-        {"tag":"id", "text":"#", "visible":true, "style":"text-align:center;width:45px;color:red;", },
-        {"tag":"official_document", "text":"Documento", "visible":true, "style":"text-align:center;width:140px;"},
-        {"tag":"name", "text":"Nome ou razão social", "visible":true, "style":""},
-        {"tag":"popular_name", "text":"Nome popular", "visible":true, "style":"text-align:center;width:120px;"},
-        {"tag":"company_relations", "text":"Relação", "visible":true, "style":"text-align:center;width:160px;"},
-        {"tag":"activities", "text":"Atividade", "visible":true, "style":"text-align:center;width:160px;"},
-        {"tag":"commercial_status", "text":"Status", "visible":true, "style":"text-align:center;width:60px;"},
-        {"tag":"creation_date", "text":"Criação", "visible":true, "style":"text-align:center;width:135px;"},
-        {"tag":"last_update", "text":"Últ. alteração", "visible":true, "style":"text-align:center;width:135px;"},
-        {"tag":"", "text":"", "visible":true, "style":"text-align:center;width:80px;"},
-      ],
+var contextmenux_actions = {
+	methods: {
+		use_borders: function(){
+			this.controls.table.styles.bordered = true;
+			this.controls.contextmenu.contextoptions[6].options[1].options[0].is_checked = true;
+			this.controls.contextmenu.contextoptions[6].options[1].options[1].is_checked = false;
+		},
 
-		  column_selected: 'name',
-		  column_direction:'asc',
-    }
-  },
+		not_use_borders: function(){
+			this.controls.table.styles.bordered = false;
+			this.controls.contextmenu.contextoptions[6].options[1].options[0].is_checked = false;
+			this.controls.contextmenu.contextoptions[6].options[1].options[1].is_checked = true;
+		},
+
+		use_striped: function(){
+			this.controls.table.styles.striped = true;
+		},
+
+		not_use_striped: function(){
+			this.controls.table.styles.striped = false;
+		},
+
+		set_font_size: function(font_size){
+			this.controls.table.styles.font_size = font_size;
+		},
+
+		change_column: function(args){
+			this.controls.table.columns[args.column].visible = !this.controls.table.columns[args.column].visible;
+			this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked = !this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked;
+		}
+	}
+}
+
+Vue.component('app_search',{
+	props:['search'],
+	template:`
+	<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="coluna">Buscar por:</label>
+			<select v-model="search.field" class="form-control">
+				<option>Documento</option>
+				<option>Nome ou Razão Social</option>
+				<option>Apelido ou Nome Fantasia</option>
+				<option>Relação</option>
+				<option>Atividade</option>
+				<option>Status</option>
+				<option>Criação</option>
+				<option>Última Alteração</option>
+			</select>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0;" for="busca"></label>
+			<div class="input-group mb-3">
+				<input type="text" class="form-control" placeholder="Digite o que você deseja encontrar" aria-label="Digite o que você deseja encontrar" aria-describedby="basic-addon2" v-model="search.text">
+				<div class="input-group-append">
+					<button class="btn btn-outline-info" type="button"><i class="fas fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	`
+});
+
+Vue.component('app_entities_table',{
+	mixins: [],
+	props: ['forms', 'data', 'classes', 'table', 'controls'],
+	data: function(){
+		return {
+		}
+	},
 
 	methods: {
 		aumentar_fonte: function(){
@@ -56,9 +104,9 @@ Vue.component('app_entities_table',{
       $('#get_activities').selectpicker('val', this.forms.entity.object.get_activities);
       $('#get_company_relations').selectpicker('val', this.forms.entity.object.get_company_relations);
       //$('.selectpicker').selectpicker('render');
-    },
+	  },
 
-    select: function(register, index){
+	  select: function(register, index){
       this.forms.disable.object = {
         id: register.id,
         name: register.name,
@@ -125,96 +173,86 @@ Vue.component('app_entities_table',{
     },
   },
 	template: `
-		<div style="border: 1px solid #eee;box-sizing: border-box;">
-			<button @click="aumentar_fonte()">+</button> {{ table.fontSize }}
-			<button @click="diminuir_fonte()">-</button>
-			<div class="btn-group-sm">
-				<button class="btn btn-info" @click="toggle_border()">Borda</button>
-				<button class="btn btn-info" @click="toggle_strip()">Listra</button>
-			</div>
+		<div style=""><!--border: 1px solid #eee;box-sizing: border-box;">-->
 			<div id="entity-container">
-				<table id="entity-table" :class="{'table-striped': table.tableStriped, 'table-bordered': table.tableBordered}" style='width:100%;' :style="{fontSize: table.fontSize + 'px'}">
+				<app_search :search="controls.search"></app_search>
+				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
 
-          <tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
-            <td v-for='field in table_fields' v-if='field.visible' v-bind:style="field.style" @click="sort(field.tag)">
-              {{ field.text }} <input type="checkbox" @click="field.visible = false">
-            </td>
-          </tr>
-
-          <app_cells_table :data="data" :table_fields="table_fields"></app_cells_table>
-
-          <tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
-            <td colspan='11'>Aguarde.. carregando os registros</td>
-          </tr>
-
-          <tr v-if='data.controls.loaded==true && data.objects.length==0' style='font-size: 12px;text-align:center;'>
-            <td colspan='11'>Nenhum registro cadastrado</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  `,
-});
-
-Vue.component('app_cells_table', {
-  mixins:[],
-  props:['data', 'table_fields'],
-  data: function() {
-    return {
-      table_cells: [
-        {"attribute":"id", "style":"text-align:center;width:45px;",},
-        {"attribute":"official_document", "style":"text-align:center;width:140px;",},
-				{"attribute":"name", "style":"",},
-				{"attribute":"popular_name", "style":"text-align:left;width:90px;",},
-				{"attribute":"relation", "style":"text-align:center;width:160px;",},
-				{"attribute":"activity", "style":"text-align:center;width:160px;",},
-				{"attribute":"status", "style":"text-align:center;width:60px;",},
-				{"attribute":"creation_date", "style":"text-align:center;width:135px;",},
-				{"attribute":"last_alt", "style":"text-align:center;width:135px;",},
-				{"attribute":"buttons", "style":"padding:5px;",},
-      ],
-    }
-  },
-  template:
-  `
-    <tbody>
-
-      <tr v-if='data.objects.length > 0 && data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, tr_index) in data.objects'>
-        <td v-for='(cell, td_index) in table_cells' v-if='table_fields[td_index].visible' v-bind:style="cell.style">
-          {{ entity[cell.attribute] }}
+					<thead>
+						<tr>
+							<th v-for='column in controls.table.columns' v-if='column.visible' :style="column.style">
+								{{ column.title }}
+								<span v-if='column.sorted' style=''>
+									<i class="fas fa-sort-amount-down"></i>
+								</span>
+							</th>
+						</tr>
+					</thead>
+				</table>
 
 
-          <div v-if="cell.attribute=='relations'">
-	          <span v-for="(relation,index) in entity.company_relations">
-	            {{ relation | company_relations }}<span v-if='index < (entity.company_relations.length-1)' style='padding-right:3px;'>,</span>
-	          </span>
-          </div>
+				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
+					<thead>
+						<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
+							<td style='text-align:center;width:45px;'>#</td>
+							<td style='text-align:center;width:140px;'>Documento</td>
+							<td>Nome ou razão social</td>
+							<td style='text-align:center;width:120px;'>Nome popular</td>
+							<td style='text-align:center;width:160px;'>Relação</td>
+							<td style='text-align:center;width:160px;'>Atividade</td>
+							<td style='text-align:center;width:60px;'>Status</td>
+							<td style='text-align:center;width:135px;'>Criação</td>
+							<td style='text-align:center;width:135px;'>Últ. Alteração</td>
+							<td style='text-align:center;width:80px;'></td>
+						</tr>
+					</thead>
 
-          <div v-if="cell.attribute=='activity'">
-	          <span v-for="(activity,index) in entity.get_activities">
-	            {{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
-	          </span>
-          </div>
+					<tbody>
+						<tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
+							<td colspan='11'>Aguarde.. carregando os registros</td>
+						</tr>
 
-          <div v-if="cell.attribute=='activity'">
-	          <span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
-	          <span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
-	          <span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
-	          <span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
-          </div>
+						<tr v-if='data.controls.loaded==true && data.objects.length==0' style='font-size: 12px;text-align:center;'>
+							<td colspan='11'>Nenhum registro cadastrado</td>
+						</tr>
 
-          <div v-if="cell.attribute=='buttons'">
-	          <div class="btn-group btn-group-xs" role="group" aria-label="...">
-	            <button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
-	            <button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
-	          </div>
-          </div>
-        </td>
-      </tr>
-
-    </tbody>
-  `,
-  methods: {},
+						<template v-if='data.objects.length > 0'>
+							<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
+								<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
+								<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
+								<td>{{ entity.name }}</td>
+								<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
+								<td style='text-align:center;width:160px;'>
+									<span v-for="(relation,index) in entity.get_company_relations">
+										{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
+									</span>
+								</td>
+								<td style='text-align:center;width:160px;'>
+									<span v-for="(activity,index) in entity.get_activities">
+										{{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
+									</span>
+								</td>
+								<td style='text-align:center;width:60px;'>
+									<span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
+									<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
+									<span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
+									<span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
+								</td>
+								<td style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
+								<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
+								<td style="padding:5px;">
+									<div class="btn-group btn-group-xs" role="group" aria-label="...">
+										<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
+										<button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
+									</div>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	`,
 });
 
 Vue.component('app_entities_form',{
@@ -249,7 +287,7 @@ Vue.component('app_entities_form',{
 		    <div class='col-lg-2 col-md-6 col-sm-4 col-xs-12'>
 		      <template v-if="form.object.nationality=='BR'">
 			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'"></app_field>
-			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else=""></app_field>
+			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else></app_field>
 		      </template>
 
 		      <template v-else>
@@ -370,21 +408,117 @@ Vue.component('app_disable_entity', {
 });
 
 Vue.component('app_entities',{
-	mixins: [base_controller],
-	props: [],
+	mixins: [base_controller, contextmenux_actions],
+	props: ['app_controls'],
 	data: function(){
 		return {
 			data: {
 				objects: [],
 				selected: {object: null, index: null, backup: null},
-				controls: {loaded: false}
+				controls: {
+					loaded: false,
+				}
+			},
+
+			controls: {
+				table:{
+					columns:{
+						"id":{"title":"Código", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"official_document":{"title":"CPF ou CNPJ", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"name":{"title":"Nome ou razão social", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"popular_name":{"title":"Nome popular", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"company_relations":{"title":"Relações", "visible":false, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"activities":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"status":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"creation_date":{"title":"Data de criação", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"last_update":{"title":"Última alteração", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+					},
+          styles:{
+	          bordered: true,
+	          striped: true,
+	          font_size: 12,
+          }
+        },
+        search: {
+          type: '',
+					text: '',
+					field: 'Documento',
+				},
+
+				contextmenu:{
+          contextoptions:[
+            {"type":"submenu-item", "label":"Entidade selecionada", "options":[
+              {"type":"menu-item", "label":"Visualizar ficha", "options":[]},
+              {"type":"menu-item", "label":"Contatos", "options":[]},
+              {"type":"menu-item", "label":"Endereços", "options":[]},
+							{"type":"menu-item", "label":"Crédito", "options":[]},
+							{"type":"menu-item", "label":"Visualizar histórico", "options":[]},
+							{"type":"menu-item", "label":"Desativar", "options":[]},
+						]},
+						{"type":"menu-item", "label":"Adicionar entidade", "options":[]},
+
+            {"type":"divider", "label":"", "options":[]},
+            {"type":"menu-item", "label":"Colunas", "options":[
+              {"type":"menu-item", "label":"Código", "callback":this.change_column, "args":{"column":"id", "menu_index":3, "submenu_index":0}, "is_checked":true, "is_enable":false, "options":[]},
+              {"type":"menu-item", "label":"Documento", "callback": this.change_column, "args":{"column":"official_document", "menu_index":3, "submenu_index":1}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Nome ou razão", "callback":this.change_column,"args":{"column":"name", "menu_index":3, "submenu_index":2}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Nome popular", "callback":this.change_column, "args":{"column":"popular_name", "menu_index":3, "submenu_index":3}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Relações", "callback":this.change_column, "args":{"column":"company_relations", "menu_index":3, "submenu_index":4}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Atividades", "callback":this.change_column, "args":{"column":"activities", "menu_index":3, "submenu_index":5}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Status", "callback":this.change_column, "args":{"column":"status", "menu_index":3, "submenu_index":6}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Data de Criação", "callback":this.change_column, "args":{"column":"creation_date", "menu_index":3, "submenu_index":7}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Última alteração", "callback":this.change_column, "args":{"column":"last_update", "menu_index":3, "submenu_index":8}, "is_checked":false, "is_enable":true, "options":[]},
+            ]},
+
+            {"type":"submenu-item", "label":"Ordenação", "options":[
+							{"type":"submenu-item", "label":"Primária", "options":[
+								{"type":"menu-item", "label":"Aumentar texto", "options":[]},
+								{"type":"menu-item", "label":"Diminuir texto", "options":[]},
+							]},
+
+							{"type":"submenu-item", "label":"Adicionais", "options":[
+								{"type":"menu-item", "label":"Aumentar texto", "options":[]},
+								{"type":"menu-item", "label":"Diminuir texto", "options":[]},
+							]},
+						]},
+
+            {"type":"menu-item", "label":"Paginação", "options":[]},
+
+            {"type":"submenu-item", "label":"Estilos", "options":[
+							{"type":"submenu-item", "label":"Tamanho do texto", "options":[
+								{"type":"menu-item", "label":"9 px", "callback":this.set_font_size,"args":9, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"10 px", "callback":this.set_font_size,"args":10, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"11 px", "callback":this.set_font_size,"args":11, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"12 px", "callback":this.set_font_size,"args":12, "is_checked":true, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"13 px", "callback":this.set_font_size,"args":13, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"14 px", "callback":this.set_font_size,"args":14, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"15 px", "callback":this.set_font_size,"args":15, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"16 px", "callback":this.set_font_size,"args":16, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"17 px", "callback":this.set_font_size,"args":17, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"18 px", "callback":this.set_font_size,"args":18, "is_checked":false, "is_enable":true, "options":[]},
+
+							]},
+							{"type":"submenu-item", "label":"Bordas", "options":[
+								{"type":"menu-item", "label":"Com bordas", "callback":this.use_borders, "is_checked":true, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"Sem bordas", "callback":this.not_use_borders, "is_checked":false, "is_enable":true, "options":[]},
+							]},
+							{"type":"submenu-item", "label":"Linhas", "options":[
+								{"type":"menu-item", "label":"Diferenciadas", "callback":this.use_striped, "options":[]},
+								{"type":"menu-item", "label":"Simples", "callback":this.not_use_striped, "options":[]},
+							]},
+            ]},
+          ],
+        },
+
+
 			},
 
 			table_styles: {
 				fontSize: 12,
-				tableBordered: true,
 				tableStriped: false,
 			},
+
+
 
 			forms:{
 				entity:{
@@ -459,6 +593,7 @@ Vue.component('app_entities',{
 	},
 
 	methods: {
+
 		load: function() {
       let scope = this;
       let data_paramters = {};
@@ -517,22 +652,17 @@ Vue.component('app_entities',{
 					//let strCpf = data_paramters.official_document;
 					if (!validate_cpf(data_paramters.official_document)) {
 							alert("Seu CPF é inválido!!!");
-							return;
-					} else {
-						alert("Seu CPF é válido!!!");
+							return false;
 					}
           if (!validate_name(data_paramters.name)){
-             alert("Digite um nome válido.")
-             return;
+             alert("Digite um nome válido.");
+             return false;
           }
 
           if (!validate_data(data_paramters.birthdate_foundation)){
-             alert("Data Inválida!!!")
-             return;
-          } else {
-             alert("Data está ok!!!")
+             alert("Data Inválida!!!");
+             return false;
           }
-
         }
 
         if (data_paramters.type === 'PJ') {
@@ -540,25 +670,21 @@ Vue.component('app_entities',{
             //let strCnpj = data_paramters.official_document;
             if (!validate_cnpj(data_paramters.official_document)) {
                 alert("Seu CNPJ é inválido!!!");
-                return;
-            } else {
-              alert("Seu CNPJ é válido!!!");
+                return false;
             }
 
             if (!validate_name(data_paramters.name)){
-             alert("Digite um nome valido")
-             return;
+               alert("Digite um nome valido")
+               return false;
             }
 
         }
-
-
         return true;
 			};
       this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
 
-		disable: function(object, index) {
+		disable: function(object, index){
 			let scope = this;
 			let data_parameters = scope.forms.disable.object;
 			let success_function = function(response){
@@ -598,19 +724,57 @@ Vue.component('app_entities',{
      let scope = this;
      //scope.data.objects[index] = object;
      Vue.set(scope.data.objects, index, object);
-     alert('troquei');
-    }
+    },
+
+		filter_entities: function () {
+			let scope = this;
+			let base_filter = true;
+
+			let filtered_list = scope.data.objects.filter(function (item) {
+				if (scope.controls.search.text != '' && scope.controls.search.text != null) {
+					base_filter = scope.apply_busca(item);
+				}
+				return base_filter;
+			});
+			return filtered_list;
+		},
+
+
+
+		apply_busca: function(item){
+			//return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
+		},
 	},
 
 	mounted: function(){
 		this.load();
 		this.init_formulary();
+
+		this.controls.contextmenu.contextoptions[3].options[0].is_checked = this.controls.table.columns.id.visible;
+		this.controls.contextmenu.contextoptions[3].options[1].is_checked = this.controls.table.columns.official_document.visible;
+		this.controls.contextmenu.contextoptions[3].options[2].is_checked = this.controls.table.columns.name.visible;
+		this.controls.contextmenu.contextoptions[3].options[3].is_checked = this.controls.table.columns.popular_name.visible;
+		this.controls.contextmenu.contextoptions[3].options[4].is_checked = this.controls.table.columns.company_relations.visible;
+		this.controls.contextmenu.contextoptions[3].options[5].is_checked = this.controls.table.columns.activities.visible;
+		this.controls.contextmenu.contextoptions[3].options[6].is_checked = this.controls.table.columns.status.visible;
+		this.controls.contextmenu.contextoptions[3].options[7].is_checked = this.controls.table.columns.creation_date.visible;
+		this.controls.contextmenu.contextoptions[3].options[8].is_checked = this.controls.table.columns.last_update.visible;
+
+		this.app_controls.contextmenu.contextoptions.local = this.controls.contextmenu.contextoptions;
+
+	},
+
+	computed: {
+		result_list: function() {
+			//let result_list = this.filter_entities();
+			return []//result_list;
+		}
 	},
 	template: `
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles"></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="controls.search"></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>

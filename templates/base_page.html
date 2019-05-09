@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{% static 'bower_components/bootstrap/dist/css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/pnotify/dist/pnotify.css' %}">
     <link rel="stylesheet" href="{% static 'bower_components/nprogress/nprogress.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/custom/vcontext_menu/styles/v-contextmenu.min.css' %}">
 
 		<link rel="stylesheet" href="{% static 'css/otma-fonts.css' %}">
     <link rel="stylesheet" href="{% static 'apps/test_project/css/base/otma-base.css' %}">
@@ -25,12 +26,14 @@
     <script src="{% static 'bower_components/vue/dist/vue.js' %}"></script>
 
     <script src="{% static 'apps/test_project/js/controllers/BaseController.js' %}"></script>
+    <script src="{% static 'apps/custom/vcontext_menu/v-contextmenu.min.js' %}"></script>
 
     <style>
       .ui-pnotify-container {
         padding-top:8px;
       }
       .ui-pnotify-title {
+        display: block;
         padding-top:4px;
         font-size:12px;
       }
@@ -44,6 +47,72 @@
         padding: 70px 0;
         width: 50%;
         text-align:center;
+      }
+
+      .v-contextmenu{
+        background-color: #d7d9e4 !important;
+        border: 1px solid #ccc;
+      }
+
+      .v-contextmenu .v-contextmenu {
+        margin-left: 0px;
+      }
+
+      .v-contextmenu .v-contextmenu .v-contextmenu-submenu{
+        margin-left: 0px !important;
+        padding-left: 15px !important;
+
+        padding-right: 20px !important;
+        margin-right: 0px !important;
+      }
+
+      .v-contextmenu-item {
+        margin-left: 0px;
+        padding-left: 15px !important;
+        padding-right: 0px;
+        width: 100%;
+        margin-right:0px;
+
+        /*padding-left: 7px !important;
+        margin-left: 4px;
+        padding*/
+      }
+
+      .v-contextmenu .v-contextmenu-divider{
+        border-bottom: 1px solid #bbb !important;
+      }
+
+      .vcontext_icon:before{
+        font-family: "Font Awesome 5 Free";
+        font-weight: 400;
+
+        padding-right: 7px;
+        color: #888;
+      }
+
+      .icon_insert:before{
+        content: "\f067";
+      }
+
+      .icon_remove:before{
+        content: "\f014";
+      }
+
+      .icon_edit:before{
+        content: "\f044";
+      }
+
+      .icon_ordernation:before{
+        content: "\f160";
+      }
+      .icon_pagination:before{
+        content: "\f24d";
+      }
+      .icon_filters:before{
+        content: "\f0b0";
+      }
+      .icon_config:before{
+        font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f7d9";
       }
     </style>
 
@@ -504,38 +573,156 @@
           </ul>
         </nav>
 
-        <div id="content">
-        <div class="row top-menu">
-          <div class="col-12 dropdown">
-            <a id="sidebarCollapse">
-              <i class="fas fa-bars toggle-menu"></i>
-            </a>
-            <a class="menu-profile float-right" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <img alt="Avatar" class="photo" src="https://avatars1.githubusercontent.com/u/39997031?s=400&u=017e03d9cac198018edf72d10da0d7085efa2276&v=4">
-            </a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item otma-fs-12" href="#">Perfil</a>
-              <a class="dropdown-item otma-fs-12" href="#" data-toggle="modal" data-target="#exampleModal">Alterar Senha</a>
-              <a class="dropdown-item otma-fs-12" href="#" @click="block_session()">Bloquear tela</a>
-              <a class="dropdown-item otma-fs-12" href="/logout">Encerrar sessão</a>
+        <div id="content" v-if="user.session.is_blocked==false" v-contextmenu:contextmenu @click="remove_context()">
+          <div class="row top-menu">
+            <div class="col-12 dropdown">
+              <a id="sidebarCollapse">
+                <i class="fas fa-bars toggle-menu"></i>
+              </a>
+              <a class="menu-profile float-right" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img alt="Avatar" class="photo" src="https://avatars1.githubusercontent.com/u/39997031?s=400&u=017e03d9cac198018edf72d10da0d7085efa2276&v=4">
+              </a>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item otma-fs-12" href="#">Perfil</a>
+                <a class="dropdown-item otma-fs-12" href="#" data-toggle="modal" data-target="#exampleModal">Alterar Senha</a>
+                <a class="dropdown-item otma-fs-12" href="#" @click="block_session()">Bloquear tela</a>
+                <a class="dropdown-item otma-fs-12" href="/logout">Encerrar sessão</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="page-content">
+            {% verbatim %}
+            <v-contextmenu ref="contextmenu">
+              <!--<template v-for='item in app.controls.contextmenu.contextoptions.global'>
+                <v-contextmenu-item class='vcontext_icon' style='padding-right: 7px;width:180px;'>{{ item.label }}</v-contextmenu-item>
+              </template>-->
+              <template v-for='item in app.controls.contextmenu.contextoptions.local'>
+                <template v-if="item.type == 'divider'">
+                  <v-contextmenu-item divider></v-contextmenu-item>
+                </template>
+
+                <template v-else>
+                  <template class='' style='padding-left: 0px;padding-right: 7px;width:180px;'>
+                    <template v-if="item.options.length > 0">
+                      <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="item.label" class=''>
+                        <template v-for="submenu in item.options">
+                          <template v-if="submenu.options.length > 0">
+                            <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="submenu.label" class=''>
+                              <template v-for="sub_submenu in submenu.options">
+                                <template v-if="sub_submenu.is_enable">
+                                  <template v-if="sub_submenu.callback">
+                                    <v-contextmenu-item @click="sub_submenu.callback(sub_submenu.args)">{{ sub_submenu.label }}
+                                      <span v-if="sub_submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                        <i class="fas fa-check"></i>
+                                      </span>
+                                    </v-contextmenu-item>
+                                  </template>
+
+                                  <template v-else>
+                                    <v-contextmenu-item @click="handleClick">{{ sub_submenu.label }}
+                                      <span v-if="sub_submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                        <i class="fas fa-check"></i>
+                                      </span>
+                                    </v-contextmenu-item>
+                                  </template>
+                                </template>
+
+                                <template v-else>
+                                  <v-contextmenu-item disabled>CADE? {{ sub_submenu.label }}
+                                    <span v-if="sub_submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                      <i class="fas fa-check"></i>
+                                    </span>
+                                  </v-contextmenu-item>
+                                </template>
+                              </template>
+                            </v-contextmenu-submenu>
+                          </template>
+
+                          <template v-else>
+                            <template v-if="submenu.is_enable">
+                              <template v-if="submenu.callback">
+                                <v-contextmenu-item @click="submenu.callback(submenu.args)">{{ submenu.label }}
+                                  <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                    <i class="fas fa-check"></i>
+                                  </span>
+                                </v-contextmenu-item>
+                              </template>
+
+                              <template v-else>
+                                <v-contextmenu-item @click="handleClick">{{ submenu.label }}
+                                  <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                    <i class="fas fa-check"></i>
+                                  </span>
+                                </v-contextmenu-item>
+                              </template>
+                            </template>
+
+                            <template v-else>
+                              <v-contextmenu-item disabled>{{ submenu.label }}
+                                  <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                    <i class="fas fa-check"></i>
+                                  </span>
+                                </v-contextmenu-item>
+                            </template>
+
+
+                            <!--<v-contextmenu-item @click="handleClick">
+                              TEM NADA {{ submenu.label }}
+                            </v-contextmenu-item>-->
+                          </template>
+                        </template>
+                      </v-contextmenu-submenu>
+                    </template>
+
+                    <template v-else>
+                      <v-contextmenu-item @click="handleClick">{{ item.label }}</v-contextmenu-item>
+
+                    </template>
+                  </template>
+                </template>
+              </template>
+
+              <v-contextmenu-item divider></v-contextmenu-item>
+
+              <template v-for='item in app.controls.contextmenu.contextoptions.global'>
+                <v-contextmenu-item class='' style='padding-left: 0px;padding-right: 7px;width:180px;'>
+                  <template v-if="item.options.length > 0">
+                    <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="item.label" class=''>
+                      <template v-for="submenu in item.options">
+                        <v-contextmenu-item @click="handleClick">{{ submenu.label }}</v-contextmenu-item>
+                      </template>
+                    </v-contextmenu-submenu>
+                  </template>
+                  <template v-else>{{ item.label }}</template>
+
+                </v-contextmenu-item>
+              </template>
+
+
+            {% endverbatim %}
+            </v-contextmenu>
+
+            <!--<v-contextmenu-item class='vcontext_icon icon_insert' style='padding-right: 7px;width:180px;'>Adicionar</v-contextmenu-item>
+            <v-contextmenu-item class='vcontext_icon icon_insert' style='padding-right: 7px;width:180px;'>Alterar</v-contextmenu-item>
+            <v-contextmenu-item class='vcontext_icon icon_insert' style='padding-right: 7px;width:180px;'>Testar</v-contextmenu-item>
+            <v-contextmenu-item class='vcontext_icon icon_insert' style='padding-right: 7px;width:180px;'>Sei la</v-contextmenu-item>-->
+
+
+
+           {% block main_content %}
+
+           {% endblock %}
+          </div>
+
+          <div class="otma-footer otma-fs-12">
+            <div class="text-center">
+              <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
+              <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
+              <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
             </div>
           </div>
         </div>
-
-        <div class="page-content">
-         {% block main_content %}
-
-         {% endblock %}
-        </div>
-
-        <div class="otma-footer otma-fs-12">
-          <div class="text-center">
-            <span class="otma-info-footer otma-footer-font"><a href="https://www.otmasolucoes.com.br"> OTMA Soluções LTDA</a></span>
-            <span class="otma-info-footer otma-footer-font">e-mail: <a href="mailto:contato@otmasolucoes.com">contato@otmasolucoes.com</a></span>
-            <span class="otma-footer-font"> Telefone: (27) 2141-7943</span>
-          </div>
-        </div>
-      </div>
       </template>
 
       <template v-else>
@@ -611,11 +798,10 @@
       </div>
 
     </template>
-
-
   </div>
 </body>
   {% load static %}
+
   <script src="{% static 'bower_components/pnotify/dist/pnotify.js' %}"></script>
   <script src="{% static 'bower_components/nprogress/nprogress.js' %}"></script>
 	<script src="{% static 'bower_components/moment/moment.js' %}"></script>
@@ -628,7 +814,11 @@
   <script src="{% static 'apps/test_project/commons/components/FormsComponents.js' %}"></script>
   <script src="{% static 'apps/AppComponents.js' %}"></script>
   <script src="{% static 'apps/AppController.js' %}"></script>
+
+
   <script src="{% static 'js/blocker.js' %}"></script>
+
+
   {% block secondary_dependencies %}
 
   {% endblock %}

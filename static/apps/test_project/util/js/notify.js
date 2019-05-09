@@ -8,7 +8,7 @@ function notify(type,title,description){
     delay: type=='error' ? 5000 : 5000,
     mouse_reset: false,
     type: type=='confirm' ? 'success' : type,
-    addclass: 'clickable font-10',
+    addclass: 'clickable',
     styling: 'fontawesome', //fontawesome5 'bootstrap3' // bootstrap3 ,
     nonblock: {
         nonblock: true
