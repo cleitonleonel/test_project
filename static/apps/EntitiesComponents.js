@@ -1,10 +1,25 @@
 Vue.component('app_entities_table',{
-	mixins: [],
-	props: ['forms', 'data', 'classes', 'table'],
-	data: function(){
-		return {
-		}
-	},
+  mixins: [],
+  props: ['forms', 'data', 'classes', 'table'],
+  data: function(){
+    return {
+      table_fields: [
+        {"tag":"id", "text":"#", "visible":true, "style":"text-align:center;width:45px;color:red;", },
+        {"tag":"official_document", "text":"Documento", "visible":true, "style":"text-align:center;width:140px;"},
+        {"tag":"name", "text":"Nome ou razão social", "visible":true, "style":""},
+        {"tag":"popular_name", "text":"Nome popular", "visible":true, "style":"text-align:center;width:120px;"},
+        {"tag":"company_relations", "text":"Relação", "visible":true, "style":"text-align:center;width:160px;"},
+        {"tag":"activities", "text":"Atividade", "visible":true, "style":"text-align:center;width:160px;"},
+        {"tag":"commercial_status", "text":"Status", "visible":true, "style":"text-align:center;width:60px;"},
+        {"tag":"creation_date", "text":"Criação", "visible":true, "style":"text-align:center;width:135px;"},
+        {"tag":"last_update", "text":"Últ. alteração", "visible":true, "style":"text-align:center;width:135px;"},
+        {"tag":"", "text":"", "visible":true, "style":"text-align:center;width:80px;"},
+      ],
+
+		  column_selected: 'name',
+		  column_direction:'asc',
+    }
+  },
 
 	methods: {
 		aumentar_fonte: function(){
@@ -41,9 +56,9 @@ Vue.component('app_entities_table',{
       $('#get_activities').selectpicker('val', this.forms.entity.object.get_activities);
       $('#get_company_relations').selectpicker('val', this.forms.entity.object.get_company_relations);
       //$('.selectpicker').selectpicker('render');
-	  },
+    },
 
-	  select: function(register, index){
+    select: function(register, index){
       this.forms.disable.object = {
         id: register.id,
         name: register.name,
@@ -53,8 +68,29 @@ Vue.component('app_entities_table',{
       }
       //this.forms.disable.backup = register;
       this.forms.disable.index = index;
-	},
-	},
+  },
+
+    sort: function(tag){
+			//alert(this.column_direction);
+      //alert("oi");
+      if(tag === this.column_selected) {
+        this.column_direction = this.column_direction==='asc'?'desc':'asc';
+      };
+      this.column_selected = tag;
+
+
+      return this.data.objects.sort((a,b) => {
+	      let modifier = 1;
+	      if(this.column_direction === 'desc') modifier = -1;
+	      if(a[this.column_selected] < b[this.column_selected]) return -1 * modifier;
+	      if(a[this.column_selected] > b[this.column_selected]) return 1 * modifier;
+	      //this.column_direction= 'desc';
+	      return 0;
+	    });
+
+    }
+  },
+
 	filters: {
     moment: function (date) {
       return moment(date).format('DD/MM/YYYY, HH:mm:ss');
@@ -98,63 +134,87 @@ Vue.component('app_entities_table',{
 			</div>
 			<div id="entity-container">
 				<table id="entity-table" :class="{'table-striped': table.tableStriped, 'table-bordered': table.tableBordered}" style='width:100%;' :style="{fontSize: table.fontSize + 'px'}">
-					<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
-						<td style='text-align:center;width:45px;'>#</td>
-						<td style='text-align:center;width:140px;'>Documento</td>
-						<td>Nome ou razão social</td>
-						<td style='text-align:center;width:120px;'>Nome popular</td>
-						<td style='text-align:center;width:160px;'>Relação</td>
-						<td style='text-align:center;width:160px;'>Atividade</td>
-						<td style='text-align:center;width:60px;'>Status</td>
-						<td style='text-align:center;width:135px;'>Criação</td>
-						<td style='text-align:center;width:135px;'>Últ. Alteração</td>
-						<td style='text-align:center;width:80px;'></td>
-					</tr>
 
-					<tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
-						<td colspan='11'>Aguarde.. carregando os registros</td>
-					</tr>
+          <tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
+            <td v-for='field in table_fields' v-if='field.visible' v-bind:style="field.style" @click="sort(field.tag)">
+              {{ field.text }} <input type="checkbox" @click="field.visible = false">
+            </td>
+          </tr>
 
-					<tr v-if='data.controls.loaded==true && data.objects.length==0' style='font-size: 12px;text-align:center;'>
-						<td colspan='11'>Nenhum registro cadastrado</td>
-					</tr>
+          <app_cells_table :data="data" :table_fields="table_fields"></app_cells_table>
 
-					<template v-if='data.objects.length > 0'>
-						<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
-							<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
-							<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
-							<td>{{ entity.name }} - {{ entity.is_active }}</td>
-							<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
-							<td style='text-align:center;width:160px;'>
-								<span v-for="(relation,index) in entity.get_company_relations">
-									{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
-								</span>
-							</td>
-							<td style='text-align:center;width:160px;'>
-								<span v-for="(activity,index) in entity.get_activities">
-									{{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
-								</span>
-							</td>
-							<td style='text-align:center;width:60px;'>
-								<span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
-								<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
-								<span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
-								<span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
-							</td>
-							<td style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
-							<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
-							<td style="padding:5px;">
-								<div class="btn-group btn-group-xs" role="group" aria-label="...">
-									<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
-									<button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
-								</div>
-							</td>
-						</tr>
-					</template>
-				</table>
-			</div>
-		</div>
-	`,
+          <tr v-if='data.controls.loaded==false' style='font-size: 12px;text-align:center;'>
+            <td colspan='11'>Aguarde.. carregando os registros</td>
+          </tr>
+
+          <tr v-if='data.controls.loaded==true && data.objects.length==0' style='font-size: 12px;text-align:center;'>
+            <td colspan='11'>Nenhum registro cadastrado</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  `,
+});
+
+Vue.component('app_cells_table', {
+  mixins:[],
+  props:['data', 'table_fields'],
+  data: function() {
+    return {
+      table_cells: [
+        {"attribute":"id", "style":"text-align:center;width:45px;",},
+        {"attribute":"official_document", "style":"text-align:center;width:140px;",},
+				{"attribute":"name", "style":"",},
+				{"attribute":"popular_name", "style":"text-align:left;width:90px;",},
+				{"attribute":"relation", "style":"text-align:center;width:160px;",},
+				{"attribute":"activity", "style":"text-align:center;width:160px;",},
+				{"attribute":"status", "style":"text-align:center;width:60px;",},
+				{"attribute":"creation_date", "style":"text-align:center;width:135px;",},
+				{"attribute":"last_alt", "style":"text-align:center;width:135px;",},
+				{"attribute":"buttons", "style":"padding:5px;",},
+      ],
+    }
+  },
+  template:
+  `
+    <tbody>
+
+      <tr v-if='data.objects.length > 0 && data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, tr_index) in data.objects'>
+        <td v-for='(cell, td_index) in table_cells' v-if='table_fields[td_index].visible' v-bind:style="cell.style">
+          {{ entity[cell.attribute] }}
+
+
+          <div v-if="cell.attribute=='relations'">
+	          <span v-for="(relation,index) in entity.company_relations">
+	            {{ relation | company_relations }}<span v-if='index < (entity.company_relations.length-1)' style='padding-right:3px;'>,</span>
+	          </span>
+          </div>
+
+          <div v-if="cell.attribute=='activity'">
+	          <span v-for="(activity,index) in entity.get_activities">
+	            {{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
+	          </span>
+          </div>
+
+          <div v-if="cell.attribute=='activity'">
+	          <span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
+	          <span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
+	          <span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
+	          <span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
+          </div>
+
+          <div v-if="cell.attribute=='buttons'">
+	          <div class="btn-group btn-group-xs" role="group" aria-label="...">
+	            <button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
+	            <button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
+	          </div>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  `,
+  methods: {},
 });
 
 Vue.component('app_entities_form',{
@@ -189,7 +249,7 @@ Vue.component('app_entities_form',{
 		    <div class='col-lg-2 col-md-6 col-sm-4 col-xs-12'>
 		      <template v-if="form.object.nationality=='BR'">
 			      <app_field label="CPF" title="Informe o CPF." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document' v-if="form.object.type== 'PF'"></app_field>
-			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else></app_field>
+			      <app_field label="CNPJ" title="Informe o CNPJ." classes="form-control" v-model="form.object.official_document" :error='form.errors.official_document'  v-else=""></app_field>
 		      </template>
 
 		      <template v-else>
@@ -588,3 +648,62 @@ Vue.component('app_entities',{
 		</div>
 	`,
 });
+
+/*
+Vue.component('mysearchbtn', {
+  template:`
+  <div>
+    <input type="text" placeholder="type to search"
+      v-model="search"
+      @input="$emit('update:search', $event.target.value)" />
+  </div>`,
+  props:['search']
+})
+
+new Vue({
+  el:'#app',
+  data(){
+    return{
+       original:[],
+       list:[],
+       search:'',
+       resuls:[],
+       searchIndex:null
+    }
+  },
+  mounted(){
+    axios('https://jsonplaceholder.typicode.com/comments')
+       .then(data => {
+          this.original = data.data
+          this.list = this.original
+          this.buildIndex()
+      })
+
+    this.$watch('search', () => {
+      this.resuls = this.searchIndex.search(this.search)
+
+      this.list = []
+      this.resuls.forEach(d => {
+        this.original.forEach(p => {
+          if(d.ref == p.id) this.list.push(p)
+        })
+
+      })
+    })
+  },
+  methods:{
+    buildIndex(){
+      var documents = this.original
+      this.searchIndex = lunr(function () {
+        this.ref('id')
+        this.field('name')
+        this.field('body')
+        this.field('email')
+
+        documents.forEach(doc => {
+          this.add(doc)
+        })
+      })
+    }
+  }
+})*/
