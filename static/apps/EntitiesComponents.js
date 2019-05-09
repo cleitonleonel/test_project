@@ -183,9 +183,8 @@ Vue.component('app_entities_table',{
 								<td v-if='controls.table.columns.name.visible'>{{ entity.name }}</td>
 								<td v-if='controls.table.columns.popular_name.visible' style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
 								<td v-if='controls.table.columns.company_relations.visible' style='text-align:center;width:160px;'>
-								CARA> {{ entity.get_company_relations }}
 									<span v-for="(relation,index) in entity.get_company_relations">
-										v:{{ relation }}
+										{{ relation }}
 										{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
 									</span>
 								</td>
