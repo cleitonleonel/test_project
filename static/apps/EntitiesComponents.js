@@ -116,8 +116,29 @@ Vue.component('app_entities_table',{
       }
       //this.forms.disable.backup = register;
       this.forms.disable.index = index;
-	},
-	},
+  },
+
+    sort: function(tag){
+			//alert(this.column_direction);
+      //alert("oi");
+      if(tag === this.column_selected) {
+        this.column_direction = this.column_direction==='asc'?'desc':'asc';
+      };
+      this.column_selected = tag;
+
+
+      return this.data.objects.sort((a,b) => {
+	      let modifier = 1;
+	      if(this.column_direction === 'desc') modifier = -1;
+	      if(a[this.column_selected] < b[this.column_selected]) return -1 * modifier;
+	      if(a[this.column_selected] > b[this.column_selected]) return 1 * modifier;
+	      //this.column_direction= 'desc';
+	      return 0;
+	    });
+
+    }
+  },
+
 	filters: {
     moment: function (date) {
       return moment(date).format('DD/MM/YYYY, HH:mm:ss');
@@ -772,3 +793,62 @@ Vue.component('app_entities',{
 		</div>
 	`,
 });
+
+/*
+Vue.component('mysearchbtn', {
+  template:`
+  <div>
+    <input type="text" placeholder="type to search"
+      v-model="search"
+      @input="$emit('update:search', $event.target.value)" />
+  </div>`,
+  props:['search']
+})
+
+new Vue({
+  el:'#app',
+  data(){
+    return{
+       original:[],
+       list:[],
+       search:'',
+       resuls:[],
+       searchIndex:null
+    }
+  },
+  mounted(){
+    axios('https://jsonplaceholder.typicode.com/comments')
+       .then(data => {
+          this.original = data.data
+          this.list = this.original
+          this.buildIndex()
+      })
+
+    this.$watch('search', () => {
+      this.resuls = this.searchIndex.search(this.search)
+
+      this.list = []
+      this.resuls.forEach(d => {
+        this.original.forEach(p => {
+          if(d.ref == p.id) this.list.push(p)
+        })
+
+      })
+    })
+  },
+  methods:{
+    buildIndex(){
+      var documents = this.original
+      this.searchIndex = lunr(function () {
+        this.ref('id')
+        this.field('name')
+        this.field('body')
+        this.field('email')
+
+        documents.forEach(doc => {
+          this.add(doc)
+        })
+      })
+    }
+  }
+})*/
