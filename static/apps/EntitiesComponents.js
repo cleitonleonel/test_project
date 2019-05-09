@@ -20,30 +20,14 @@ var contextmenux_actions = {
 			this.controls.table.styles.striped = false;
 		},
 
-		increase_font_size: function(){
-			if(this.controls.table.styles.font_size < 18){
-				this.controls.table.styles.font_size = this.controls.table.styles.font_size + 1;
-				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = true;
-				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = true;
-			}
-			else{
-				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = false;
-			}
-
+		set_font_size: function(font_size){
+			this.controls.table.styles.font_size = font_size;
 		},
 
-		decrease_font_size: function(){
-			if(this.controls.table.styles.font_size >= 9){
-				this.controls.table.styles.font_size = this.controls.table.styles.font_size - 1;
-				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = true;
-				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = true;
-			}
-			else{
-				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = false;
-			}
+		change_column: function(args){
+			this.controls.table.columns[args.column].visible = !this.controls.table.columns[args.column].visible;
+			this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked = !this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked;
 		}
-
-
 	}
 }
 
@@ -171,6 +155,21 @@ Vue.component('app_entities_table',{
 		<div style=""><!--border: 1px solid #eee;box-sizing: border-box;">-->
 			<div id="entity-container">
 				<app_search :search="controls.search"></app_search>
+				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
+
+					<thead>
+						<tr>
+							<th v-for='column in controls.table.columns' v-if='column.visible' :style="column.style">
+								{{ column.title }}
+								<span v-if='column.sorted' style=''>
+									<i class="fas fa-sort-amount-down"></i>
+								</span>
+							</th>
+						</tr>
+					</thead>
+				</table>
+
+
 				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
 					<thead>
 						<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
@@ -402,6 +401,17 @@ Vue.component('app_entities',{
 
 			controls: {
 				table:{
+					columns:{
+						"id":{"title":"Código", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"official_document":{"title":"CPF ou CNPJ", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"name":{"title":"Nome ou razão social", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"popular_name":{"title":"Nome popular", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
+						"company_relations":{"title":"Relações", "visible":false, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"activities":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"status":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"creation_date":{"title":"Data de criação", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"last_update":{"title":"Última alteração", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+					},
           styles:{
 	          bordered: true,
 	          striped: true,
@@ -428,14 +438,15 @@ Vue.component('app_entities',{
 
             {"type":"divider", "label":"", "options":[]},
             {"type":"menu-item", "label":"Colunas", "options":[
-              {"type":"menu-item", "label":"Documento", "options":[]},
-              {"type":"menu-item", "label":"Nome ou razão social", "options":[]},
-              {"type":"menu-item", "label":"Nome popular", "options":[]},
-              {"type":"menu-item", "label":"Relação com a empresa", "options":[]},
-              {"type":"menu-item", "label":"Atividades", "options":[]},
-              {"type":"menu-item", "label":"Status", "options":[]},
-              {"type":"menu-item", "label":"Criação", "options":[]},
-              {"type":"menu-item", "label":"Última alteração", "options":[]},
+              {"type":"menu-item", "label":"Código", "callback":this.change_column, "args":{"column":"id", "menu_index":3, "submenu_index":0}, "is_checked":true, "is_enable":false, "options":[]},
+              {"type":"menu-item", "label":"Documento", "callback": this.change_column, "args":{"column":"official_document", "menu_index":3, "submenu_index":1}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Nome ou razão", "callback":this.change_column,"args":{"column":"name", "menu_index":3, "submenu_index":2}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Nome popular", "callback":this.change_column, "args":{"column":"popular_name", "menu_index":3, "submenu_index":3}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Relações", "callback":this.change_column, "args":{"column":"company_relations", "menu_index":3, "submenu_index":4}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Atividades", "callback":this.change_column, "args":{"column":"activities", "menu_index":3, "submenu_index":5}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Status", "callback":this.change_column, "args":{"column":"status", "menu_index":3, "submenu_index":6}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Data de Criação", "callback":this.change_column, "args":{"column":"creation_date", "menu_index":3, "submenu_index":7}, "is_checked":false, "is_enable":true, "options":[]},
+              {"type":"menu-item", "label":"Última alteração", "callback":this.change_column, "args":{"column":"last_update", "menu_index":3, "submenu_index":8}, "is_checked":false, "is_enable":true, "options":[]},
             ]},
 
             {"type":"submenu-item", "label":"Ordenação", "options":[
@@ -454,8 +465,17 @@ Vue.component('app_entities',{
 
             {"type":"submenu-item", "label":"Estilos", "options":[
 							{"type":"submenu-item", "label":"Tamanho do texto", "options":[
-								{"type":"menu-item", "label":"Aumentar texto", "callback":this.increase_font_size, "is_checked":false, "is_enable":true, "options":[]},
-								{"type":"menu-item", "label":"Diminuir texto", "callback":this.decrease_font_size, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"9 px", "callback":this.set_font_size,"args":9, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"10 px", "callback":this.set_font_size,"args":10, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"11 px", "callback":this.set_font_size,"args":11, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"12 px", "callback":this.set_font_size,"args":12, "is_checked":true, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"13 px", "callback":this.set_font_size,"args":13, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"14 px", "callback":this.set_font_size,"args":14, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"15 px", "callback":this.set_font_size,"args":15, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"16 px", "callback":this.set_font_size,"args":16, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"17 px", "callback":this.set_font_size,"args":17, "is_checked":false, "is_enable":true, "options":[]},
+								{"type":"menu-item", "label":"18 px", "callback":this.set_font_size,"args":18, "is_checked":false, "is_enable":true, "options":[]},
+
 							]},
 							{"type":"submenu-item", "label":"Bordas", "options":[
 								{"type":"menu-item", "label":"Com bordas", "callback":this.use_borders, "is_checked":true, "is_enable":true, "options":[]},
@@ -698,6 +718,8 @@ Vue.component('app_entities',{
 			return filtered_list;
 		},
 
+
+
 		apply_busca: function(item){
 			//return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
 		},
@@ -706,7 +728,19 @@ Vue.component('app_entities',{
 	mounted: function(){
 		this.load();
 		this.init_formulary();
+
+		this.controls.contextmenu.contextoptions[3].options[0].is_checked = this.controls.table.columns.id.visible;
+		this.controls.contextmenu.contextoptions[3].options[1].is_checked = this.controls.table.columns.official_document.visible;
+		this.controls.contextmenu.contextoptions[3].options[2].is_checked = this.controls.table.columns.name.visible;
+		this.controls.contextmenu.contextoptions[3].options[3].is_checked = this.controls.table.columns.popular_name.visible;
+		this.controls.contextmenu.contextoptions[3].options[4].is_checked = this.controls.table.columns.company_relations.visible;
+		this.controls.contextmenu.contextoptions[3].options[5].is_checked = this.controls.table.columns.activities.visible;
+		this.controls.contextmenu.contextoptions[3].options[6].is_checked = this.controls.table.columns.status.visible;
+		this.controls.contextmenu.contextoptions[3].options[7].is_checked = this.controls.table.columns.creation_date.visible;
+		this.controls.contextmenu.contextoptions[3].options[8].is_checked = this.controls.table.columns.last_update.visible;
+
 		this.app_controls.contextmenu.contextoptions.local = this.controls.contextmenu.contextoptions;
+
 	},
 
 	computed: {
