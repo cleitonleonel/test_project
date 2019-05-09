@@ -156,7 +156,6 @@ Vue.component('app_entities_table',{
 			<div id="entity-container">
 				<app_search :search="controls.search"></app_search>
 				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
-
 					<thead>
 						<tr>
 							<th v-for='column in controls.table.columns' v-if='column.visible' :style="column.style">
@@ -165,24 +164,6 @@ Vue.component('app_entities_table',{
 									<i class="fas fa-sort-amount-down"></i>
 								</span>
 							</th>
-						</tr>
-					</thead>
-				</table>
-
-
-				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
-					<thead>
-						<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
-							<td style='text-align:center;width:45px;'>#</td>
-							<td style='text-align:center;width:140px;'>Documento</td>
-							<td>Nome ou razão social</td>
-							<td style='text-align:center;width:120px;'>Nome popular</td>
-							<td style='text-align:center;width:160px;'>Relação</td>
-							<td style='text-align:center;width:160px;'>Atividade</td>
-							<td style='text-align:center;width:60px;'>Status</td>
-							<td style='text-align:center;width:135px;'>Criação</td>
-							<td style='text-align:center;width:135px;'>Últ. Alteração</td>
-							<td style='text-align:center;width:80px;'></td>
 						</tr>
 					</thead>
 
@@ -196,29 +177,31 @@ Vue.component('app_entities_table',{
 						</tr>
 
 						<template v-if='data.objects.length > 0'>
-							<tr v-if='data.controls.loaded && entity.status != "DISABLED"' v-for='(entity, index) in data.objects'>
-								<td style='text-align:center;width:45px;'>{{ entity.id }}</td>
-								<td style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
-								<td>{{ entity.name }}</td>
-								<td style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
-								<td style='text-align:center;width:160px;'>
+							<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
+								<td v-if='controls.table.columns.id.visible' style='text-align:center;width:45px;'>{{ entity.id }}</td>
+								<td v-if='controls.table.columns.official_document.visible' style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
+								<td v-if='controls.table.columns.name.visible'>{{ entity.name }}</td>
+								<td v-if='controls.table.columns.popular_name.visible' style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
+								<td v-if='controls.table.columns.company_relations.visible' style='text-align:center;width:160px;'>
+								CARA> {{ entity.get_company_relations }}
 									<span v-for="(relation,index) in entity.get_company_relations">
+										v:{{ relation }}
 										{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
 									</span>
 								</td>
-								<td style='text-align:center;width:160px;'>
+								<td v-if='controls.table.columns.activities.visible' style='text-align:center;width:160px;'>
 									<span v-for="(activity,index) in entity.get_activities">
 										{{ activity | activity_label }}<span v-if='index < (entity.get_activities.length-1)' style='padding-right:3px;'>,</span>
 									</span>
 								</td>
-								<td style='text-align:center;width:60px;'>
+								<td v-if='controls.table.columns.status.visible' style='text-align:center;width:60px;'>
 									<span v-if="entity.commercial_status=='HAB'"><i class="fas fa-check-circle"></i></span>
 									<span v-if="entity.commercial_status=='BLO'"><i class="fas fa-ban"></i></span>
 									<span v-if="entity.commercial_status=='SUS'"><i class="fas fa-clock"></i></span>
 									<span v-if="entity.commercial_status=='DES'"><i class="fas fa-times"></i></span>
 								</td>
-								<td style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
-								<td style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
+								<td v-if='controls.table.columns.creation_date.visible' style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
+								<td v-if='controls.table.columns.last_update.visible' style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
 								<td style="padding:5px;">
 									<div class="btn-group btn-group-xs" role="group" aria-label="...">
 										<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
@@ -406,7 +389,7 @@ Vue.component('app_entities',{
 						"official_document":{"title":"CPF ou CNPJ", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
 						"name":{"title":"Nome ou razão social", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
 						"popular_name":{"title":"Nome popular", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
-						"company_relations":{"title":"Relações", "visible":false, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"company_relations":{"title":"Relações", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
 						"activities":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
 						"status":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
 						"creation_date":{"title":"Data de criação", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
@@ -740,7 +723,6 @@ Vue.component('app_entities',{
 		this.controls.contextmenu.contextoptions[3].options[8].is_checked = this.controls.table.columns.last_update.visible;
 
 		this.app_controls.contextmenu.contextoptions.local = this.controls.contextmenu.contextoptions;
-
 	},
 
 	computed: {

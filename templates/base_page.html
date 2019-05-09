@@ -594,9 +594,6 @@
           <div class="page-content">
             {% verbatim %}
             <v-contextmenu ref="contextmenu">
-              <!--<template v-for='item in app.controls.contextmenu.contextoptions.global'>
-                <v-contextmenu-item class='vcontext_icon' style='padding-right: 7px;width:180px;'>{{ item.label }}</v-contextmenu-item>
-              </template>-->
               <template v-for='item in app.controls.contextmenu.contextoptions.local'>
                 <template v-if="item.type == 'divider'">
                   <v-contextmenu-item divider></v-contextmenu-item>
