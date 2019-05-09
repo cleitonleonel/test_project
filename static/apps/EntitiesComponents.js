@@ -79,7 +79,7 @@ Vue.component('app_search',{
 
 Vue.component('app_entities_table',{
 	mixins: [],
-	props: ['forms', 'data', 'classes', 'table', 'controls', 'search'],
+	props: ['forms', 'data', 'classes', 'table', 'controls'],
 	data: function(){
 		return {
 		}
@@ -170,6 +170,7 @@ Vue.component('app_entities_table',{
 	template: `
 		<div style=""><!--border: 1px solid #eee;box-sizing: border-box;">-->
 			<div id="entity-container">
+				<app_search :search="controls.search"></app_search>
 				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
 					<thead>
 						<tr style='background: #dcdcdc;color:#777;font-size:11px;text-align:center;height:25px;'>
@@ -407,6 +408,11 @@ Vue.component('app_entities',{
 	          font_size: 12,
           }
         },
+        search: {
+          type: '',
+					text: '',
+					field: 'Documento',
+				},
 
 				contextmenu:{
           contextoptions:[
@@ -471,10 +477,7 @@ Vue.component('app_entities',{
 				tableStriped: false,
 			},
 
-			search: {
-				field: 'Documento',
-				text: '',
-			},
+
 
 			forms:{
 				entity:{
@@ -608,20 +611,17 @@ Vue.component('app_entities',{
 					//let strCpf = data_paramters.official_document;
 					if (!validate_cpf(data_paramters.official_document)) {
 							alert("Seu CPF é inválido!!!");
-							return;
-					} else {
-						alert("Seu CPF é válido!!!");
+							return false;
 					}
           if (!validate_name(data_paramters.name)){
-             alert("Digite um nome válido.")
-             return;
-          }
-
-          if (!validate_data(data_paramters.birthdate_foundation)){
-             alert("Data Inválida!!!")
+             alert("Digite um nome válido.");
              return false;
           }
 
+          if (!validate_data(data_paramters.birthdate_foundation)){
+             alert("Data Inválida!!!");
+             return false;
+          }
         }
 
         if (data_paramters.type === 'PJ') {
@@ -630,6 +630,7 @@ Vue.component('app_entities',{
             if (!validate_cnpj(data_paramters.official_document)) {
                 alert("Seu CNPJ é inválido!!!");
                 return false;
+            }
 
             if (!validate_name(data_paramters.name)){
                alert("Digite um nome valido")
@@ -637,14 +638,12 @@ Vue.component('app_entities',{
             }
 
         }
-
-
         return true;
 			};
       this.request('/api/entity/save/', 'post', data_paramters, validation_function, success_function, failure_function);
     },
 
-		disable: function(object, index) {
+		disable: function(object, index){
 			let scope = this;
 			let data_parameters = scope.forms.disable.object;
 			let success_function = function(response){
@@ -691,7 +690,7 @@ Vue.component('app_entities',{
 			let base_filter = true;
 
 			let filtered_list = scope.data.objects.filter(function (item) {
-				if (scope.search.text != '' && scope.search.text != null) {
+				if (scope.controls.search.text != '' && scope.controls.search.text != null) {
 					base_filter = scope.apply_busca(item);
 				}
 				return base_filter;
@@ -700,7 +699,7 @@ Vue.component('app_entities',{
 		},
 
 		apply_busca: function(item){
-			return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
+			//return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
 		},
 	},
 
@@ -712,15 +711,15 @@ Vue.component('app_entities',{
 
 	computed: {
 		result_list: function() {
-			let result_list = this.filter_entities();
-			return result_list;
+			//let result_list = this.filter_entities();
+			return []//result_list;
 		}
 	},
 	template: `
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="search"></app_entities_table>
+			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="controls.search"></app_entities_table>
 
 			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 			  <template v-slot:title>
