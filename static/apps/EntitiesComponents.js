@@ -27,14 +27,88 @@ var contextmenux_actions = {
 		change_column: function(args){
 			this.controls.table.columns[args.column].visible = !this.controls.table.columns[args.column].visible;
 			this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked = !this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked;
+		},
+
+		decrease_font_size: function(){
+			if(this.controls.table.styles.font_size >= 9){
+				this.controls.table.styles.font_size = this.controls.table.styles.font_size - 1;
+				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = true;
+				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = true;
+			}
+			else{
+				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = false;
+			}
+		},
+
+		view_entity: function () {
+			alert('aaaaaaaaaaaaaaa');
+			$('modal_entity').modal('show')
+		},
+
+		view_entity_disable() {
+			$('modal_disable_entity').modal('show')
 		}
 	}
-}
+};
+
+Vue.component('app_filters', {
+	props: ['filters'],
+	template: `
+<!--	<table style="border: 1px solid #eee; width: 100%;">-->
+	<table class="table-bordered" style="width: 100%;">
+		<thead>
+			<tr>
+				<td v-for="filter in filters" style="text-align: center;"><span class="otma-fs-10">
+					<select v-if="filter.length != 0" class="form-control">
+						<option v-for="option in filter">{{option}}</option>
+					</select>
+				</span></td>
+			</tr>
+		</thead>
+	</table>
+	`
+});
 
 Vue.component('app_search',{
 	props:['search'],
 	template:`
 	<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="tipo">Tipo:</label>
+			<select v-model="search.field" class="form-control">
+				<option>Geral</option>
+				<option>Pessoa</option>
+				<option>Empresa</option>
+				<option>ONG</option>
+				<option>Outros</option>
+			</select>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="relacao">Relação:</label>
+			<select v-model="search.field" class="form-control">
+				<option>Geral</option>
+				<option>Cliente</option>
+				<option>Fornecedor</option>
+				<option>Funcionário</option>
+				<option>Representante</option>
+				<option>Transportador</option>
+				<option>Contador</option>
+				<option>Banco</option>
+			</select>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="atividade">Atividade:</label>
+			<select v-model="search.field" class="form-control">
+				<option>Geral</option>
+				<option>Comércio</option>
+				<option>Serviço</option>
+				<option>Induśtria</option>
+				<option>Importador</option>
+				<option>Exportador</option>
+				<option>Produtor Rural</option>
+				<option>Extravista</option>
+			</select>
+		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
 			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="coluna">Buscar por:</label>
 			<select v-model="search.field" class="form-control">
@@ -70,6 +144,10 @@ Vue.component('app_entities_table',{
 	},
 
 	methods: {
+		mostrar_filtros: function() {
+			this.controls.show_filters_menu = !this.controls.show_filters_menu;
+		},
+
 		aumentar_fonte: function(){
 			const font = this.table.fontSize;
 			if (font < 18) {
@@ -205,7 +283,6 @@ Vue.component('app_entities_table',{
 								<td v-if='controls.table.columns.popular_name.visible' style='text-align:left;width:90px;'>{{ entity.popular_name }}</td>
 								<td v-if='controls.table.columns.company_relations.visible' style='text-align:center;width:160px;'>
 									<span v-for="(relation,index) in entity.get_company_relations">
-										{{ relation }}
 										{{ relation | company_relations_label }}<span v-if='index < (entity.get_company_relations.length-1)' style='padding-right:3px;'>,</span>
 									</span>
 								</td>
@@ -231,6 +308,14 @@ Vue.component('app_entities_table',{
 							</tr>
 						</template>
 					</tbody>
+					
+					<tfoot>
+						<tr>
+							<td v-if="data.objects.length == 0" colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;"></td>
+							<td v-else colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;">Exibindo x registros de {{data.objects.length}}</td>
+							<td colspan="8" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;"></td>
+						</tr>
+					</tfoot>
 				</table>
 			</div>
 		</div>
@@ -401,7 +486,6 @@ Vue.component('app_entities',{
 					loaded: false,
 				}
 			},
-
 			controls: {
 				table:{
 					columns:{
@@ -426,16 +510,28 @@ Vue.component('app_entities',{
 					text: '',
 					field: 'Documento',
 				},
-
+				show_filters_menu: false,
+				filters: {
+					id: [],
+					documento: ['CPF', 'CNPJ'],
+					nome: [],
+					apelido: [],
+					relacao: ['Cliente', 'Fornecedor', 'Funcionário', 'Representante', 'Trasnportador', 'Contador', 'Banco'],
+					atividade: ['Comércio', 'Serviço', 'Indústria', 'Importador', 'Exportador', 'Produtor Rural', 'Extravista'],
+					status: ['Habilitado', 'Bloqueado', 'Suspenso', 'Desativado'],
+					criacao: [],
+					alteracao: [],
+					options: ['button'],
+				},
 				contextmenu:{
           contextoptions:[
             {"type":"submenu-item", "label":"Entidade selecionada", "options":[
-              {"type":"menu-item", "label":"Visualizar ficha", "options":[]},
+              {"type":"menu-item", "label":"Visualizar ficha", "callback":this.view_entity, "is_checked":false, "is_enable":true, "options":[]},
               {"type":"menu-item", "label":"Contatos", "options":[]},
               {"type":"menu-item", "label":"Endereços", "options":[]},
 							{"type":"menu-item", "label":"Crédito", "options":[]},
 							{"type":"menu-item", "label":"Visualizar histórico", "options":[]},
-							{"type":"menu-item", "label":"Desativar", "options":[]},
+							{"type":"menu-item", "label":"Desativar", "options":[], "callback":this.view_entity_disable},
 						]},
 						{"type":"menu-item", "label":"Adicionar entidade", "options":[]},
 
@@ -491,17 +587,11 @@ Vue.component('app_entities',{
             ]},
           ],
         },
-
-
 			},
-
 			table_styles: {
 				fontSize: 12,
 				tableStriped: false,
 			},
-
-
-
 			forms:{
 				entity:{
 					options:{
@@ -721,8 +811,6 @@ Vue.component('app_entities',{
 			return filtered_list;
 		},
 
-
-
 		apply_busca: function(item){
 			//return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
 		},
@@ -755,42 +843,74 @@ Vue.component('app_entities',{
 		<div>
 			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
 
-			<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="controls.search"></app_entities_table>
+			<div class="card">
+				<div class="card-header">
+					<h4><i class="fas fa-users"></i> Entidades</h4>
+				</div>
+				<div class="card-body">
+					<app_search :search="controls.search"></app_search>
+					
+					<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="controls.search"></app_entities_table>
+					
+					<nav aria-label="Page navigation example">
+						<ul class="pagination justify-content-end">
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span>
+									<span class="sr-only">Previous</span>
+								</a>
+							</li>
+							<li class="page-item"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item">
+								<a class="page-link" href="#" aria-label="Next">
+									<span aria-hidden="true">&raquo;</span>
+									<span class="sr-only">Next</span>
+								</a>
+							</li>
+						</ul>
+					</nav>
 
-			<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
-			  <template v-slot:title>
-			    <h5>Adicionar entidade</h5>
-			  </template>
-
-			  <template v-slot:content>
-			    <app_entities_form :form='forms.entity' :callback='save'></app_entities_form>
-			  </template>
-			</app_modal>
-
-			<app_modal id="modal_disable_entity" classes='modal-dialog modal-sm'>
-			  <template v-slot:title>
-			    <h5><i class="fas fa-exclamation-triangle"></i> Atenção</h5>
-			  </template>
-
-			  <template v-slot:content>
-			    <p style="">
-						<span style="font-size: 0.9em;">
-							Deseja mesmo desativar o registro <b><u>{{ forms.disable.object.name }} ({{ forms.disable.object.official_document }})</u></b> do sistema?
-							Por questões de segurança essa operação exige uma confirmação por senha e uma justificativa.
-						</span>
-					</p>
-
-					<form autocomplete="off">
-						<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable.object.reason' :error="forms.disable.errors.reason" title='Qual o motivo de desativar esta entidade?'></app_textarea>
-						<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable.object.password" :error="forms.disable.errors.password"></app_field>
-					</form>
-
-					<br>
-
-					<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'> <i class="fas fa-trash-alt"></i> Desativar</button>
-			  </template>
-			</app_modal>
+					<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
+						<template v-slot:title>
+							<h5>Adicionar entidade</h5>
+						</template>
+		
+						<template v-slot:content>
+							<app_entities_form :form='forms.entity' :callback='save'></app_entities_form>
+						</template>
+					</app_modal>
+		
+					<app_modal id="modal_disable_entity" classes='modal-dialog modal-sm'>
+						<template v-slot:title>
+							<h5><i class="fas fa-exclamation-triangle"></i> Atenção</h5>
+						</template>
+		
+						<template v-slot:content>
+							<p style="">
+								<span style="font-size: 0.9em;">
+									Deseja mesmo desativar o registro <b><u>{{ forms.disable.object.name }} ({{ forms.disable.object.official_document }})</u></b> do sistema?
+									Por questões de segurança essa operação exige uma confirmação por senha e uma justificativa.
+								</span>
+							</p>
+		
+							<form autocomplete="off">
+								<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable.object.reason' :error="forms.disable.errors.reason" title='Qual o motivo de desativar esta entidade?'></app_textarea>
+								<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable.object.password" :error="forms.disable.errors.password"></app_field>
+							</form>
+		
+							<br>
+		
+							<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'> <i class="fas fa-trash-alt"></i> Desativar</button>
+						</template>
+					</app_modal>
+				</div>
+				<div class="card-footer">
+				</div>		
+			</div>
 		</div>
+			
 	`,
 });
 

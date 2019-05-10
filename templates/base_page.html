@@ -667,6 +667,7 @@
                             <!--<v-contextmenu-item @click="handleClick">
                               TEM NADA {{ submenu.label }}
                             </v-contextmenu-item>-->
+                            <v-contextmenu-item @click="submenu.callback(submenu.args)">7777 {{ submenu.label }}</v-contextmenu-item>
                           </template>
                         </template>
                       </v-contextmenu-submenu>
@@ -687,11 +688,11 @@
                   <template v-if="item.options.length > 0">
                     <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="item.label" class=''>
                       <template v-for="submenu in item.options">
-                        <v-contextmenu-item @click="handleClick">{{ submenu.label }}</v-contextmenu-item>
+                        <v-contextmenu-item @click="handleClick">444444444 {{ submenu.label }}</v-contextmenu-item>
                       </template>
                     </v-contextmenu-submenu>
                   </template>
-                  <template v-else>{{ item.label }}</template>
+                  <template v-else>55555555555 {{ item.label }}</template>
 
                 </v-contextmenu-item>
               </template>
