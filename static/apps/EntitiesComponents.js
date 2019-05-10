@@ -55,6 +55,7 @@ Vue.component('app_filters', {
 	props: ['filters'],
 	template: `
 <!--	<table style="border: 1px solid #eee; width: 100%;">-->
+	<table class="table-bordered" style="width: 100%;">
 		<thead>
 			<tr>
 				<td v-for="filter in filters" style="text-align: center;"><span class="otma-fs-10">
@@ -510,7 +511,7 @@ Vue.component('app_entities',{
 
 				},
 				show_filters_menu: false,
-				filters: {
+				/*filters: {
 					id: [],
 					documento: ['CPF', 'CNPJ'],
 					nome: [],
@@ -521,6 +522,87 @@ Vue.component('app_entities',{
 					criacao: [],
 					alteracao: [],
 					options: ['button'],
+				},*/
+				filter: {
+					form: {
+						value: '',
+						selected_condition: 'bigger_then',
+						selected_column: 'id',
+					},
+					list: [	],
+					conditions: {
+						condition1: {
+							name: 'Maior que',
+							value:'bigger_then',
+						},
+						condition2: {
+							name:'Menor que',
+							value: 'lesser_then',
+						},
+						condition3: {
+							name:'Contém',
+							value: 'have'
+						},
+						condition4: {
+							name: 'Não contém',
+							value: 'dont_have'
+						},
+						condition5: {
+							name: 'Iniciado em',
+							value: 'starts_with'
+						},
+						condition6: {
+							name:'Terminado em',
+							value: 'ends_with'
+						}
+					},
+					columns: {
+						id: {
+							name: 'ID',
+							value: 'id',
+							type: 'integer'
+						},
+						official_document: {
+							name: 'Documento',
+							value: 'official_document',
+							type: 'integer'
+						},
+						name: {
+							name: 'Nome/Razão Social',
+							value: 'name',
+							type: 'string'
+						},
+						popular_name: {
+							name: 'Apelido/Nome Fantasia',
+							value: 'popular_name',
+							type: 'string'
+						},
+						company_relations: {
+							name:'Relações',
+							value: 'company_relations',
+							type: 'string'
+						},
+						activities: {
+							name: 'Atividades Exercidas',
+							value: 'activities',
+							type: 'string'
+						},
+						commercial_status: {
+							name: 'Status Comercial',
+							value: 'commercial_status',
+							type: 'string'
+						},
+						creation_date: {
+							name:'Data de Criação',
+							value:'creation_date',
+							type: 'date_time'
+						},
+						last_update: {
+							name:'Última Atualização',
+							value:'last_update',
+							type: 'date_time'
+						}
+					},
 				},
 				contextmenu:{
           contextoptions:[
@@ -664,6 +746,24 @@ Vue.component('app_entities',{
 	},
 
 	methods: {
+		add_filter: function () {
+			let data_parameters = {};
+			data_parameters["selected_column"] = this.controls.filter.form.selected_column;
+			data_parameters["selected_condition"] = this.controls.filter.form.selected_condition;
+			data_parameters["value"] = this.controls.filter.form.value;
+			this.controls.filter.list.push(data_parameters);
+			this.reset_filters_form();
+		},
+
+		del_filter: function (index) {
+			this.controls.filter.list.splice(index,1)
+		},
+
+		reset_filters_form: function(){
+			this.controls.filter.form.value = '';
+			this.controls.filter.form.selected_column = 'id';
+			this.controls.filter.form.selected_condition = "bigger_then";
+		},
 
 		load: function() {
       let scope = this;
@@ -797,7 +897,6 @@ Vue.component('app_entities',{
      Vue.set(scope.data.objects, index, object);
     },
 
-
 		apply_busca: function(item){
 			//return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
 		},
@@ -822,10 +921,6 @@ Vue.component('app_entities',{
 
 	template: `
 		<div>
-
-
-
-
 			<div class="card">
 				<div class="card-body">
 					<div class='row'>
@@ -858,7 +953,7 @@ Vue.component('app_entities',{
 				        <button type="button" class="form-control btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</button>
 								<button type="button" class="form-control btn btn-secondary btn-sm">Editar</button>
 			        </div>
-
+			        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#filters-modal"><i class="fas fa-filter"></i> Filtros</button>
 				    </div>
 				  </div>
 
@@ -917,6 +1012,66 @@ Vue.component('app_entities',{
 							<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'> <i class="fas fa-trash-alt"></i> Desativar</button>
 						</template>
 					</app_modal>
+					
+					<div class="modal fade" id="filters-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog modal-sm" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel"><i class="fas fa-filter"></i>Filtros</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="row">
+										<div class="col-3">
+											<sub>Coluna:</sub>					
+											<select class="form-control" v-model="controls.filter.form.selected_column">
+												<option v-for="column in controls.filter.columns"  :value="column.value">{{column.name}}</option>
+											</select>
+										</div>
+										<div class="col-9">
+											<div class="row">
+												<div class="col-5">
+													<sub>Condição</sub>
+													<select class="form-control" v-model="controls.filter.form.selected_condition">
+														<option v-for="condition in controls.filter.conditions" :value="condition.value">{{condition.name}}</option>
+													</select>
+												</div>
+												<div class="col-5">
+													<app_field classes="form-control" v-model="controls.filter.form.value" label="Valor"></app_field>
+												</div>
+												<div class="col-2">
+													<label></label>
+													<button class="btn btn-outline-info" @click="add_filter()" style="display: block;width: 100%;">+</button>
+												</div>
+											</div>									
+										</div>									
+									</div>
+									
+									<hr>
+									<table class="table-bordered table-hover" width="100%" style="margin-top: 5px;margin-bottom: 5px;">
+										<thead>
+											<tr>
+												<td>Coluna</td>
+												<td>Condição</td>
+												<td>Valor</td>
+												<td>#</td>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="(filter, index) in controls.filter.list">
+												<td>{{filter.selected_column}}</td>
+												<td>{{filter.selected_condition}}</td>
+												<td>{{filter.value}}</td>
+												<td><button @click="del_filter(index)">Excluir</button></td>
+											</tr>
+										</tbody>										
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
