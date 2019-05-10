@@ -573,7 +573,7 @@
           </ul>
         </nav>
 
-        <div id="content" v-if="user.session.is_blocked==false" v-contextmenu:contextmenu @click="remove_context()">
+        <div id="content" v-if="user.session.is_blocked==false" v-contextmenu:contextmenu @click="remove_context()"  style="background: rgb(233, 234, 240) none repeat scroll 0% 0%">
           <div class="row top-menu">
             <div class="col-12 dropdown">
               <a id="sidebarCollapse">

@@ -55,7 +55,6 @@ Vue.component('app_filters', {
 	props: ['filters'],
 	template: `
 <!--	<table style="border: 1px solid #eee; width: 100%;">-->
-	<table class="table-bordered" style="width: 100%;">
 		<thead>
 			<tr>
 				<td v-for="filter in filters" style="text-align: center;"><span class="otma-fs-10">
@@ -70,67 +69,21 @@ Vue.component('app_filters', {
 });
 
 Vue.component('app_search',{
-	props:['search'],
+	props:['controls'],
 	template:`
-	<div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
-			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="tipo">Tipo:</label>
-			<select v-model="search.field" class="form-control">
+	<div>
+		<!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
+			<sub class="" style="font-size: 10px;margin-bottom: 0; margin-left: 5px;">Tipo</sub>
+			<select v-model="controls.search.field" class="form-control">
 				<option>Geral</option>
 				<option>Pessoa</option>
 				<option>Empresa</option>
 				<option>ONG</option>
 				<option>Outros</option>
 			</select>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
-			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="relacao">Relação:</label>
-			<select v-model="search.field" class="form-control">
-				<option>Geral</option>
-				<option>Cliente</option>
-				<option>Fornecedor</option>
-				<option>Funcionário</option>
-				<option>Representante</option>
-				<option>Transportador</option>
-				<option>Contador</option>
-				<option>Banco</option>
-			</select>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
-			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="atividade">Atividade:</label>
-			<select v-model="search.field" class="form-control">
-				<option>Geral</option>
-				<option>Comércio</option>
-				<option>Serviço</option>
-				<option>Induśtria</option>
-				<option>Importador</option>
-				<option>Exportador</option>
-				<option>Produtor Rural</option>
-				<option>Extravista</option>
-			</select>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
-			<label class="otma-fs-12" style="margin-bottom: 0; margin-left: 5px;" for="coluna">Buscar por:</label>
-			<select v-model="search.field" class="form-control">
-				<option>Documento</option>
-				<option>Nome ou Razão Social</option>
-				<option>Apelido ou Nome Fantasia</option>
-				<option>Relação</option>
-				<option>Atividade</option>
-				<option>Status</option>
-				<option>Criação</option>
-				<option>Última Alteração</option>
-			</select>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-auto">
-			<label class="otma-fs-12" style="margin-bottom: 0;" for="busca"></label>
-			<div class="input-group mb-3">
-				<input type="text" class="form-control" placeholder="Digite o que você deseja encontrar" aria-label="Digite o que você deseja encontrar" aria-describedby="basic-addon2" v-model="search.text">
-				<div class="input-group-append">
-					<button class="btn btn-outline-info" type="button"><i class="fas fa-search"></i></button>
-				</div>
-			</div>
-		</div>
+		</div>-->
+
+
 	</div>
 	`
 });
@@ -214,8 +167,54 @@ Vue.component('app_entities_table',{
 	      return 0;
 	    });
 
-    }
+    },
+
+    apply_search: function(item){
+			if(this.controls.search.type=='text'){
+				return item[this.controls.search.field].search(new RegExp(this.controls.search.value, "i")) != -1;
+			}
+			//else if(scope.controls.search.type=='datetime'){
+			//	var filtered_text = this.$options.filters.datetime_format(item[this.controls.search.by.id]);
+			//	return filtered_text.indexOf(this.controls.search.value)!=-1;
+			//}
+			else{
+				return true
+			}
+		},
+
+    filter_list: function(){
+			var scope = this;
+			var base_filter = true;
+			var extra_filter = false;
+
+			var filtered_list = scope.data.objects.filter(function(item){
+				if(scope.controls.search.value != "" && scope.controls.search.value != null){
+					base_filter = scope.apply_search(item);
+				}
+
+				//if(scope.filters.length>0){
+				//	extra_filter = scope.apply_filters(item);
+				//}
+				//else{
+				//	extra_filter = true;
+				//}
+				extra_filter = true;
+				return base_filter && extra_filter;
+			});
+			return filtered_list;
+		},
   },
+
+  computed: {
+		result_list: function() {
+			let result_list = this.filter_list();
+			//result_list = this.apply_orders(result_list);
+			//this.data.total_filtered =  result_list.length;
+			//result_list = this.apply_pagination(result_list);
+			return result_list;
+		}
+	},
+
 
 	filters: {
     moment: function (date) {
@@ -251,18 +250,17 @@ Vue.component('app_entities_table',{
     },
   },
 	template: `
-		<div style=""><!--border: 1px solid #eee;box-sizing: border-box;">-->
+		<div style="">
 			<div id="entity-container">
-				<app_search :search="controls.search"></app_search>
-				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}">
-					<thead>
+				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}" style='white-space: nowrap;'>
+					<thead style='background: #5e83b6;color: #fff;height:35px;'>
 						<tr>
-							<th v-for='column in controls.table.columns' v-if='column.visible' :style="column.style">
+							<td v-for='column in controls.table.columns' v-if='column.visible' style='text-align:center;padding-top:7px;'>
 								{{ column.title }}
 								<span v-if='column.sorted' style=''>
 									<i class="fas fa-sort-amount-down"></i>
 								</span>
-							</th>
+							</td>
 						</tr>
 					</thead>
 
@@ -276,7 +274,7 @@ Vue.component('app_entities_table',{
 						</tr>
 
 						<template v-if='data.objects.length > 0'>
-							<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
+							<tr v-if='data.controls.loaded' v-for='(entity, index) in result_list'>
 								<td v-if='controls.table.columns.id.visible' style='text-align:center;width:45px;'>{{ entity.id }}</td>
 								<td v-if='controls.table.columns.official_document.visible' style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
 								<td v-if='controls.table.columns.name.visible'>{{ entity.name }}</td>
@@ -299,20 +297,20 @@ Vue.component('app_entities_table',{
 								</td>
 								<td v-if='controls.table.columns.creation_date.visible' style='text-align:center;width:135px;'>{{ entity.creation_date | moment }}</td>
 								<td v-if='controls.table.columns.last_update.visible' style='text-align:center;width:135px;'>{{ entity.last_update | moment }}</td>
-								<td style="padding:5px;">
+								<!--<td style="padding:5px;">
 									<div class="btn-group btn-group-xs" role="group" aria-label="...">
 										<button @click="open(entity, index)" type="button" class="btn btn-xs btn-info" title="Editar" data-toggle="modal" data-target="#modal_entity"><i class="fas fa-edit"></i></button>
 										<button @click="select(entity, index)" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal_disable_entity" title="Desativar" style='margin-left: 4px;'> <i class="fas fa-trash-alt"></i></button>
 									</div>
-								</td>
+								</td>-->
 							</tr>
 						</template>
 					</tbody>
 					
 					<tfoot>
-						<tr>
+						<tr style='background: #afc3d3;'>
 							<td v-if="data.objects.length == 0" colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;"></td>
-							<td v-else colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;">Exibindo x registros de {{data.objects.length}}</td>
+							<td v-else colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;">Exibindo {{ result_list.length }} registros de {{data.objects.length}}</td>
 							<td colspan="8" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;"></td>
 						</tr>
 					</tfoot>
@@ -489,15 +487,15 @@ Vue.component('app_entities',{
 			controls: {
 				table:{
 					columns:{
-						"id":{"title":"Código", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
-						"official_document":{"title":"CPF ou CNPJ", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
-						"name":{"title":"Nome ou razão social", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
-						"popular_name":{"title":"Nome popular", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'red'}},
-						"company_relations":{"title":"Relações", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
-						"activities":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
-						"status":{"title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
-						"creation_date":{"title":"Data de criação", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
-						"last_update":{"title":"Última alteração", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','color':'blue'}},
+						"id":{"id":"id", "title":"ID", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center','width':'40px'}},
+						"official_document":{"id":"official_document", "title":"Documento oficial", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'left'}},
+						"name":{"id":"name", "title":"Nome ou razão social", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'left'}},
+						"popular_name":{"id":"popular_name", "title":"Nome popular", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'left'}},
+						"company_relations":{"id":"company_relations", "title":"Relações", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'left'}},
+						"activities":{"id":"activities", "title":"Atividades", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'left'}},
+						"status":{"id":"status", "title":"Status", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center'}},
+						"creation_date":{"id":"creation_date", "title":"Data de criação", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center'}},
+						"last_update":{"id":"last_update", "title":"Última alteração", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center'}},
 					},
           styles:{
 	          bordered: true,
@@ -506,9 +504,10 @@ Vue.component('app_entities',{
           }
         },
         search: {
-          type: '',
-					text: '',
-					field: 'Documento',
+          field:'name',
+          type: 'text',
+					value: '',
+
 				},
 				show_filters_menu: false,
 				filters: {
@@ -798,18 +797,6 @@ Vue.component('app_entities',{
      Vue.set(scope.data.objects, index, object);
     },
 
-		filter_entities: function () {
-			let scope = this;
-			let base_filter = true;
-
-			let filtered_list = scope.data.objects.filter(function (item) {
-				if (scope.controls.search.text != '' && scope.controls.search.text != null) {
-					base_filter = scope.apply_busca(item);
-				}
-				return base_filter;
-			});
-			return filtered_list;
-		},
 
 		apply_busca: function(item){
 			//return item[this.controls.search.by.id].search(new RegExp(this.controls.search.value, "i")) != -1;
@@ -833,25 +820,50 @@ Vue.component('app_entities',{
 		this.app_controls.contextmenu.contextoptions.local = this.controls.contextmenu.contextoptions;
 	},
 
-	computed: {
-		result_list: function() {
-			//let result_list = this.filter_entities();
-			return []//result_list;
-		}
-	},
 	template: `
 		<div>
-			<a class="dropdown-item otma-fs-14" href="#" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</a>
+
+
+
 
 			<div class="card">
-				<div class="card-header">
-					<h4><i class="fas fa-users"></i> Entidades</h4>
-				</div>
 				<div class="card-body">
-					<app_search :search="controls.search"></app_search>
-					
-					<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls" :search="controls.search"></app_entities_table>
-					
+					<div class='row'>
+						<div class='col-lg-12'>
+							<h5 class="card-title"><i class="fas fa-users"></i> Cadastro de Entidades</h5>
+							<hr>
+						</div>
+					</div>
+
+					<div class="row" style='padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;'>
+						<div class="col col-lg-2">
+				      <sub class="" style="font-size: 10px;margin-bottom: 0; margin-left: 5px;">Buscar por</sub>
+							<select v-model="controls.search.field" class="form-control">
+								<option v-for='column in controls.table.columns' :value='column.id'>{{ column.title }}</option>
+							</select>
+				    </div>
+
+				    <div class="col-lg-auto">
+				      <label class="otma-fs-12" style="margin-bottom: 0;" for="busca"></label>
+							<div class="input-group mb-3">
+								<input type="text" v-model="controls.search.value" class="form-control" placeholder="Digite o que você deseja encontrar" aria-label="Digite o que você deseja encontrar" aria-describedby="basic-addon2">
+								<div class="input-group-append">
+									<button class="btn btn-outline-info" type="button"><i class="fas fa-search"></i></button>
+								</div>
+							</div>
+				    </div>
+
+				    <div class="col col-lg-2">
+				      <div class="input-group mb-3">
+				        <button type="button" class="form-control btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</button>
+								<button type="button" class="form-control btn btn-secondary btn-sm">Editar</button>
+			        </div>
+
+				    </div>
+				  </div>
+
+					<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls"></app_entities_table>
+
 					<nav aria-label="Page navigation example">
 						<ul class="pagination justify-content-end">
 							<li class="page-item">
@@ -876,17 +888,17 @@ Vue.component('app_entities',{
 						<template v-slot:title>
 							<h5>Adicionar entidade</h5>
 						</template>
-		
+
 						<template v-slot:content>
 							<app_entities_form :form='forms.entity' :callback='save'></app_entities_form>
 						</template>
 					</app_modal>
-		
+
 					<app_modal id="modal_disable_entity" classes='modal-dialog modal-sm'>
 						<template v-slot:title>
 							<h5><i class="fas fa-exclamation-triangle"></i> Atenção</h5>
 						</template>
-		
+
 						<template v-slot:content>
 							<p style="">
 								<span style="font-size: 0.9em;">
@@ -894,20 +906,18 @@ Vue.component('app_entities',{
 									Por questões de segurança essa operação exige uma confirmação por senha e uma justificativa.
 								</span>
 							</p>
-		
+
 							<form autocomplete="off">
 								<app_textarea classes='form-control' label='Justificativa'  v-model='forms.disable.object.reason' :error="forms.disable.errors.reason" title='Qual o motivo de desativar esta entidade?'></app_textarea>
 								<app_field type="password" label="Senha" classes="form-control" v-model="forms.disable.object.password" :error="forms.disable.errors.password"></app_field>
 							</form>
-		
+
 							<br>
-		
+
 							<button type="button" class="btn btn-danger" @click="disable(forms.disable.object, forms.disable.index)" style='float:right;'> <i class="fas fa-trash-alt"></i> Desativar</button>
 						</template>
 					</app_modal>
 				</div>
-				<div class="card-footer">
-				</div>		
 			</div>
 		</div>
 			
