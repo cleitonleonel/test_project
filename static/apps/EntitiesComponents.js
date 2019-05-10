@@ -66,6 +66,10 @@ Vue.component('app_entities_table',{
 	props: ['forms', 'data', 'classes', 'table', 'controls'],
 	data: function(){
 		return {
+	    maxRows:1,
+	    currentPage:1,
+	    pages:0,
+	    
 		}
 	},
 
@@ -116,27 +120,53 @@ Vue.component('app_entities_table',{
       }
       //this.forms.disable.backup = register;
       this.forms.disable.index = index;
+	  },
+
+    nextPage:function() {
+      if((this.currentPage*this.maxRows) < this.data.objects.length) this.currentPage++;
+    },
+    prevPage:function() {
+      if(this.currentPage > 1) this.currentPage--;
+    },
+
+    setter: function(i, index) {
+      let show    = Math.round(this.pages / 2);
+      let initial = Math.round(this.pages / 4);
+
+			if (i != this.pages){
+				if (i == show){
+	        //i = "middle";
+	        return i
+	      } else if (i == initial || i == initial - 1){
+	        //i = "initial";
+	        return i
+	      } else if (i == this.pages || i == this.pages -1){
+	        if (this.pages -1 == show ||i == show + 1){
+	         i = "..";
+	         return i
+	        }
+	        else {return i};
+	      } else if (i == this.pages) {
+	        return i
+	      }else {
+	        i = ".."
+	        return i
+	      }
+			} else {
+				return i
+			}
+    },
   },
 
-    sort: function(tag){
-			//alert(this.column_direction);
-      //alert("oi");
-      if(tag === this.column_selected) {
-        this.column_direction = this.column_direction==='asc'?'desc':'asc';
-      };
-      this.column_selected = tag;
-
-
-      return this.data.objects.sort((a,b) => {
-	      let modifier = 1;
-	      if(this.column_direction === 'desc') modifier = -1;
-	      if(a[this.column_selected] < b[this.column_selected]) return -1 * modifier;
-	      if(a[this.column_selected] > b[this.column_selected]) return 1 * modifier;
-	      //this.column_direction= 'desc';
-	      return 0;
+  computed: {
+    pagination: function(){
+      return this.data.objects.filter((row, index) => {
+          this.pages = Math.ceil(this.data.objects.length / this.maxRows);
+	        let start = (this.currentPage-1)*this.maxRows;
+	        let end = this.currentPage*this.maxRows;
+	        if(index >= start && index < end) return true;
 	    });
-
-    }
+    },
   },
 
 	filters: {
@@ -197,8 +227,9 @@ Vue.component('app_entities_table',{
 							<td colspan='11'>Nenhum registro cadastrado</td>
 						</tr>
 
+
 						<template v-if='data.objects.length > 0'>
-							<tr v-if='data.controls.loaded' v-for='(entity, index) in data.objects'>
+							<tr v-if='data.controls.loaded' v-for='(entity, index) in pagination'>
 								<td v-if='controls.table.columns.id.visible' style='text-align:center;width:45px;'>{{ entity.id }}</td>
 								<td v-if='controls.table.columns.official_document.visible' style='text-align:center;width:140px;'>{{ entity.official_document }}</td>
 								<td v-if='controls.table.columns.name.visible'>{{ entity.name }}</td>
@@ -233,6 +264,28 @@ Vue.component('app_entities_table',{
 						</template>
 					</tbody>
 				</table>
+
+			  <td>
+				  <button v-if="currentPage == 1"  style="color:gray;" disabled><i class="fas fa-chevron-circle-left"></i></button>
+				  <button v-else @click="prevPage"><i class="fas fa-chevron-circle-left"></i></button>
+			  </td>
+
+			  <td v-for="(i, index) in pages">
+				  <button v-if="currentPage == i" disabled  style="color:gray;">{{ setter(i, index) }}</button>
+				  <button v-else @click="currentPage = i">{{ setter(i, index) }}</button>
+			  </td>
+
+				<td>
+				  <button v-if="currentPage == pages"  style="color:gray;" disabled><i class="fas fa-chevron-circle-left"></i></button>
+				  <button v-else @click="nextPage"><i class="fas fa-chevron-circle-right"></i></button>
+			  </td>
+			  {{ maxRows }} <br>
+			  {{ currentPage }}<br>
+			  pages= {{ pages }}
+
+			  <input v-model="maxRows" placeholder="itens por página">
+				<p>A quantidade é: {{ maxRows }}</p>
+
 			</div>
 		</div>
 	`,
