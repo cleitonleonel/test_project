@@ -24,20 +24,29 @@ var contextmenux_actions = {
 			this.controls.table.styles.font_size = font_size;
 		},
 
+		set_pagination: function(args){
+			if(args.itens_per_page != null){
+				if(args.itens_per_page != -1){
+					this.controls.table.pagination.itens_per_page = args.itens_per_page;
+					this.controls.table.pagination.total_itens = this.data.total_length;
+
+					this.controls.table.pagination.current_page = 1;
+					this.controls.table.pagination.init_slice_position = 0;
+					this.controls.table.pagination.end_slice_position = this.controls.table.pagination.current_page*this.controls.table.pagination.itens_per_page;
+				}
+				else{
+					alert('eh automatico.. entao relaxa senhorzinho')
+				}
+			}
+			else{
+				alert("ok.. sem paginar senhor")
+			}
+			this.controls.table.pagination.total_pages = Math.ceil(this.controls.table.pagination.total_itens / this.controls.table.pagination.itens_per_page);
+		},
+
 		change_column: function(args){
 			this.controls.table.columns[args.column].visible = !this.controls.table.columns[args.column].visible;
 			this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked = !this.controls.contextmenu.contextoptions[args.menu_index].options[args.submenu_index].is_checked;
-		},
-
-		decrease_font_size: function(){
-			if(this.controls.table.styles.font_size >= 9){
-				this.controls.table.styles.font_size = this.controls.table.styles.font_size - 1;
-				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = true;
-				this.controls.contextmenu.contextoptions[6].options[0].options[0].is_enable = true;
-			}
-			else{
-				this.controls.contextmenu.contextoptions[6].options[0].options[1].is_enable = false;
-			}
 		},
 
 		view_entity: function () {
@@ -104,33 +113,6 @@ Vue.component('app_entities_table',{
 	methods: {
 		mostrar_filtros: function() {
 			this.controls.show_filters_menu = !this.controls.show_filters_menu;
-		},
-
-		aumentar_fonte: function(){
-			const font = this.table.fontSize;
-			if (font < 18) {
-				this.table.fontSize += 1;
-			}
-			else {	}
-		},
-
-		diminuir_fonte: function(){
-			const font = this.table.fontSize;
-			if (font <= 9){	}
-			else {
-				this.table.fontSize -= 1;
-			}
-
-		},
-
-		toggle_border: function() {
-			const table = this.table.tableBordered;
-			this.table.tableBordered = !table
-		},
-
-		toggle_strip: function() {
-			const table = this.table.tableStriped;
-			this.table.tableStriped = !table
 		},
 
 		open: function(register, index){
@@ -241,8 +223,27 @@ Vue.component('app_entities_table',{
 				extra_filter = true;
 				return base_filter && extra_filter;
 			});
-			return filtered_list;
+
+			return filtered_list.slice(this.controls.table.pagination.init_slice_position,this.controls.table.pagination.end_slice_position);
 		},
+
+		select_page: function(page){
+			this.controls.table.pagination.current_page = page;
+			this.controls.table.pagination.init_slice_position = (this.controls.table.pagination.current_page-1) * this.controls.table.pagination.itens_per_page;
+			this.controls.table.pagination.end_slice_position = (this.controls.table.pagination.current_page)*this.controls.table.pagination.itens_per_page;
+		},
+
+		next_page: function(){
+			if(this.controls.table.pagination.current_page < this.controls.table.pagination.total_pages){
+				this.controls.table.pagination.current_page = this.controls.table.pagination.current_page + 1;
+			}
+		},
+
+		back_page: function(){
+			if(this.controls.table.pagination.current_page > 0){
+				this.controls.table.pagination.current_page = this.controls.table.pagination.current_page -1;
+			}
+		}
   },
 
   computedx: {
@@ -259,9 +260,10 @@ Vue.component('app_entities_table',{
   computed: {
 		result_list: function() {
 			let result_list = this.filter_list();
+			this.controls.table.pagination.total_itens = result_list.length;
+
 			//result_list = this.apply_orders(result_list);
 			//this.data.total_filtered =  result_list.length;
-			//result_list = this.apply_pagination(result_list);
 			return result_list;
 		}
 	},
@@ -269,7 +271,7 @@ Vue.component('app_entities_table',{
 
 	filters: {
     moment: function (date) {
-      return moment(date).format('DD/MM/YYYY, HH:mm:ss');
+      return moment(date).format('DD/MM/YYYY, HH:mm');
     },
 
     company_relations_label: function(value){
@@ -302,8 +304,8 @@ Vue.component('app_entities_table',{
   },
 	template: `
 		<div style="">
-			<div id="entity-container">
-				<table id="entity-table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}" style='white-space: nowrap;'>
+			<div id="entity-container" class='table-responsive'>
+				<table id="entity_table" :class="{'table':true, 'table-sm':true, 'table-hover':true, 'table-striped': controls.table.styles.striped, 'table-bordered': controls.table.styles.bordered}" style='width:100%;' :style="{fontSize: controls.table.styles.font_size + 'px'}"> <!--style='white-space: nowrap;'>-->
 					<thead style='background: #5e83b6;color: #fff;height:35px;'>
 						<tr>
 							<td v-for='column in controls.table.columns' v-if='column.visible' style='text-align:center;padding-top:7px;'>
@@ -356,39 +358,22 @@ Vue.component('app_entities_table',{
 									</div>
 								</td>-->
 							</tr>
+
+							<tr v-for='extra_rows in (controls.table.pagination.itens_per_page - result_list.length)'>
+								<td style='opacity:0.0'>.</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+							</tr>
+
 						</template>
 					</tbody>
 
 					<tfoot>
 						<tr style='background: #afc3d3;'>
 							<td v-if="data.objects.length == 0" colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;"></td>
-							<td v-else colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;">Exibindo {{ result_list.length }} registros de {{data.objects.length}}</td>
+							<td v-else colspan="2" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;">Exibindo {{ result_list.length }} registros de {{data.total_length}}</td>
 							<td colspan="8" style="background: rgb(220, 220, 220); color: rgb(119, 119, 119); font-size: 11px; text-align: center; height: 25px;"></td>
 						</tr>
 					</tfoot>
 				</table>
-
-			  <td>
-				  <button v-if="currentPage == 1"  style="color:gray;" disabled><i class="fas fa-chevron-circle-left"></i></button>
-				  <button v-else @click="prevPage"><i class="fas fa-chevron-circle-left"></i></button>
-			  </td>
-
-			  <td v-for="(i, index) in pages">
-				  <button v-if="currentPage == i" disabled  style="color:gray;">{{ setter(i, index) }}</button>
-				  <button v-else @click="currentPage = i">{{ setter(i, index) }}</button>
-			  </td>
-
-				<td>
-				  <button v-if="currentPage == pages"  style="color:gray;" disabled><i class="fas fa-chevron-circle-left"></i></button>
-				  <button v-else @click="nextPage"><i class="fas fa-chevron-circle-right"></i></button>
-			  </td>
-			  {{ maxRows }} <br>
-			  {{ currentPage }}<br>
-			  pages= {{ pages }}
-
-			  <input v-model="maxRows" placeholder="itens por página">
-				<p>A quantidade é: {{ maxRows }}</p>
-
 			</div>
 		</div>
 	`,
@@ -553,7 +538,9 @@ Vue.component('app_entities',{
 		return {
 			data: {
 				objects: [],
+				total_length: 0,
 				selected: {object: null, index: null, backup: null},
+
 				controls: {
 					loaded: false,
 				}
@@ -570,6 +557,13 @@ Vue.component('app_entities',{
 						"status":{"id":"status", "title":"Status", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center'}},
 						"creation_date":{"id":"creation_date", "title":"Data de criação", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center'}},
 						"last_update":{"id":"last_update", "title":"Última alteração", "visible":true, "sorted":false,"sorted_asc": true, 'style':{'text-align':'center'}},
+					},
+					pagination:{
+						init_slice_position: 0,
+						end_slice_position: 10,
+						itens_per_page: 10,
+						current_page: 1,
+						total_pages: 1,
 					},
           styles:{
 	          bordered: true,
@@ -714,7 +708,18 @@ Vue.component('app_entities',{
 							]},
 						]},
 
-            {"type":"menu-item", "label":"Paginação", "options":[]},
+
+						{"type":"menu-item", "label":"Paginação", "options":[
+              {"type":"menu-item", "label":"Automático", "callback":this.set_pagination, "args":{"itens_per_page":-1}, "is_checked":false, "is_enable":false, "options":[]},
+							{"type":"menu-item", "label":"10 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":10}, "is_checked":true, "is_enable":true, "options":[]},
+							{"type":"menu-item", "label":"20 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":20}, "is_checked":false, "is_enable":true, "options":[]},
+							{"type":"menu-item", "label":"30 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":30}, "is_checked":false, "is_enable":true, "options":[]},
+							{"type":"menu-item", "label":"40 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":40}, "is_checked":false, "is_enable":true, "options":[]},
+							{"type":"menu-item", "label":"50 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":50}, "is_checked":false, "is_enable":true, "options":[]},
+							{"type":"menu-item", "label":"100 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":100}, "is_checked":false, "is_enable":true, "options":[]},
+							{"type":"divider", "label":"", "callback":this.set_pagination, "args":{"itens_per_page":null}, "is_checked":false, "is_enable":false, "options":[]},
+							{"type":"menu-item", "label":"Sem paginação", "callback":this.set_pagination, "args":{"itens_per_page":null}, "is_checked":false, "is_enable":true, "options":[]},
+            ]},
 
             {"type":"submenu-item", "label":"Estilos", "options":[
 							{"type":"submenu-item", "label":"Tamanho do texto", "options":[
@@ -843,6 +848,10 @@ Vue.component('app_entities',{
       let data_paramters = {};
       let success_function = function(response) {
         scope.data.objects = response.object;
+        scope.data.total_length = scope.data.objects.length;
+        scope.controls.table.pagination.total_itens = scope.data.total_length;
+
+        scope.controls.table.pagination.total_pages = Math.ceil(scope.controls.table.pagination.total_itens /scope.controls.table.pagination.itens_per_page);
         scope.data.controls.loaded = true;
       };
 
@@ -996,61 +1005,94 @@ Vue.component('app_entities',{
 		<div>
 			<div class="card">
 				<div class="card-body">
-					<div class='row'>
-						<div class='col-lg-12'>
-							<h5 class="card-title"><i class="fas fa-users"></i> Cadastro de Entidades</h5>
-							<hr>
+					<div class="container-fluid" style='padding-left: 0px;padding-right: 0px;'>
+						<div class='row' style="backgroun:red;">
+							<div class='col-lg-12' style="backgroun:red;">
+								<h5 class="card-title" style='float:left;'><i class="fas fa-users"></i>
+									Cadastro de Entidades
+								</h5>
+
+
+							</div>
 						</div>
 					</div>
 
-					<div class="row" style='padding-top:0px;padding-bottom:0px;margin-top:0px;margin-bottom:0px;'>
-						<div class="col col-lg-2">
-				      <sub class="" style="font-size: 10px;margin-bottom: 0; margin-left: 5px;">Buscar por</sub>
-							<select v-model="controls.search.field" class="form-control">
-								<option v-for='column in controls.table.columns' :value='column.id'>{{ column.title }}</option>
-							</select>
-				    </div>
+					<hr style='padding-bottom: 10px;padding-top: 0px;margin-top:5px;'>
 
-				    <div class="col-lg-auto">
-				      <label class="otma-fs-12" style="margin-bottom: 0;" for="busca"></label>
-							<div class="input-group mb-3">
-								<input type="text" v-model="controls.search.value" class="form-control" placeholder="Digite o que você deseja encontrar" aria-label="Digite o que você deseja encontrar" aria-describedby="basic-addon2">
-								<div class="input-group-append">
-									<button class="btn btn-outline-info" type="button"><i class="fas fa-search"></i></button>
-								</div>
-							</div>
-				    </div>
+					<div class="container-fluid" style='margin-top:10px;padding-left: 0px;padding-right: 0px;padding-bottom:30px;height:30px;'>
+					  <div class="row">
+				      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+					      <sub class="" style="float:left;font-size: 10px;margin-bottom: 0; margin-left: 5px;margin-top:-8px;">Situação</sub>
+								<select v-model="controls.search.field" class="form-control form-control-sm">
+									<option v-for='column in controls.table.columns' :value='column.id'>{{ column.title }}</option>
+								</select>
+					    </div>
 
-				    <div class="col col-lg-2">
-				      <div class="input-group mb-3">
-				        <button type="button" class="form-control btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'>Adicionar</button>
-								<button type="button" class="form-control btn btn-secondary btn-sm">Editar</button>
-			        </div>
-			        <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#filters-modal"><i class="fas fa-filter"></i> Filtros</button>
-				    </div>
-				  </div>
+					    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+					      <sub class="" style="float:left;font-size: 10px;margin-bottom: 0; margin-left: 5px;margin-top:-8px;">Tipo de cliente</sub>
+								<select v-model="controls.search.field" class="form-control form-control-sm">
+									<option v-for='column in controls.table.columns' :value='column.id'>{{ column.title }}</option>
+								</select>
+					    </div>
+
+					    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+					      <span style='float:right;'>
+									<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal_entity" @click='init_formulary()'><i class="fas fa-plus"></i> Adicionar</button>
+									<button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i></button>
+									<button class="btn btn-sm btn-secondary " data-toggle="modal" data-target="#filters-modal"><i class="fas fa-filter"></i> </button>
+								</span>
+					    </div>
+					  </div>
+					</div>
+
+					<br>
 
 					<app_entities_table :forms='forms' :data='data' classes='table_entities table-hover' :table="table_styles" :controls="controls"></app_entities_table>
 
-					<nav aria-label="Page navigation example">
-						<ul class="pagination justify-content-end">
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Previous">
-									<span aria-hidden="true">&laquo;</span>
-									<span class="sr-only">Previous</span>
-								</a>
-							</li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item">
-								<a class="page-link" href="#" aria-label="Next">
-									<span aria-hidden="true">&raquo;</span>
-									<span class="sr-only">Next</span>
-								</a>
-							</li>
-						</ul>
-					</nav>
+					<div class="container-fluid" style='margin-top:10px;padding-left: 0px;padding-right: 0px;padding-bottom:0px;height:30px;'>
+					  <div class="row">
+				      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+					      <sub class="" style="float:left;font-size: 10px;margin-bottom: 0; margin-left: 5px;margin-top:-8px;">Buscar por</sub>
+								<select v-model="controls.search.field" class="form-control form-control-sm">
+									<option v-for='column in controls.table.columns' :value='column.id'>{{ column.title }}</option>
+								</select>
+					    </div>
+
+					    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+					      <div class="input-group">
+									<input type="text" v-model="controls.search.value" class="form-control form-control-sm" placeholder="Digite o que você deseja encontrar" aria-label="Digite o que você deseja encontrar" aria-describedby="basic-addon2">
+									<div class="input-group-append">
+										<button class="btn btn-outline-info btn-sm" type="button"><i class="fas fa-search"></i></button>
+									</div>
+								</div>
+					    </div>
+
+					    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+					      <nav>
+								  <ul class="pagination pagination-sm justify-content-end">
+								    <li class="page-item" @click='back_page()'>
+								      <a class="page-link clickable" aria-label="Previous">
+								        <span aria-hidden="true">&laquo;</span>
+								        <span class="sr-only">Previous</span>
+								      </a>
+								    </li>
+
+								    <li :class="{'page-item':true, 'active':(page==controls.table.pagination.current_page)}" v-for='page in controls.table.pagination.total_pages' @click='select_page(page)'>
+								      <a class="page-link clickable">{{ page }}</a>
+								    </li>
+
+								    <li class="page-item" @click='next_page()'>
+								      <a class="page-link clickable" aria-label="Next">
+								        <span aria-hidden="true">&raquo;</span>
+								        <span class="sr-only">Next</span>
+								      </a>
+								    </li>
+								  </ul>
+								</nav>
+					    </div>
+					  </div>
+					</div>
+
 
 					<app_modal id="modal_entity" classes='modal-dialog modal-lg'>
 						<template v-slot:title>
@@ -1151,62 +1193,3 @@ Vue.component('app_entities',{
 
 	`,
 });
-
-/*
-Vue.component('mysearchbtn', {
-  template:`
-  <div>
-    <input type="text" placeholder="type to search"
-      v-model="search"
-      @input="$emit('update:search', $event.target.value)" />
-  </div>`,
-  props:['search']
-})
-
-new Vue({
-  el:'#app',
-  data(){
-    return{
-       original:[],
-       list:[],
-       search:'',
-       resuls:[],
-       searchIndex:null
-    }
-  },
-  mounted(){
-    axios('https://jsonplaceholder.typicode.com/comments')
-       .then(data => {
-          this.original = data.data
-          this.list = this.original
-          this.buildIndex()
-      })
-
-    this.$watch('search', () => {
-      this.resuls = this.searchIndex.search(this.search)
-
-      this.list = []
-      this.resuls.forEach(d => {
-        this.original.forEach(p => {
-          if(d.ref == p.id) this.list.push(p)
-        })
-
-      })
-    })
-  },
-  methods:{
-    buildIndex(){
-      var documents = this.original
-      this.searchIndex = lunr(function () {
-        this.ref('id')
-        this.field('name')
-        this.field('body')
-        this.field('email')
-
-        documents.forEach(doc => {
-          this.add(doc)
-        })
-      })
-    }
-  }
-})*/

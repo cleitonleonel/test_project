@@ -114,6 +114,10 @@
       .icon_config:before{
         font-family: "Font Awesome 5 Free"; font-weight: 900; content: "\f7d9";
       }
+
+      .clickable {
+        cursor: pointer;
+      }
     </style>
 
   {% block main_dependencies %}
@@ -626,7 +630,7 @@
                                 </template>
 
                                 <template v-else>
-                                  <v-contextmenu-item disabled>CADE? {{ sub_submenu.label }}
+                                  <v-contextmenu-item disabled>{{ sub_submenu.label }}
                                     <span v-if="sub_submenu.is_checked==true" style="float: right;padding-left: 10px;">
                                       <i class="fas fa-check"></i>
                                     </span>
@@ -637,37 +641,45 @@
                           </template>
 
                           <template v-else>
-                            <template v-if="submenu.is_enable">
-                              <template v-if="submenu.callback">
-                                <v-contextmenu-item @click="submenu.callback(submenu.args)">{{ submenu.label }}
-                                  <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
-                                    <i class="fas fa-check"></i>
-                                  </span>
-                                </v-contextmenu-item>
-                              </template>
-
-                              <template v-else>
-                                <v-contextmenu-item @click="handleClick">{{ submenu.label }}
-                                  <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
-                                    <i class="fas fa-check"></i>
-                                  </span>
-                                </v-contextmenu-item>
-                              </template>
+                            <template v-if="submenu.type=='divider'">
+                              <v-contextmenu-item divider></v-contextmenu-item>
                             </template>
 
                             <template v-else>
-                              <v-contextmenu-item disabled>{{ submenu.label }}
-                                  <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
-                                    <i class="fas fa-check"></i>
-                                  </span>
-                                </v-contextmenu-item>
+                              <template v-if="submenu.is_enable">
+                                <template v-if="submenu.callback">
+                                  <v-contextmenu-item @click="submenu.callback(submenu.args)">{{ submenu.label }}
+                                    <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                      <i class="fas fa-check"></i>
+                                    </span>
+                                  </v-contextmenu-item>
+                                </template>
+
+                                <template v-else>
+                                  <v-contextmenu-item @click="handleClick">{{ submenu.label }}
+                                    <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                      <i class="fas fa-check"></i>
+                                    </span>
+                                  </v-contextmenu-item>
+                                </template>
+                              </template>
+
+                              <template v-else>
+                                <v-contextmenu-item disabled>{{ submenu.label }}
+                                    <span v-if="submenu.is_checked==true" style="float: right;padding-left: 10px;">
+                                      <i class="fas fa-check"></i>
+                                    </span>
+                                  </v-contextmenu-item>
+                              </template>
                             </template>
+
+
 
 
                             <!--<v-contextmenu-item @click="handleClick">
                               TEM NADA {{ submenu.label }}
-                            </v-contextmenu-item>-->
-                            <v-contextmenu-item @click="submenu.callback(submenu.args)">7777 {{ submenu.label }}</v-contextmenu-item>
+                            </v-contextmenu-item>
+                            <v-contextmenu-item @click="submenu.callback(submenu.args)">22222{{ submenu.label }}</v-contextmenu-item>-->
                           </template>
                         </template>
                       </v-contextmenu-submenu>
@@ -688,11 +700,11 @@
                   <template v-if="item.options.length > 0">
                     <v-contextmenu-submenu @submenu-show="handleSubmenuShow" :title="item.label" class=''>
                       <template v-for="submenu in item.options">
-                        <v-contextmenu-item @click="handleClick">444444444 {{ submenu.label }}</v-contextmenu-item>
+                        <v-contextmenu-item @click="handleClick">{{ submenu.label }}</v-contextmenu-item>
                       </template>
                     </v-contextmenu-submenu>
                   </template>
-                  <template v-else>55555555555 {{ item.label }}</template>
+                  <template v-else>{{ item.label }}</template>
 
                 </v-contextmenu-item>
               </template>

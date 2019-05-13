@@ -51,8 +51,8 @@ let app = new Vue({
           loaded: false,
         },
         session:{
-          timeout_warning:120000,
-					timeout_close:150000,
+          timeout_warning:1400000,
+					timeout_close:1500000,
 					warning_timer: null,
 					closer_timer: null,
         },
@@ -128,7 +128,6 @@ let app = new Vue({
 			data_paramters['password'] = scope.password;
 
 			let success_function = function(response){
-				alert("Olha o novo jeito:"+JSON.stringify(response.object))
 				scope.user = response.object;
 				scope.errors = response.message;
 			};
