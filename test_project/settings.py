@@ -179,3 +179,26 @@ BOWER_INSTALLED_APPS = (
     #'rateyo'
 
 )
+
+
+FILTER_COUNTRY  = True
+FILTER_STATE    = True
+FILTER_CITY     = False
+FILTER_DISTRICT = False
+FILTER_IP       = False
+
+AUTHORIZED_IPS = ['179.234.250.164']
+AUTHORIZED_COUNTRIES = {
+    "BR": {
+        "ES":{
+            "VITÓRIA":["ENSEADA DO SUÁ", "JARDIM DA PENHA", "SANTA LÚCIA"],
+            "VILA VELHA":["PRAIA DA COSTA", "ITAPUÃ", "ITAPARICA"],
+            "CARIACICA": ["JARDIM AMÉRICA", "ITAQUARI", "CAMPO GRANDE"],
+            "SERRA":["LARANJEIRAS", "MANGUINGOS", "CARAPINA"],
+            "GUARAPARI":["CENTRO", "MUQUIÇABA", "PRAIA DO MORRO"],
+            "VIANA":["MARCILHO DE NORONHA", "INDUSTRIAL", "PRIMAVERA"]
+        },
+        "SP":[],
+        "RJ":[]
+    },
+}

@@ -708,7 +708,6 @@ Vue.component('app_entities',{
 							]},
 						]},
 
-
 						{"type":"menu-item", "label":"Paginação", "options":[
               {"type":"menu-item", "label":"Automático", "callback":this.set_pagination, "args":{"itens_per_page":-1}, "is_checked":false, "is_enable":false, "options":[]},
 							{"type":"menu-item", "label":"10 itens por página", "callback":this.set_pagination, "args":{"itens_per_page":10}, "is_checked":true, "is_enable":true, "options":[]},
