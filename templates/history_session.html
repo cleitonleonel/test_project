@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    {% load static %}
+
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/history-session.css' %}">
+    <style>
+      html, body, #map { height: 100%; margin: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
+{% block secondary_dependencies %}
+{% load static %}
+
+<script src="{% static 'js/map_location.js' %}"></script>
+
+{% endblock %}
+</html>

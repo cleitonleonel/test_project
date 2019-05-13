@@ -31,3 +31,11 @@ def change_password_page(request):
 
 def entities_page(request):
     return render(request, "entities.html", {'base_page': 'base_page.html'})
+
+
+
+
+
+def session_history_page(request):
+    return render(request, "history_session.html", {'base_page': 'base_page.html'})
+
