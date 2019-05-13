@@ -48,7 +48,6 @@ function get_location(){
             type: 'get',
             url: url_places + lat + ',' + lng + "&location_type=ROOFTOP&result_type=street_address&key=" + key,
             success: function(response) {
-              //console.log(JSON.stringify(response));
               var date = new Date();
               SESSION_PARAMTERS.external_ip = get_ip();
               SESSION_PARAMTERS.time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
