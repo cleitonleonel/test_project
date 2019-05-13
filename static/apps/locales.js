@@ -5,7 +5,7 @@ SESSION_PARAMTERS['country_code'] = null;
 SESSION_PARAMTERS['country_name'] =  null;
 SESSION_PARAMTERS['region_name'] =  null;
 SESSION_PARAMTERS['region_code'] =  null;
-SESSION_PARAMTERS['distrit'] =  null;
+SESSION_PARAMTERS['district'] =  null;
 SESSION_PARAMTERS['city'] =  null;
 SESSION_PARAMTERS['zip_code'] =  null;
 SESSION_PARAMTERS['time_zone'] =  null;
@@ -59,7 +59,7 @@ function get_location(){
               SESSION_PARAMTERS.city = response.results[0].address_components[3].long_name.toUpperCase();
               SESSION_PARAMTERS.latitude = lat;
               SESSION_PARAMTERS.longitude =lng;
-              SESSION_PARAMTERS.distrit = response.results[0].address_components[2].long_name.toUpperCase();
+              SESSION_PARAMTERS.district = response.results[0].address_components[2].long_name.toUpperCase();
             }
           });
        },
