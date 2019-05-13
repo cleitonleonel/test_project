@@ -6,6 +6,7 @@ SESSION_PARAMTERS['country_name'] =  null;
 SESSION_PARAMTERS['region_name'] =  null;
 SESSION_PARAMTERS['region_code'] =  null;
 SESSION_PARAMTERS['district'] =  null;
+SESSION_PARAMTERS['street_name'] = null;
 SESSION_PARAMTERS['city'] =  null;
 SESSION_PARAMTERS['zip_code'] =  null;
 SESSION_PARAMTERS['time_zone'] =  null;
@@ -47,7 +48,6 @@ function get_location(){
             type: 'get',
             url: url_places + lat + ',' + lng + "&location_type=ROOFTOP&result_type=street_address&key=" + key,
             success: function(response) {
-              console.log(JSON.stringify(response));
               var date = new Date();
               SESSION_PARAMTERS.external_ip = get_ip();
               SESSION_PARAMTERS.time_zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -56,6 +56,7 @@ function get_location(){
               SESSION_PARAMTERS.country_name = response.results[0].address_components[5].long_name.toUpperCase();
               SESSION_PARAMTERS.region_name = response.results[0].address_components[4].long_name.toUpperCase();
               SESSION_PARAMTERS.region_code = response.results[0].address_components[4].short_name.toUpperCase();
+              SESSION_PARAMTERS.street_name = response.results[0].address_components[1].long_name.toUpperCase();
               SESSION_PARAMTERS.city = response.results[0].address_components[3].long_name.toUpperCase();
               SESSION_PARAMTERS.latitude = lat;
               SESSION_PARAMTERS.longitude =lng;
